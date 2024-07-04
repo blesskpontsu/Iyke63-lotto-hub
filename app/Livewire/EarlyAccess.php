@@ -3,8 +3,8 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Rules\Recaptcha;
 use App\Models\EarlyUser;
+use App\Notifications\NewEarlyAccessUser;
 use WireUi\Traits\WireUiActions;
 
 class EarlyAccess extends Component
@@ -42,7 +42,7 @@ class EarlyAccess extends Component
     {
         $this->validate();
 
-        EarlyUser::create([
+        $user = EarlyUser::create([
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
             'phone' => $this->phone,
@@ -55,6 +55,8 @@ class EarlyAccess extends Component
             'title' => 'Registration successful!',
             'description' => 'You have registered for the early access',
         ]);
+
+        $user->notify(new NewEarlyAccessUser($user));
 
         $this->reset();
     }
