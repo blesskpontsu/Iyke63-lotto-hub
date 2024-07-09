@@ -2,7 +2,24 @@
     <div class="xl:w-1/5 mx-auto my-16">
         <h1 class="text-center text-4xl font-bold text-blue-900">Get an Early Access</h1>
         <div class="flex justify-center items-center my-10">
-            <form wire:submit.prevent='register' id="early" method="POST">
+            <form
+                @submit.prevent="doCaptcha"
+                x-data="{
+                    siteKey: @js(config('services.recaptcha.site_key')),
+                    init() {
+                        // load our recaptcha.
+                        if (!window.recaptcha) {
+                            const script = document.createElement('script');
+                            script.src = 'https://www.google.com/recaptcha/api.js?render=' + this.siteKey;
+                            document.body.append(script);
+                        }
+                    },
+                    doCaptcha() {
+                        grecaptcha.execute(this.siteKey, {action: 'submit'}).then(token => {
+                            Livewire.dispatch('formSubmitted', {token: token});
+                        });
+                    },
+            }">
                 <div class="space-y-5">
                     <x-input
                         icon="user"
@@ -41,7 +58,7 @@
 
                     <x-button
                         class="bg-blue-900 w-full py-4 rounded-lg"
-                        wire:click='register'
+                        type='submit'
                         spinner.longest="register"  
                         label="Get Early Access"
                     />

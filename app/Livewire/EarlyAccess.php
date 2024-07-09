@@ -5,7 +5,6 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\EarlyUser;
 use Livewire\Attributes\On;
-use Illuminate\Http\Request;
 use WireUi\Traits\WireUiActions;
 use Illuminate\Support\Facades\Http;
 use App\Notifications\NewEarlyAccessUser;
@@ -42,9 +41,11 @@ class EarlyAccess extends Component
         $this->validateOnly($prop);
     }
 
-    public function register(): void
+    #[On('formSubmitted')]
+    public function submit($token): void
     {
         $this->validate();
+        $this->validateRecaptcha($token);
 
         $user = EarlyUser::create([
             'firstname' => $this->firstname,
@@ -65,23 +66,22 @@ class EarlyAccess extends Component
         $this->reset();
     }
 
-    // protected function validateRecaptcha(string $token): void
-    // {
-    //     // validate Google reCaptcha.
-    //     $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-    //         'secret' => config('services.grecaptcha.secret_key'),
-    //         'response' => $token,
-    //         // 'remoteip' => request()->ip(),
-    //     ]);
-    //     $throw = fn ($message) => throw ValidationException::withMessages(['recaptcha' => $message]);
-    //     if (!$response->successful() || !$response->json('success')) {
-    //         $throw($response->json(['error-codes'])[0] ?? 'An error occurred.');
-    //     }
-    //     // if response was score based (the higher the score, the more trustworthy the request)
-    //     if ($response->json('score') < 0.6) {
-    //         $throw('We were unable to verify that you\'re not a robot. Please try again.');
-    //     }
-    // }
+    protected function validateRecaptcha(string $token): void
+    {
+        // validate Google reCaptcha.
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => config('services.recaptcha.secret_key'),
+            'response' => $token,
+        ]);
+        $throw = fn ($message) => throw ValidationException::withMessages(['recaptcha' => $message]);
+        if (!$response->successful() || !$response->json('success')) {
+            $throw($response->json(['error-codes'])[0] ?? 'An error occurred.');
+        }
+        // if response was score based (the higher the score, the more trustworthy the request)
+        if ($response->json('score') < 0.6) {
+            $throw('We were unable to verify that you\'re not a robot. Please try again.');
+        }
+    }
 
 
     public function render()
