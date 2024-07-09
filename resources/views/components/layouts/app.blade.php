@@ -6,6 +6,7 @@
 
     <title>{{ $title ?? 'Page Title' }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js',])
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     @livewireStyles
 </head>
 <body class="font-poppins">
@@ -14,7 +15,7 @@
 @livewireScripts
 <wireui:scripts />
 @livewire('wire-elements-modal')
-{{-- <script src="//unpkg.com/alpinejs" defer></script> --}}
+@stack('scripts')
 </body>
 </html>
 

@@ -2,7 +2,7 @@
     <div class="xl:w-1/5 mx-auto my-16">
         <h1 class="text-center text-4xl font-bold text-blue-900">Get an Early Access</h1>
         <div class="flex justify-center items-center my-10">
-            <form action="register" wire:submit='register' id="early">
+            <form wire:submit.prevent='register' id="early" method="POST">
                 <div class="space-y-5">
                     <x-input
                         icon="user"
@@ -40,10 +40,9 @@
                     />
 
                     <x-button
-                        class="bg-blue-900 w-full rounded-lg g-recaptcha"
+                        class="bg-blue-900 w-full py-4 rounded-lg"
                         wire:click='register'
-                        spinner.longest="register"
-                        primary
+                        spinner.longest="register"  
                         label="Get Early Access"
                     />
                 </div>
