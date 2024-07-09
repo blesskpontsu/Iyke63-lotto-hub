@@ -4,13 +4,14 @@ namespace App\Notifications;
 
 use App\Models\EarlyUser;
 use Illuminate\Bus\Queueable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 
-class NewEarlyAccessUser extends Notification
+class NewEarlyAccessUser extends Notification implements ShouldQueue
 {
-    use Queueable;
+    use Queueable, InteractsWithQueue;
 
     /**
      * Create a new notification instance.
