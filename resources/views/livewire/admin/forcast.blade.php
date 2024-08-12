@@ -16,6 +16,7 @@
                             <x-select label="Select Lotto Company" wire:model.live='company' placeholder="Select company">
                                 <x-select.option label="Afriluck NLA" value="Afriluck NLA" />
                                 <x-select.option label="NLA" value="NLA" />
+                                <x-select.option label="UK49S" value="UK49S" />
                                 <x-select.option label="Alpha Lotto" value="Alpha Lotto" />
                             </x-select>
                         </div>
