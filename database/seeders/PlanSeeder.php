@@ -40,12 +40,12 @@ class PlanSeeder extends Seeder
         // ]);
         // $plan3->save();
 
-        // Admin::create([
-        //     'firstname' => 'admin',
-        //     'lastname' => 'iyke',
-        //     'email' => 'admin@iyke63.com',
-        //     'password' => Hash::make('12345678')
-        // ]);
+        Admin::create([
+            'firstname' => 'admin',
+            'lastname' => 'iyke',
+            'email' => 'admin@iyke63.com',
+            'password' => Hash::make('IamIyke63.')
+        ]);
 
         $announcement = new Announcement([
             'title' => 'Early User Welcome',
