@@ -27,6 +27,8 @@ class Forcast extends Component
 
     public function store(): void
     {
+        $imageExtension = null; // Initialize with a default value
+
         $forcast = new ModelsForcast([
             'company' => $this->company,
             'game' => $this->game,
@@ -46,17 +48,19 @@ class Forcast extends Component
             $imageStream = $image->stream();
             Storage::disk('local')->put($location, $imageStream->__toString());
         }
-        $forcast->image = $imageExtension;
+
+        $forcast->image = $imageExtension; // This will now be null if no image is provided
         $forcast->save();
 
         $this->notification()->send([
             'icon' => 'success',
             'title' => 'Forcast Created Successfully',
-            'description' => 'You have created new forcast',
+            'description' => 'You have created a new forcast',
         ]);
 
         $this->reset();
     }
+
 
     public function render()
     {
