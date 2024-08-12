@@ -27,8 +27,6 @@ class Forcast extends Component
 
     public function store(): void
     {
-        $imageExtension = null; // Initialize with a default value
-
         $forcast = new ModelsForcast();
         $forcast->company = $this->company;
         $forcast->game = $this->game;
