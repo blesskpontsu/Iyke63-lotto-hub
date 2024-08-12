@@ -29,11 +29,10 @@ class Forcast extends Component
     {
         $imageExtension = null; // Initialize with a default value
 
-        $forcast = new ModelsForcast([
-            'company' => $this->company,
-            'game' => $this->game,
-            'game_time' => $this->draw_time
-        ]);
+        $forcast = new ModelsForcast();
+        $forcast->company = $this->company;
+        $forcast->game = $this->game;
+        $forcast->draw_time = $this->draw_time;
 
         if ($this->image) {
             $imageName = $this->image->getClientOriginalName();
@@ -49,7 +48,7 @@ class Forcast extends Component
             Storage::disk('local')->put($location, $imageStream->__toString());
         }
 
-        $forcast->image = $imageExtension; // This will now be null if no image is provided
+        $forcast->image = $imageExtension;
         $forcast->save();
 
         $this->notification()->send([
