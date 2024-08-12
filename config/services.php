@@ -40,4 +40,8 @@ return [
         'secret_key' => env('SECRET_KEY'),
     ],
 
+    'paystack' => [
+        'live_key' => env('PAYSTACK_SECRET'),
+    ],
+
 ];

@@ -22,7 +22,7 @@
         <div x-data="{ open: false }">
             <div class="lg:hidden flex justify-between items-center">
                 <img class="w-1/4 rounded-full" src="{{ asset('images/logo.svg') }}" alt="">
-                <a href="/early-access" wire:navigate class="bg-blue-900 px-4 py-2 text-white font-bold rounded-2xl inline-block">Get an Early Access</a>
+                <a href="/register" wire:navigate class="bg-blue-900 px-4 py-2 text-white font-bold rounded-2xl inline-block">Create An Account</a>
                 <img class="hamburger-menu w-20" src="{{ asset('images/hamburger.svg') }}" alt="" @click="open = !open">
             </div>
             <div class="mobile-nav"
@@ -55,7 +55,7 @@
             <a class="hover:text-green-600 text-xl text-gray-500" href="#testimonials">What others say</a>
             <div class="space-x-5">
                 {{-- <a href="/login" wire:navigate class="bg-blue-800 text-white text-lg px-7 py-2 rounded-lg">Sign In</a> --}}
-                <a href="/early-access" wire:navigate class="bg-blue-800 text-white text-lg px-5 py-2 rounded-lg">Get an Early Access</a>
+                <a href="/register" wire:navigate class="bg-blue-800 text-white text-lg px-5 py-2 rounded-lg">Create An Account</a>
             </div>
         </div>
     </nav>
@@ -71,7 +71,7 @@
                 <h1 class="text-2xl xl:text-5xl font-bold">Everyone deserves an <br> opportunity to win lottery</h1>
                 <p>Your one stop application to get lotto forcast and game predictions from professional <br> book makers to guarantee your wins</p>
 
-                <a href="/early-access" wire:navigate class="bg-blue-900 px-4 py-2 text-white font-bold rounded-2xl inline-block">Get an Early Access</a>
+                <a href="/register" wire:navigate class="bg-blue-900 px-4 py-2 text-white font-bold rounded-2xl inline-block">Create An Account</a>
             </div>
         </div>
         <div class="hidden xl:block w-1/3">
