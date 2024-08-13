@@ -39,7 +39,7 @@
                     <a class="hover-green block text-gray-500" href="#what">What do you get</a>
                     <a class="hover-green block text-gray-500" href="#pricing">Plans & Pricing</a>
                     <a class="hover-green block text-gray-500 pb-3 " href="#testimonials">What others say</a>
-                    {{-- <a href="/login" wire:navigate class="bg-blue-800 text-white text-lg px-7 py-2 rounded-lg">Sign In</a> --}}
+                    <a href="/login" wire:navigate class="bg-blue-800 text-white text-lg px-7 py-2 rounded-lg">Sign In</a>
                 </div>
             </div>
         </div>
@@ -54,7 +54,7 @@
             <a class="hover:text-green-600 text-xl text-gray-500" href="#pricing">Plans & Pricing</a>
             <a class="hover:text-green-600 text-xl text-gray-500" href="#testimonials">What others say</a>
             <div class="space-x-5">
-                {{-- <a href="/login" wire:navigate class="bg-blue-800 text-white text-lg px-7 py-2 rounded-lg">Sign In</a> --}}
+                <a href="/login" wire:navigate class="bg-blue-800 text-white text-lg px-7 py-2 rounded-lg">Sign In</a>
                 <a href="/register" wire:navigate class="bg-blue-800 text-white text-lg px-5 py-2 rounded-lg">Create An Account</a>
             </div>
         </div>

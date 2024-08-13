@@ -75,6 +75,9 @@
                 </div> 
                 <x-button wire:click='register' blue class="w-full py-2 md:py-2 text-xl text-white" spinner="register" loading-delay="short" label="Log In" />
             </div>
+            <div>
+                <p class="text-gray-500">Already have an account? <a class="ml-3 text-blue-700 hover:text-blue-900" href="/login" wire:navigate>Login</a></p>
+            </div>
         </form>
     </x-login-card>
 
