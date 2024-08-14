@@ -20,6 +20,7 @@ class Register extends Component
     public string $phone = '';
     public string $email = '';
     public string $password = '';
+    public $countryCode = '233';
 
 
     public function rules(): array

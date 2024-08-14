@@ -29,12 +29,13 @@
                     </div>
 
                     <div class="space-y-2">
-                        <x-input
-                            wire:model.blur='phone'
-                            type="text"
-                            icon="phone"
-                            label="Phone Number"
-                            placeholder="0123456789"
+                        
+                        <x-phone
+                            wire:model="phone"
+                            label="Phone"
+                            placeholder="Phone"
+                            :mask="['+### ## ###-####', '+# ### ###-####']"
+                            prefix="{{  $countryCode  }}"
                         />
                     </div>
 
@@ -73,7 +74,7 @@
                     </div>
                     
                 </div> 
-                <x-button wire:click='register' blue class="w-full py-2 md:py-2 text-xl text-white" spinner="register" loading-delay="short" label="Log In" />
+                <x-button wire:click='register' blue class="w-full py-2 md:py-2 text-xl text-white" spinner="register" loading-delay="short" label="Register" />
             </div>
             <div>
                 <p class="text-gray-500">Already have an account? <a class="ml-3 text-blue-700 hover:text-blue-900" href="/login" wire:navigate>Login</a></p>
