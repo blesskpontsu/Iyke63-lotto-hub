@@ -22,7 +22,7 @@
                     <i class="fa-solid fa-chart-line fa-2x"></i>
                     <p class="font-semibold">Forcast</p>
                 </button>
-                <button style="width: 30%" class="bg-blue-500 py-6 rounded-xl px-1">
+                <button wire:click='videos' style="width: 30%" class="bg-blue-500 py-6 rounded-xl px-1">
                     <i class="fa-solid fa-video fa-2x"></i>
                     <p class="font-semibold">Videos</p>
                 </button>

@@ -1,9 +1,9 @@
 <div class="">
     <x-slot name="title">
-        {{ _('Login') }}
+        {{ _('Password Reset') }}
     </x-slot>
     <x-auth-card>
-        <h1 class="text-center text-3xl lg:text-4xl text-blue-700 font-bold">Sign in to Dashboard</h1>
+        <h1 class="text-center text-3xl lg:text-4xl text-blue-700 font-bold">Reset Password?</h1>
         <form>
             @csrf
             <div class="space-y-5 py-10">
@@ -12,13 +12,21 @@
                         <x-input
                             wire:model.blur='email'
                             type="email"
+                            id="email"
+                            name='email'
                             icon="envelope-open"
                             label="Email"
                             placeholder="kofi@example.com"
                         />
-                    </div>
+                    </div> 
+
                     <div class="space-y-2" x-data="{ showPassword: false }">
-                        <x-input wire:model.blur='password' label="Password" x-bind:type="showPassword ? 'text' : 'password'" class="password-input" placeholder="********" icon="lock-closed">
+                        <x-input 
+                            wire:model.blur='password' 
+                            label="Password" 
+                            x-bind:type="showPassword ? 'text' : 'password'" 
+                            class="password-input" placeholder="********" 
+                            icon="lock-closed">
                             <x-slot name="append" @click="showPassword = !showPassword">
                                 <x-button
                                     x-show="!showPassword"
@@ -41,15 +49,8 @@
                             </x-slot>
                         </x-input>
                     </div>
-                    
                 </div> 
-                <x-button wire:click='login' blue class="w-full py-2 md:py-2 text-xl text-white" spinner="login" loading-delay="short" label="Log In" />
-            </div>
-            <div>
-                <p class="text-gray-500">Don't have an account yet? <a class="ml-3 text-blue-700 hover:text-blue-900" href="/register" wire:navigate>Register</a></p>
-            </div>
-            <div>
-                <p class="text-gray-500">Forgot your password? <a class="ml-3 text-blue-700 hover:text-blue-900" href="/forgot-password" wire:navigate>Reset Password</a></p>
+                <x-button wire:click='resetPassword' blue class="w-full py-2 md:py-2 text-xl text-white" spinner="resetPassword" loading-delay="short" label="Reset Password" />
             </div>
         </form>
     </x-login-card>

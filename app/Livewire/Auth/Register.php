@@ -2,14 +2,15 @@
 
 namespace App\Livewire\Auth;
 
-use App\Models\EarlyUser;
 use App\Models\User;
 use Livewire\Component;
+use App\Models\EarlyUser;
+use Illuminate\Support\Str;
+use WireUi\Traits\WireUiActions;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
-use WireUi\Traits\WireUiActions;
 
 class Register extends Component
 {
@@ -20,7 +21,7 @@ class Register extends Component
     public string $phone = '';
     public string $email = '';
     public string $password = '';
-    public $countryCode = '233';
+    public $countryCode = '+233';
 
 
     public function rules(): array
@@ -53,17 +54,23 @@ class Register extends Component
 
         $this->password = Hash::make($this->password); //Hashing password
 
-        $earlyUser = EarlyUser::query()->where('email', $this->email)->first();
-
-        if (!$earlyUser) {
-            $this->notification()->send([
-                'icon' => 'error',
-                'title' => 'Registration unsuccessful!',
-                'description' => 'This registration is only for early users at the moment',
-            ]);
-            $this->dispatch('redirectAfterDelay');
-            return;
+        if (Str::startsWith($this->phone, '0')) {
+            $this->phone = Str::replaceFirst('0', $this->countryCode, $this->phone);
+        } else {
+            $this->phone = $this->countryCode . $this->phone;
         }
+
+        // $earlyUser = EarlyUser::query()->where('email', $this->email)->first();
+
+        // if (!$earlyUser) {
+        //     $this->notification()->send([
+        //         'icon' => 'error',
+        //         'title' => 'Registration unsuccessful!',
+        //         'description' => 'This registration is only for early users at the moment',
+        //     ]);
+        //     $this->dispatch('redirectAfterDelay');
+        //     return;
+        // }
 
         //Creating a new user
         $user = new User($this->all());

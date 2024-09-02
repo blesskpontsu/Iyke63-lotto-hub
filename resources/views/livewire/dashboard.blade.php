@@ -8,7 +8,7 @@
             <figure>
                 <img class="mx-auto" width="150" src="{{ asset('images/logo.png') }}" alt="">
             </figure>
-            <div class="bg-white w-11/12 shadow-lg mx-auto py-8 rounded-lg flex items-center">
+            <div class="bg-white w-11/12 shadow-lg mx-auto pt-8 pb-28 rounded-lg flex items-center">
                 <figure>
                     <img width="100" src="{{ asset('images/user-image.webp') }}" alt="">
                 </figure>
@@ -22,7 +22,7 @@
                     <i class="fa-solid fa-gear fa-2x"></i>
                     <p class="font-semibold">Stake Lotto</p>
                 </button>
-                <button style="width: 30%" class="bg-blue-500 py-6 rounded-xl px-1">
+                <button wire:click='videos' style="width: 30%" class="bg-blue-500 py-6 rounded-xl px-1">
                     <i class="fa-solid fa-video fa-2x"></i>
                     <p class="font-semibold">Videos</p>
                 </button>

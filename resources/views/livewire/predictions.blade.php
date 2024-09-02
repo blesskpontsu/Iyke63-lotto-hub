@@ -7,7 +7,7 @@
             <div class="bg-white py-5 w-full shadow-xl px-2">
                 <h1>Predictions</h1>
             </div>
-            <div class="bg-white shadow-lg mx-auto py-8 mt-10">
+            <div class="bg-white shadow-lg mx-auto pt-8 pb-32 mt-10">
             @foreach ($predictions as $prediction)
                 <figure class="text-center my-5">
                     <h1 class="text-3xl font-semibold text-gray-600">{{ $prediction->company }}</h1>

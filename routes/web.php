@@ -6,25 +6,32 @@ use App\Livewire\Admin\Login as AdminLogin;
 use App\Livewire\Admin\Prediction;
 use App\Livewire\Admin\Result;
 use App\Livewire\Admin\Settings as AdminSettings;
+use App\Livewire\Admin\Video\Index;
 use App\Livewire\Dashboard;
 use App\Livewire\Auth\Login;
-use App\Livewire\EarlyAccess;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Auth\EmailVerification;
+use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\Plans;
 use App\Livewire\Auth\Register;
+use App\Livewire\Auth\ResetPassword;
 use App\Livewire\LottoResults;
 use App\Livewire\Predictions;
 use App\Livewire\RequestBet;
 use App\Livewire\Settings;
+use App\Livewire\Video;
 
 Route::get('/', function () {
     return view('welcome');
 });
 Route::webhooks('paystack-webhooks', 'paystack');
-// Route::get('/early-access', EarlyAccess::class)->name('early-access');
-Route::get('/login', Login::class)->name('login');
-Route::get('/register', Register::class)->name('register');
+Route::middleware('guest')->group(function () {
+    // Route::get('/early-access', EarlyAccess::class)->name('early-access');
+    Route::get('/login', Login::class)->name('login');
+    Route::get('/register', Register::class)->name('register');
+    Route::get('/forgot-password', ForgotPassword::class)->name('password-request');
+    Route::get('reset-password/{token}', ResetPassword::class)->name('password.reset');
+});
 
 
 Route::middleware('auth')->group(function () {
@@ -39,7 +46,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/settings', Settings::class)->name('settings');
         Route::get('/lotto-results', LottoResults::class)->name('lotto.results');
         Route::get('predictions', Predictions::class)->name('predictions');
-        // });
+        Route::get('/videos', Video::class)->name('videos');
     });
 
     Route::get('/email/verify', EmailVerification::class)->name('verification.notice');
@@ -59,5 +66,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('predictions', Prediction::class)->name('predictions');
         Route::get('results', Result::class)->name('results');
         Route::get('settings', AdminSettings::class)->name('settings');
+        Route::get('videos', Index::class)->name('video.index');
     });
 });

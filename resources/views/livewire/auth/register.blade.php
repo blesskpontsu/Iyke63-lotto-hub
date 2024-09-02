@@ -28,16 +28,36 @@
                         />
                     </div>
 
-                    <div class="space-y-2">
-                        
-                        <x-phone
-                            wire:model="phone"
-                            label="Phone"
-                            placeholder="Phone"
-                            :mask="['+### ## ###-####', '+# ### ###-####']"
-                            prefix="{{  $countryCode  }}"
-                        />
+                    <div x-data="{ phone: @entangle('phone'), countryCode: @entangle('countryCode') }" class="space-y-2">
+                        <div class="flex">
+                            <!-- Country Code Select Dropdown -->
+                            <x-select
+                                x-model="countryCode"
+                                wire:model.live="countryCode"
+                                label='Phone'
+                                class="block flex-1 rounded-l-md border-r-0 rounded-r-none text-sm"
+                                value='countryCode'
+                            >
+                                <x-select.option label="GH" value="+233" />
+                                <x-select.option label="NG" value="+234" />
+                                <x-select.option label="SA" value="+27" />
+                                <x-select.option label="UK" value="+44" />
+                                <x-select.option label="CI" value="+225" />
+                                <x-select.option label="TG" value="+228" />
+                            </x-select>
+                    
+                            <!-- Phone Number Input -->
+                            <x-input
+                                type="tel"
+                                x-model.live="phone"
+                                wire:model="phone"
+                                placeholder="542345678"
+                                class="mt-6"
+                                prefix="{{ $countryCode }}"
+                            />
+                        </div>
                     </div>
+                    
 
                     <div class="space-y-2">
                         <x-input
@@ -48,29 +68,12 @@
                             placeholder="kofi@example.com"
                         />
                     </div>
-                    <div class="space-y-2" x-data="{ showPassword: false }">
-                        <x-input wire:model.blur='password' label="Password" x-bind:type="showPassword ? 'text' : 'password'" class="password-input" placeholder="********" icon="lock-closed">
-                            <x-slot name="append" @click="showPassword = !showPassword">
-                                <x-button
-                                    x-show="!showPassword"
-                                    class="h-full"
-                                    id="input-eye"
-                                    icon="eye"
-                                    rounded="rounded-r-md"
-                                    primary
-                                    flat
-                                />
-                                <x-button
-                                    x-show="showPassword"
-                                    class="h-full"
-                                    id="input-eye-off"
-                                    icon="eye-slash"
-                                    rounded="rounded-r-md"
-                                    primary
-                                    flat
-                                />
-                            </x-slot>
-                        </x-input>
+                    <div class="space-y-2">
+                        <x-password 
+                            wire:model.live='password'
+                            label="Password" 
+                            placeholder='********'
+                        />
                     </div>
                     
                 </div> 

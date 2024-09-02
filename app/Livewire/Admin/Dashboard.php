@@ -17,6 +17,11 @@ class Dashboard extends Component
         $this->redirect('/admin/results', navigate: true);
     }
 
+    public function videos(): void
+    {
+        $this->redirect('/admin/videos', navigate: true);
+    }
+
     public function render()
     {
         return view('livewire.admin.dashboard', [

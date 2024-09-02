@@ -18,6 +18,11 @@ class Dashboard extends Component
         $this->redirectIntended(default: route('lotto.results', absolute: false), navigate: true);
     }
 
+    public function videos()
+    {
+        $this->redirectIntended(default: route('videos', absolute: false), navigate: true);
+    }
+
     public function render()
     {
         return view('livewire.dashboard', [
