@@ -39,7 +39,7 @@
         <div class="flex justify-end mt-4">
             <button 
                 x-on:click = "show = false"
-                class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
             >
                 Close
             </button>

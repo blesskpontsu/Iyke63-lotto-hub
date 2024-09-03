@@ -21,7 +21,8 @@ class RequestBet extends Model
         'selected_numbers',
         'amount',
         'total_amount',
-        'status'
+        'status',
+        'image'
     ];
 
     public function user(): BelongsTo

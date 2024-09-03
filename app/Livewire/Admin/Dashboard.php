@@ -7,6 +7,8 @@ use App\Models\RequestBet;
 
 class Dashboard extends Component
 {
+    public RequestBet $selectedRequest;
+
     public function forcast(): void
     {
         $this->redirect('/admin/forcast', navigate: true);
@@ -20,6 +22,13 @@ class Dashboard extends Component
     public function videos(): void
     {
         $this->redirect('/admin/videos', navigate: true);
+    }
+
+    public function viewRequest(RequestBet $request)
+    {
+        $this->selectedRequest = $request;
+
+        $this->dispatch('open-modal', name: 'view.request');
     }
 
     public function render()

@@ -4,11 +4,13 @@
     </x-slot>
 
     <x-structure>
-        <x-Modal name="view.request" title="View Bet Request">
-            <x-slot:body>
-                <p>This is a body</p>
-            </x-slot:body>
-        </x-Modal>
+        @if ($selectedRequest)
+            <x-Modal name="view.request" title="Update Bet Request">
+                <x-slot:body>
+                    <livewire:admin.edit-best-request :request="$selectedRequest" />
+                </x-slot:body>
+            </x-Modal>
+        @endif
         <div class="w-full bg-zinc-200 px-5 h-full">
             <figure>
                 <img class="mx-auto" width="150" src="{{ asset('images/logo.png') }}" alt="">
@@ -42,7 +44,10 @@
                 {{-- Table --}}
                 <div class="overflow-x-auto px-3">
                     @foreach($requests as $request)
-                        <div class="my-5 flex justify-between items-center">
+                        <div 
+                            wire:key='{{ $request->id }}'
+                            class="my-5 flex justify-between items-center"
+                            >
                             <div>
                                 <p class="text-md font-semibold">{{ $request->game }}</p>
                                 <p>{{ $request->game_type }} {{ $request->game_code }}</p>
@@ -52,7 +57,7 @@
                             </div>
                             <div>
                                 <button 
-                                    x-data x-on:click="$dispatch('open-modal', { name : 'view.request'})"
+                                    wire:click="viewRequest('{{ $request->id }}')"
                                     class="bg-blue-500 text-white px-2 py-1 rounded-lg">
                                     <i class="fa-solid fa-plus"></i>
                                 </button>
