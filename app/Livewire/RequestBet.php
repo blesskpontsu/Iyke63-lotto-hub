@@ -160,6 +160,7 @@ class RequestBet extends Component
                 'icon' => 'error',
                 'title' => 'Payment not successful',
                 'description' => $response->json('message'),
+                'channels' => ['card', 'bank', 'ussd', 'mobile_money']
             ]);
 
             return redirect('/dashboard');
