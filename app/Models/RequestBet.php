@@ -20,7 +20,8 @@ class RequestBet extends Model
         'game_code',
         'selected_numbers',
         'amount',
-        'total_amount'
+        'total_amount',
+        'status'
     ];
 
     public function user(): BelongsTo

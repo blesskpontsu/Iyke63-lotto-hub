@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('request_bets', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->primary();
             $table->string('company');
-            $table->id('user_id')->constrained('users');
+            $table->foreignId('user_id')->constrained('users');
             $table->string('game');
             $table->string('game_time')->nullable();
             $table->string('game_type');
@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('selected_numbers');
             $table->integer('amount');
             $table->integer('total_amount');
+            $table->string('status')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

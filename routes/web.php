@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/lotto-results', LottoResults::class)->name('lotto.results');
         Route::get('predictions', Predictions::class)->name('predictions');
         Route::get('/videos', Video::class)->name('videos');
+        Route::get('bet-request-callback', [RequestBet::class, 'callback'])->name('request.bet.callback');
     });
 
     Route::get('/email/verify', EmailVerification::class)->name('verification.notice');

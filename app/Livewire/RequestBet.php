@@ -2,12 +2,18 @@
 
 namespace App\Livewire;
 
-use App\Models\RequestBet as ModelsRequestBet;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
-use Livewire\Attributes\Validate;
+use App\Models\Transaction;
+use Illuminate\Http\Request;
 use WireUi\Traits\WireUiActions;
+use Livewire\Attributes\Validate;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Response;
+use App\Models\RequestBet as ModelsRequestBet;
+use Illuminate\Http\Client\Response as ClientResponse;
 
 class RequestBet extends Component
 {
@@ -26,6 +32,8 @@ class RequestBet extends Component
     public string $selected_numbers = '';
 
     public int $amount = 1;
+
+    public string $email = '';
 
     public int $total_amount = 1;
 
@@ -127,18 +135,94 @@ class RequestBet extends Component
         }
     }
 
+    public function callback(Request $request)
+    {
+        $response = $this->verify_payment($request->reference);
+
+        $jsonResponse = $response->json('data');
+
+        $successful = $jsonResponse['status'] == 'sucess';
+
+        $jsonPretty = json_encode($response['data'], JSON_PRETTY_PRINT);
+
+        $transaction = new Transaction([
+            'user_id' => Auth::user()->id,
+            'transaction_id' => $jsonResponse['id'],
+            'customer_id' => $jsonResponse['customer']['id'],
+            'amount' => $jsonResponse['amount'],
+            'status' => $jsonResponse['status'],
+            'payload' => $jsonPretty,
+        ]);
+        $transaction->save();
+
+        if (!$successful) {
+            $this->notification()->send([
+                'icon' => 'error',
+                'title' => 'Payment not successful',
+                'description' => $response->json('message'),
+            ]);
+
+            return redirect('/dashboard');
+        }
+
+        $betRequest = ModelsRequestBet::find($jsonResponse['reference']);
+
+        if (!$betRequest) {
+            Log::info('Bet Request not found');
+            return redirect('/dashboard');
+        }
+
+        $betRequest->update([
+            'status' => 'paid'
+        ]);
+
+
+        $this->notification()->send([
+            'icon' => 'error',
+            'title' => 'Payment not successful',
+            'description' => $response->json('message'),
+        ]);
+
+        $this->redirect('/dashboard');
+    }
+
     public function submit()
     {
         $this->validate();
 
-        $bet = ModelsRequestBet::create($this->all());
+        $bet = new ModelsRequestBet($this->all());
         $bet->user_id = Auth::user()->id;
+        $bet->status = 'pending';
+        $bet->save();
 
-        $this->notification()->send([
-            'icon' => 'success',
-            'title' => 'Game Staked Successfully',
-            'description' => 'You have successfully stake your game',
-        ]);
+        $discount = $this->total_amount * 0.15;
+
+        $amount = $this->total_amount - $discount;
+
+        $formData = [
+            'email' => Auth::user()->email,
+            'amount' => $amount * 100,
+            'reference' => $bet->id,
+            'callback_url' => route('request.bet.callback'),
+        ];
+
+        $response = $this->initiate_payment($formData);
+
+        if ($response->json('status') == false) {
+
+            $this->notification()->send([
+                'icon' => 'error',
+                'title' => 'Request not successful',
+                'description' => $response->json('message'),
+            ]);
+        } else {
+            $this->notification()->send([
+                'icon' => 'success',
+                'title' => 'Request Succesful',
+                'description' => 'Proceed to make payment',
+            ]);
+            $this->redirect($response->json('data')['authorization_url']);
+        };
     }
 
     public function render()
@@ -288,5 +372,29 @@ class RequestBet extends Component
             }
         }
         return $results;
+    }
+
+    public function initiate_payment($formData): ClientResponse
+    {
+        $key = config('services.paystack.live_key');
+        $response = Http::withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => "Bearer $key",
+            'Cache-Control' => 'no-cache'
+        ])->post('https://api.paystack.co/transaction/initialize', $formData);
+
+        return $response;
+    }
+
+    public function verify_payment($reference)
+    {
+        $key = config('services.paystack.live_key');
+        $response = Http::withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => "Bearer $key",
+            'Cache-Control' => 'no-cache'
+        ])->get("https://api.paystack.co/transaction/verify/{$reference}");
+
+        return $response;
     }
 }

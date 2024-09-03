@@ -8,6 +8,7 @@
             @csrf
             <div class="space-y-5 py-10">
                 <div class="space-y-4">
+        
                     <div class="space-y-2">
                         <x-select label="Select Lotto Company" wire:model.live='company' placeholder="Select company">
                             @foreach ($companies as $company)

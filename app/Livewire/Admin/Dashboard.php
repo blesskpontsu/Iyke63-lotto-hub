@@ -25,7 +25,7 @@ class Dashboard extends Component
     public function render()
     {
         return view('livewire.admin.dashboard', [
-            'requests' => RequestBet::latest()->get()
+            'requests' => RequestBet::latest()->where('status', 'paid')->get()
         ]);
     }
 }

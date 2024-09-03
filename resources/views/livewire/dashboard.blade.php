@@ -4,11 +4,11 @@
     </x-slot>
 
     <x-structure>
-        <div class="w-full bg-zinc-200 px-5 h-screen">
+        <div class="w-full bg-zinc-200 px-5 pb-48 h-screen">
             <figure>
                 <img class="mx-auto" width="150" src="{{ asset('images/logo.png') }}" alt="">
             </figure>
-            <div class="bg-white w-11/12 shadow-lg mx-auto pt-8 pb-28 rounded-lg flex items-center">
+            <div class="bg-white w-11/12 shadow-lg mx-auto py-8 rounded-lg flex items-center">
                 <figure>
                     <img width="100" src="{{ asset('images/user-image.webp') }}" alt="">
                 </figure>
