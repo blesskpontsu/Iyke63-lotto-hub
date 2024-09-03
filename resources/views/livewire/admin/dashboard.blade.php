@@ -4,7 +4,12 @@
     </x-slot>
 
     <x-structure>
-        <div class="w-full bg-zinc-200 px-5 h-screen">
+        <x-Modal name="view.request" title="View Bet Request">
+            <x-slot:body>
+                <p>This is a body</p>
+            </x-slot:body>
+        </x-Modal>
+        <div class="w-full bg-zinc-200 px-5 h-full">
             <figure>
                 <img class="mx-auto" width="150" src="{{ asset('images/logo.png') }}" alt="">
             </figure>
@@ -31,33 +36,29 @@
                     <p class="font-semibold">Lotto Results</p>
                 </button>
             </div>
-            <div class="bg-white shadow-lg mx-auto py-8 rounded-lg">
+            <div class="bg-white shadow-lg mx-auto py-8 pb-32 rounded-lg">
                 <h2 class="text-center text-3xl font-bold">Lotto Requests</h2>
             
                 {{-- Table --}}
-                <div class="overflow-x-auto">
-                    <table class="min-w-full bg-white">
-                        <thead>
-                            <tr>
-                                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 uppercase tracking-wider">Phone</th>
-                                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 uppercase tracking-wider">Amount</th>
-                                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-gray-600 uppercase tracking-wider">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($requests as $request)
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">{{ $request->user->phone }}</td>
-                                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">{{ $request->total_amount }}</td>
-                                    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                                        <button class="bg-blue-500 text-white px-2 py-1 rounded-lg">
-                                            <i class="fa-solid fa-plus"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                <div class="overflow-x-auto px-3">
+                    @foreach($requests as $request)
+                        <div class="my-5 flex justify-between items-center">
+                            <div>
+                                <p class="text-md font-semibold">{{ $request->game }}</p>
+                                <p>{{ $request->game_type }} {{ $request->game_code }}</p>
+                                <p>{{ $request->selected_numbers }}</p>
+                                <p>GHC{{ $request->amount }}</p>
+                                <p>{{ $request->user->phone }}</p>
+                            </div>
+                            <div>
+                                <button 
+                                    x-data x-on:click="$dispatch('open-modal', { name : 'view.request'})"
+                                    class="bg-blue-500 text-white px-2 py-1 rounded-lg">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
             
