@@ -141,7 +141,9 @@ class RequestBet extends Component
 
         $jsonResponse = $response->json('data');
 
-        $successful = $jsonResponse['status'] == 'sucess';
+        Log::info($jsonResponse);
+
+        $successful = $jsonResponse['status'] == 'success';
 
         $jsonPretty = json_encode($response['data'], JSON_PRETTY_PRINT);
 
@@ -159,14 +161,15 @@ class RequestBet extends Component
             $this->notification()->send([
                 'icon' => 'error',
                 'title' => 'Payment not successful',
-                'description' => $response->json('message'),
-                'channels' => ['card', 'bank', 'ussd', 'mobile_money']
+                'description' => $response->json('message')
             ]);
 
             return redirect('/dashboard');
         }
 
         $betRequest = ModelsRequestBet::find($jsonResponse['reference']);
+
+        Log::alert($betRequest);
 
         if (!$betRequest) {
             Log::info('Bet Request not found');
@@ -184,7 +187,7 @@ class RequestBet extends Component
             'description' => $response->json('message'),
         ]);
 
-        $this->redirect('/dashboard');
+        return redirect('/dashboard');
     }
 
     public function submit()
