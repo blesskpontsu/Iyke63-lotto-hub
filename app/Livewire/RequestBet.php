@@ -71,13 +71,13 @@ class RequestBet extends Component
         if ($this->company === 'National Lottery Authority') {
             if ($this->game_time === 'morning') {
                 $games = [
-                    'Monday' => 'VAGA MONDAY',
-                    'Tuesday' => 'VAGA TUESDAY',
-                    'Wednesday' => 'VAGA WEDNESDAY',
-                    'Thursday' => 'VAGA THURSDAY',
-                    'Friday' => 'VAGA FRIDAY',
-                    'Saturday' => 'VAGA SATURDAY',
-                    'Sunday' => 'VAGA SUNDAY'
+                    'Monday' => 'VAG MONDAY',
+                    'Tuesday' => 'VAG TUESDAY',
+                    'Wednesday' => 'VAG WEDNESDAY',
+                    'Thursday' => 'VAG THURSDAY',
+                    'Friday' => 'VAG FRIDAY',
+                    'Saturday' => 'VAG SATURDAY',
+                    'Sunday' => 'VAG SUNDAY'
                 ];
             } elseif ($this->game_time === 'afternoon') {
                 $games = [
