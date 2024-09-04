@@ -3,6 +3,7 @@
 namespace App\Handler;
 
 use App\Models\Plan;
+use App\Models\RequestBet;
 use App\Models\User;
 use App\Models\Subscription;
 use App\Models\Transaction;
@@ -15,38 +16,73 @@ class ProcessWebhook extends ProcessWebhookJob
 {
     public function handle()
     {
-        Log::info('This is running');
-        $data = json_decode($this->webhookCall, true);
+        $payload = json_decode($this->webhookCall, true); //Incomming payload
 
-        $payload = $data['payload']['data'];
+        $data = $payload['payload']['data']; //Retrieve data from payload
 
-        $user = User::query()->where('email', $payload['customer']['email'])->first();
+        $eventType = $payload['payload']['event']; //Retrive event
 
-        $lastSubscription = Subscription::query()->where('user_id', $user->id)->first();
+        $metadata = $data['metadata'] ?? null; //Retrieve Metadata
+
+        $user = User::query()->where('email', $data['customer']['email'])->first(); //Retrive User
+
+        $lastSubscription = Subscription::query()->where('user_id', $user->id)->first(); //Retrive previous subscription
+
+        $dataPlan = $data['plan'] ?? null; //Retrieve plan
+
+        //Check if plan exists and query plan
+        // Check if $dataPlan exists and contains 'plan_code'
+        if ($dataPlan && array_key_exists('plan_code', $dataPlan)) {
+            $plan = Plan::query()->where('plan_code', $dataPlan['plan_code'])->first();
+        }
 
         //Every charge event
-        if ($data['payload']['event'] == 'charge.success') {
+        if ($eventType == 'charge.success') {
             if ($user) {
-                $jsonResponse = json_encode($payload, JSON_PRETTY_PRINT);
+                $jsonResponse = json_encode($data, JSON_PRETTY_PRINT);
                 $transaction = new Transaction([
                     'user_id' => $user->id,
-                    'transaction_id' => $payload['id'],
-                    'customer_id' => $payload['customer']['id'],
-                    'amount' => $payload['amount'],
-                    'status' => $payload['status'],
+                    'transaction_id' => $data['id'],
+                    'customer_id' => $data['customer']['id'],
+                    'amount' => $data['amount'],
+                    'status' => $data['status'],
                     'payload' => $jsonResponse,
                 ]);
                 $transaction->save();
+
+
+                //Create or update subscription
+                if ($metadata) {
+                    if ($metadata['type'] == 'subscription') {
+                        $start_date = Carbon::parse($data['created_at']);
+                        $end_date = $start_date->copy()->addDays(30);
+
+                        if ($lastSubscription) {
+                            $lastSubscription->forceFill([
+                                'is_active' => true,
+                                'start_date' => $start_date->format('Y-m-d H:i:s'),
+                                'end_date' => $end_date->format('Y-m-d H:i:s'),
+                            ])->save();
+                        }
+                    }
+
+                    if ($metadata['type'] == 'bet_request') {
+                        $betRequest = RequestBet::find($data['reference']);
+
+                        Log::info($betRequest);
+
+                        $betRequest->update([
+                            'status' => 'paid'
+                        ]);
+                    }
+                }
             }
         }
 
-
-        $plan = Plan::query()->where('name', $payload['plan']['name'])->first();
-
         //Event for new subscription created
-        if ($data['payload']['event'] == 'subscription.create') {
-            $start_date = Carbon::parse($payload['createdAt']);
-            $end_date = Carbon::parse($payload['next_payment_date']);
+        if ($eventType == 'subscription.create') {
+            $start_date = Carbon::parse($data['createdAt']);
+            $end_date = Carbon::parse($data['next_payment_date']);
 
             if ($user) {
                 $subscription = new Subscription();
@@ -55,16 +91,16 @@ class ProcessWebhook extends ProcessWebhookJob
                 $subscription->start_date = $start_date->format('Y-m-d H:i:s');
                 $subscription->end_date = $end_date->format('Y-m-d H:i:s');
                 $subscription->user_id = $user->id;
-                $subscription->subscription_code = $payload['subscription_code'];
+                $subscription->subscription_code = $data['subscription_code'];
                 $subscription->save();
             }
         }
 
-        // //Invoice created event for subscription renewal
-        if ($data['payload']['event'] == 'invoice.update') {
-            $start_date = Carbon::parse($payload['period_start']);
-            $end_date = Carbon::parse($payload['period_end']);
-            if ($payload['status'] == 'success' && $payload['paid'] == true) {
+
+        if ($eventType == 'invoice.update') {
+            $start_date = Carbon::parse($data['period_start']);
+            $end_date = Carbon::parse($data['period_end']);
+            if ($data['status'] == 'success' && $data['paid'] == true) {
                 $lastSubscription->forceFill([
                     'is_active' => true,
                     'start_date' => $start_date->format('Y-m-d H:i:s'),
@@ -72,8 +108,7 @@ class ProcessWebhook extends ProcessWebhookJob
                 ])->save();
             }
         }
-
-        logger($data['payload']);
+        logger($payload);
         http_response_code(200); //Acknowledge you received the response
     }
 }

@@ -141,51 +141,11 @@ class RequestBet extends Component
 
         $jsonResponse = $response->json('data');
 
-        Log::info($jsonResponse);
-
         $successful = $jsonResponse['status'] == 'success';
 
-        $jsonPretty = json_encode($response['data'], JSON_PRETTY_PRINT);
-
-        $transaction = new Transaction([
-            'user_id' => Auth::user()->id,
-            'transaction_id' => $jsonResponse['id'],
-            'customer_id' => $jsonResponse['customer']['id'],
-            'amount' => $jsonResponse['amount'],
-            'status' => $jsonResponse['status'],
-            'payload' => $jsonPretty,
-        ]);
-        $transaction->save();
-
         if (!$successful) {
-            $this->notification()->send([
-                'icon' => 'error',
-                'title' => 'Payment not successful',
-                'description' => $response->json('message')
-            ]);
-
-            return redirect('/dashboard');
+            return redirect('/request-bet');
         }
-
-        $betRequest = ModelsRequestBet::find($jsonResponse['reference']);
-
-        Log::alert($betRequest);
-
-        if (!$betRequest) {
-            Log::info('Bet Request not found');
-            return redirect('/dashboard');
-        }
-
-        $betRequest->update([
-            'status' => 'paid'
-        ]);
-
-
-        $this->notification()->send([
-            'icon' => 'error',
-            'title' => 'Payment not successful',
-            'description' => $response->json('message'),
-        ]);
 
         return redirect('/dashboard');
     }
@@ -203,10 +163,16 @@ class RequestBet extends Component
 
         $amount = $this->total_amount - $discount;
 
+        $metadata = [
+            'type' => 'bet_request',
+            'cancel_action' => route('plans')
+        ];
+
         $formData = [
             'email' => Auth::user()->email,
             'amount' => $amount * 100,
             'reference' => $bet->id,
+            'metadata' => $metadata,
             'callback_url' => route('request.bet.callback'),
         ];
 

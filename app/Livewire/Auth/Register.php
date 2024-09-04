@@ -60,18 +60,6 @@ class Register extends Component
             $this->phone = $this->countryCode . $this->phone;
         }
 
-        // $earlyUser = EarlyUser::query()->where('email', $this->email)->first();
-
-        // if (!$earlyUser) {
-        //     $this->notification()->send([
-        //         'icon' => 'error',
-        //         'title' => 'Registration unsuccessful!',
-        //         'description' => 'This registration is only for early users at the moment',
-        //     ]);
-        //     $this->dispatch('redirectAfterDelay');
-        //     return;
-        // }
-
         //Creating a new user
         $user = new User($this->all());
         $user->save();

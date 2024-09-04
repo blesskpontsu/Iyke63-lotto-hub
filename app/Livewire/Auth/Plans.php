@@ -5,6 +5,7 @@ namespace App\Livewire\Auth;
 use App\Models\Plan;
 use Livewire\Component;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -20,20 +21,26 @@ class Plans extends Component
         return $http;
     }
 
-    public function subscribe($plan_id)
+    public function subscribe(string $plan_id)
     {
         // Check internet connection
         if (!$this->isInternetConnected()) {
             return response()->json(['error' => 'No internet connection']);
         }
 
-        $user = auth()->user();
+        $user = Auth::user();
         $plan = Plan::find($plan_id);
+
+        $metadata = [
+            'type' => 'subscription',
+            'cancel_action' => route('plans')
+        ];
 
         $user_data = [
             'email' => $user->email,
             'amount' => $plan->price * 100,
             'plan' => $plan->plan_code,
+            'metadata' => $metadata,
             'callback_url' => route('subscription.callback'),
         ];
 
@@ -65,13 +72,9 @@ class Plans extends Component
 
     public function subscription_callback(Request $request)
     {
-        Log::info('callback started');
-
         $data = $this->verify_subscription($request->reference);
 
         $response = $data->json();
-
-        Log::info($response);
 
         // Ensure that the response is valid and the transaction was successful
         if ($response && isset($response['status']) && $response['status'] === true) {
@@ -101,6 +104,10 @@ class Plans extends Component
 
     public function render()
     {
-        return view('livewire.auth.plans');
+        return view('livewire.auth.plans', [
+            'basic' => Plan::where('name', 'IYKE63 Basic')->first(),
+            'deluxe' => Plan::where('name', 'IYKE63 Deluxe')->first(),
+            'gold' => Plan::where('name', 'IYKE63 Gold')->first(),
+        ]);
     }
 }
