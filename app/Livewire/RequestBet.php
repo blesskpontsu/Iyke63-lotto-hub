@@ -194,8 +194,6 @@ class RequestBet extends Component
     {
         $this->validate();
 
-        $this->validateSelectedNumbers();
-
         $bet = new ModelsRequestBet($this->all());
         $bet->user_id = Auth::user()->id;
         $bet->status = 'pending';

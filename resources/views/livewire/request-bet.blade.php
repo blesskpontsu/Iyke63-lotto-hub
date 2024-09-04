@@ -1,3 +1,9 @@
+
+{{-- $disabled variable is set to true if there are errors or empty input fields. --}}
+@php
+    $disabled = $errors->any() 
+@endphp
+
 <div class="" x-data="{ company: @entangle('company') }">
     <x-slot name="title">
         {{ __('Request Stake') }}
@@ -70,7 +76,7 @@
                     </div>
                     
                 </div> 
-                <x-button type="submit" blue class="w-full py-2 md:py-2 text-xl text-white" spinner="submit" loading-delay="short" label="Stake Lotto" />
+                <x-button type="submit" blue spinner="submit" loading-delay="short" label="Stake Lotto" :disabled="$disabled" class="w-full py-2 md:py-2 text-xl text-white disabled disabled:opacity-15 transition {{ $disabled ? 'disabled' : '' }}" />
             </div>
         </form>
     </x-auth-card>
