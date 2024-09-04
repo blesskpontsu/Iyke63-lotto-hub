@@ -5,11 +5,11 @@ namespace App\Livewire\Admin;
 use Livewire\Component;
 use Illuminate\Support\Str;
 use Livewire\WithFileUploads;
+use WireUi\Traits\WireUiActions;
 use Livewire\Attributes\Validate;
+use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Forcast as ModelsForcast;
-use Intervention\Image\Facades\Image;
-use WireUi\Traits\WireUiActions;
 
 class Forcast extends Component
 {
@@ -25,6 +25,7 @@ class Forcast extends Component
     public $image;
 
 
+    //Storing the forcast
     public function store(): void
     {
         $forcast = new ModelsForcast();
