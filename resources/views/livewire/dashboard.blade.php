@@ -4,7 +4,7 @@
     </x-slot>
 
     <x-structure>
-        <div class="w-full bg-zinc-200 px-5 pb-48 h-screen">
+        <div class="w-full bg-zinc-200 px-5 pb-48 h-full">
             <figure>
                 <img class="mx-auto" width="150" src="{{ asset('images/logo.png') }}" alt="">
             </figure>
@@ -19,7 +19,7 @@
             </div>
             <div class="flex justify-around items-center my-10 text-white">
                 <button wire:click='requestBet' style="width: 30%" class="bg-warning-500 py-6 rounded-xl px-1">
-                    <i class="fa-solid fa-gear fa-2x"></i>
+                    <i class="fa-solid fa-square-plus fa-2x"></i>
                     <p class="font-semibold">Stake Lotto</p>
                 </button>
                 <button wire:click='videos' style="width: 30%" class="bg-blue-500 py-6 rounded-xl px-1">
@@ -27,8 +27,15 @@
                     <p class="font-semibold">Videos</p>
                 </button>
                 <button wire:click='lottoResults' style="width: 30%" class="bg-green-500 py-6 rounded-xl px-1">
-                    <i class="fa-solid fa-gear fa-2x"></i>
+                    <i class="fa-solid fa-square-poll-vertical fa-2x"></i>
                     <p class="font-semibold">Lotto Results</p>
+                </button>
+                
+            </div>
+            <div class="flex justify-around items-center my-10 text-white">
+                <button wire:click='tickets' style="width: 30%" class="bg-warning-500 py-6 rounded-xl px-1">
+                    <i class="fa-solid fa-ticket fa-2x"></i>
+                    <p class="font-semibold">Tickets</p>
                 </button>
             </div>
             <div class="bg-white w-11/12 shadow-lg mx-auto pt-10 pb-32 rounded-lg">

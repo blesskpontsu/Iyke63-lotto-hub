@@ -23,6 +23,11 @@ class Dashboard extends Component
         $this->redirectIntended(default: route('videos', absolute: false), navigate: true);
     }
 
+    public function tickets()
+    {
+        $this->redirectIntended(default: route('recent.bets', absolute: false), navigate: true);
+    }
+
     public function render()
     {
         return view('livewire.dashboard', [
