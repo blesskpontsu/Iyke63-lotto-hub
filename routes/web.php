@@ -17,6 +17,7 @@ use App\Livewire\Auth\Register;
 use App\Livewire\Auth\ResetPassword;
 use App\Livewire\LottoResults;
 use App\Livewire\Predictions;
+use App\Livewire\RecentBets;
 use App\Livewire\RequestBet;
 use App\Livewire\Settings;
 use App\Livewire\Video;
@@ -48,6 +49,7 @@ Route::middleware('auth')->group(function () {
         Route::get('predictions', Predictions::class)->name('predictions');
         Route::get('/videos', Video::class)->name('videos');
         Route::get('bet-request-callback', [RequestBet::class, 'callback'])->name('request.bet.callback');
+        Route::get('/recent-bets', RecentBets::class)->name('recent.bets');
         // });
     });
 
