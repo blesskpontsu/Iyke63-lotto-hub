@@ -24,8 +24,10 @@ class SubscriptionMiddleware
                 !$request->user()->hasSubscription())
         ) {
             return $request->expectsJson()
-                ? abort(code: 403, message: 'Mobile Phone is not verified yet')
-                : Redirect::guest(URL::route(name: $redirectToRoute ?: 'plans'));
+                ? abort(403, 'Mobile Phone is not verified yet')
+                : tap(Redirect::guest(URL::route($redirectToRoute ?: 'plans')), function () {
+                    session()->forget('url.intended');
+                });
         }
 
         return $next($request);

@@ -24,8 +24,10 @@ class ActiveSubscriptionMiddleware
                 !$request->user()->hasActiveSubscription())
         ) {
             return $request->expectsJson()
-                ? abort(code: 403, message: 'You haven\'t subscribed yet or your subscription has expired. Please Subscribe!')
-                : Redirect::guest(URL::route(name: $redirectToRoute ?: 'plans'));
+                ? abort(403, 'You haven\'t subscribed yet or your subscription has expired. Please Subscribe!')
+                : tap(Redirect::guest(URL::route($redirectToRoute ?: 'plans')), function () {
+                    session()->forget('url.intended');
+                });
         }
 
         return $next($request);
