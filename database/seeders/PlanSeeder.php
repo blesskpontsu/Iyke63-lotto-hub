@@ -20,7 +20,7 @@ class PlanSeeder extends Seeder
             'name' => 'IYKE63 Basic',
             'amount' => '70.00',
             'interval' => 91,
-            'plan_code' => 'PLN_tki47v87lnonyka'
+            'plan_code' => 'PLN_zu9097n5bm9ai6b'
         ]);
         $plan1->save();
 
@@ -28,7 +28,7 @@ class PlanSeeder extends Seeder
             'name' => 'IYKE63 Deluxe',
             'amount' => '120.00',
             'interval' => 182,
-            'plan_code' => 'PLN_jcj3pvr0ewa4uet'
+            'plan_code' => 'PLN_95hx2bv03i1doal'
         ]);
         $plan2->save();
 
@@ -36,7 +36,7 @@ class PlanSeeder extends Seeder
             'name' => 'IYKE63 Gold',
             'amount' => '150.00',
             'interval' => 360,
-            'plan_code' => 'PLN_zp2kmz5mk49ve6x'
+            'plan_code' => 'PLN_ky57qc8aekr1zl3'
         ]);
         $plan3->save();
 

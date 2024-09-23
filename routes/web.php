@@ -41,16 +41,16 @@ Route::middleware('auth')->group(function () {
         Route::get('/plans', Plans::class)->name('plans');
         Route::get('/subscription-callback', [Plans::class, 'subscription_callback'])->name('subscription.callback')->middleware(['throttle:6,1']);;
 
-        // Route::middleware(['subscribe', 'active'])->group(function () {
-        Route::get('dashboard', Dashboard::class)->name('dashboard');
-        Route::get('/request-bet', RequestBet::class)->name('request.bet');
-        Route::get('/settings', Settings::class)->name('settings');
-        Route::get('/lotto-results', LottoResults::class)->name('lotto.results');
-        Route::get('predictions', Predictions::class)->name('predictions');
-        Route::get('/videos', Video::class)->name('videos');
-        Route::get('bet-request-callback', [RequestBet::class, 'callback'])->name('request.bet.callback');
-        Route::get('/recent-bets', RecentBets::class)->name('recent.bets');
-        // });
+        Route::middleware(['subscribe', 'active'])->group(function () {
+            Route::get('dashboard', Dashboard::class)->name('dashboard');
+            Route::get('/request-bet', RequestBet::class)->name('request.bet');
+            Route::get('/settings', Settings::class)->name('settings');
+            Route::get('/lotto-results', LottoResults::class)->name('lotto.results');
+            Route::get('predictions', Predictions::class)->name('predictions');
+            Route::get('/videos', Video::class)->name('videos');
+            Route::get('bet-request-callback', [RequestBet::class, 'callback'])->name('request.bet.callback');
+            Route::get('/recent-bets', RecentBets::class)->name('recent.bets');
+        });
     });
 
     Route::get('/email/verify', EmailVerification::class)->name('verification.notice');

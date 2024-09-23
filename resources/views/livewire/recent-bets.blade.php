@@ -12,7 +12,7 @@
                @foreach ($tickets as $ticket)
                 <div class="bg-white shadow-lg w-11/12 mx-auto rounded-lg px-3 py-8 mt-10 flex justify-between items-center">
                     <div>
-                        <p class="text-md font-bold">{{ $ticket->company }}</p>
+                        <p class="text-md font-bold">{{ $ticket->game }}</p>
                         <p>{{ $ticket->game_type }} {{ $ticket->game_code }}</p>
                         <p>{{ $ticket->selected_numbers }}</p>
                         <p>GHC{{ $ticket->amount }}</p>
