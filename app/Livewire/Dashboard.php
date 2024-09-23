@@ -10,22 +10,22 @@ class Dashboard extends Component
 
     public function requestBet()
     {
-        $this->redirectIntended(default: route('request.bet', absolute: false), navigate: true);
+        $this->redirectIntended(default: route('request.bet', absolute: true), navigate: true);
     }
 
     public function lottoResults()
     {
-        $this->redirectIntended(default: route('lotto.results', absolute: false), navigate: true);
+        $this->redirectIntended(default: route('lotto.results', absolute: true), navigate: true);
     }
 
     public function videos()
     {
-        $this->redirectIntended(default: route('videos', absolute: false), navigate: true);
+        $this->redirectIntended(default: route('videos', absolute: true), navigate: true);
     }
 
     public function tickets()
     {
-        $this->redirectIntended(default: route('recent.bets', absolute: false), navigate: true);
+        $this->redirectIntended(default: route('recent.bets', absolute: true), navigate: true);
     }
 
     public function render()
