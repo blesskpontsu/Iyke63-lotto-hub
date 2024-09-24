@@ -110,6 +110,28 @@ class RequestBet extends Component
                 'Saturday' => 'KENSTAR SATURDAY',
                 'Sunday' => 'PRECISE SUNDAY'
             ];
+        } elseif ($this->company === 'Afriluck NLA') {
+            if ($this->game_time === 'morning') {
+                $games = [
+                    'Monday' => 'ANOPA MONDAY',
+                    'Tuesday' => 'ANOPA TUESDAY',
+                    'Wednesday' => 'ANOPA WEDNESDAY',
+                    'Thursday' => 'ANOPA THURSDAY',
+                    'Friday' => 'ANOPA FRIDAY',
+                    'Saturday' => 'ANOPA SATURDAY',
+                    'Sunday' => 'ANOPA SUNDAY'
+                ];
+            } elseif ($this->game_time === 'evening') {
+                $games = [
+                    'Monday' => '6/57 MONDAY',
+                    'Tuesday' => '6/57 TUESDAY',
+                    'Wednesday' => '6/57 WEDNESDAY',
+                    'Thursday' => '6/57 THURSDAY',
+                    'Friday' => '6/57 FRIDAY',
+                    'Saturday' => '6/57 SATURDAY',
+                    'Sunday' => '6/57 SUNDAY'
+                ];
+            }
         }
 
         $this->game = $games[$dayOfWeek] ?? $this->company;
@@ -197,29 +219,70 @@ class RequestBet extends Component
 
     public function render()
     {
+        $currentTime = Carbon::now();
+        $isMorning = $currentTime->lt(Carbon::today()->setTime(9, 50));
+        $isAfternoon = $currentTime->lt(Carbon::today()->setTime(12, 50));
+        $isEvening = $currentTime->lt(Carbon::today()->setTime(18, 50));
+
         $companies = [
             ['name' => 'Afriluck NLA'],
             ['name' => 'Alpha Lotto'],
             ['name' => 'National Lottery Authority']
         ];
-
-        $game_times = [
-            ['name' => 'morning'],
-            ['name' => 'afternoon'],
-            ['name' => 'evening']
-        ];
+        $game_times = [];
+        if ($this->company === 'National Lottery Authority') {
+            if ($isMorning) {
+                $game_times = [
+                    ['name' => 'morning'],
+                    ['name' => 'afternoon'],
+                    ['name' => 'evening']
+                ];
+            } elseif ($isAfternoon) {
+                $game_times = [
+                    ['name' => 'afternoon'],
+                    ['name' => 'evening']
+                ];
+            } elseif ($isEvening) {
+                $game_times = [
+                    ['name' => 'evening']
+                ];
+            }
+        } elseif ($this->company === 'Afriluck NLA') {
+            if ($isMorning) {
+                $game_times = [
+                    ['name' => 'morning'],
+                    ['name' => 'evening']
+                ];
+            } elseif ($isAfternoon) {
+                $game_times = [
+                    ['name' => 'evening']
+                ];
+            } elseif ($isEvening) {
+                $game_times = [
+                    ['name' => 'evening']
+                ];
+            }
+        }
 
         $game_types = [];
         $codes = [];
 
 
         if ($this->company === 'Afriluck NLA') {
-            $game_types = [
-                ['name' => 'Mega Jackpot'],
-                ['name' => 'Direct'],
-                ['name' => 'Perm'],
-                ['name' => 'Banker'],
-            ];
+            if (str_contains($this->game, 'ANOPA')) {
+                $game_types = [
+                    ['name' => 'Direct'],
+                    ['name' => 'Perm'],
+                    ['name' => 'Banker'],
+                ];
+            } else {
+                $game_types = [
+                    ['name' => 'Mega Jackpot'],
+                    ['name' => 'Direct'],
+                    ['name' => 'Perm'],
+                    ['name' => 'Banker'],
+                ];
+            }
         } else {
             $game_types = [
                 ['name' => 'Direct'],

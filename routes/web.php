@@ -47,10 +47,10 @@ Route::middleware('auth')->group(function () {
         Route::get('bet-request-callback', [RequestBet::class, 'callback'])->name('request.bet.callback');
         Route::get('/recent-bets', RecentBets::class)->name('recent.bets');
 
-        Route::middleware(['subscribe', 'active'])->group(function () {
-            Route::get('predictions', Predictions::class)->name('predictions');
-            Route::get('/videos', Video::class)->name('videos');
-        });
+        // Route::middleware(['subscribe', 'active'])->group(function () {
+        Route::get('predictions', Predictions::class)->name('predictions');
+        Route::get('/videos', Video::class)->name('videos');
+        // });
     });
 
     Route::get('/email/verify', EmailVerification::class)->name('verification.notice');

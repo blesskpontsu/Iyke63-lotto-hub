@@ -24,7 +24,7 @@
                     </div>
 
                     <!-- Display "Select Draw Time" only if the company is "National Lottery Authority" -->
-                    <div class="space-y-2" x-show="company === 'National Lottery Authority'">
+                    <div class="space-y-2" x-show="company === 'National Lottery Authority' || company === 'Afriluck NLA'">
                         <x-select label="Select Draw Time" wire:model.live='game_time' placeholder="What draw do you want to play for">
                             @foreach ($game_times as $time)
                                 <x-select.option label="{{ $time['name'] }}" value="{{ $time['name'] }}" />
