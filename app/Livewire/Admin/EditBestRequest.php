@@ -4,7 +4,6 @@ namespace App\Livewire\Admin;
 
 use Livewire\Component;
 use App\Models\RequestBet;
-use Illuminate\Support\Str;
 use Livewire\WithFileUploads;
 use WireUi\Traits\WireUiActions;
 use Intervention\Image\Facades\Image;
@@ -27,7 +26,7 @@ class EditBestRequest extends Component
     {
         if ($this->image) {
             $imageName = $this->image->getClientOriginalName();
-            $newImageName = Str::slug(pathinfo($imageName, PATHINFO_FILENAME));
+            $newImageName = str_replace(' ', '_', pathinfo($imageName, PATHINFO_FILENAME));
             $imageExtension = time() . '.' . $newImageName . '.' . $this->image->getClientOriginalExtension();
             $location = 'public/bet-requests/' . $imageExtension;
             $image = Image::make($this->image);
@@ -51,6 +50,8 @@ class EditBestRequest extends Component
         ]);
 
         $this->dispatch('close-modal');
+        $this->dispatch('refreshBets');
+        $this->dispatch('betUpdated');
 
         $this->reset();
     }

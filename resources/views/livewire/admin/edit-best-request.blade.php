@@ -1,3 +1,6 @@
+@php
+    $disabled = $errors->any() || empty($this->image)
+@endphp
 <div class="w-full">
     <div wire:loading.flex class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
         <!-- Warning spinner -->
@@ -14,6 +17,6 @@
             placeholder="Slip"
         />
 
-        <x-button class="mt-10" wire:click='update' green right-icon="check" spinner='update' label="Update Bet" />
+        <x-button wire:click='update' green right-icon="check" spinner="update" loading-delay="short" label="Update Bet" :disabled="$disabled" class="mt-10 disabled disabled:opacity-15 transition {{ $disabled ? 'disabled' : '' }}" />
     </div>
 </div>

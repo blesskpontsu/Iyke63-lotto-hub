@@ -7,7 +7,14 @@ use App\Models\RequestBet;
 
 class Dashboard extends Component
 {
-    public RequestBet $selectedRequest;
+    public ?RequestBet $selectedRequest = null;  // Make it nullable
+
+    protected $listeners = ['refreshBets' => '$refresh', 'betUpdated' => 'clearSelectedRequest'];
+
+    public function clearSelectedRequest()
+    {
+        $this->selectedRequest = null; // Clear the selected request when the bet is updated
+    }
 
     public function forcast(): void
     {
