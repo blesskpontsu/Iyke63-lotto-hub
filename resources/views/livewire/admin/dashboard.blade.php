@@ -1,4 +1,4 @@
-<div>
+<div class="m-h-screen">
     <x-slot name="title">
         {{ _('Dashboard') }}
     </x-slot>
@@ -11,7 +11,7 @@
                 </x-slot:body>
             </x-Modal>
         @endif
-        <div class="w-full bg-zinc-200 px-5 h-full">
+        <div class="w-full bg-zinc-200 px-5 min-h-screen">
             <figure>
                 <img class="mx-auto" width="150" src="{{ asset('images/logo.png') }}" alt="">
             </figure>
