@@ -29,7 +29,7 @@ class Register extends Component
         return [
             'firstname' => ['required', 'string', 'min:2'],
             'lastname' => ['required', 'string', 'min:2'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
             'password' => [
                 'required',
                 'string',
