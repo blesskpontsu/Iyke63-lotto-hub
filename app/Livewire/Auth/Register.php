@@ -47,6 +47,13 @@ class Register extends Component
     public function updated($prop): void
     {
         $this->validateOnly($prop);
+        if ($prop === 'phone') {
+            if (Str::startsWith($this->phone, '0')) {
+                $this->phone = Str::replaceFirst('0', $this->countryCode, $this->phone);
+            } else {
+                $this->phone = $this->countryCode . $this->phone;
+            }
+        }
     }
 
     public function register(): void
@@ -54,12 +61,6 @@ class Register extends Component
         $this->validate();
 
         $this->password = Hash::make($this->password); //Hashing password
-
-        if (Str::startsWith($this->phone, '0')) {
-            $this->phone = Str::replaceFirst('0', $this->countryCode, $this->phone);
-        } else {
-            $this->phone = $this->countryCode . $this->phone;
-        }
 
         //Creating a new user
         $user = new User($this->all());
