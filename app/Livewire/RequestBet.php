@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use Carbon\Carbon;
 use Livewire\Component;
 use Illuminate\Http\Request;
 use WireUi\Traits\WireUiActions;
@@ -27,11 +26,9 @@ class RequestBet extends Component
 
     public string $selected_numbers = '';
 
-    public int $amount = 1;
+    public ?int $amount = null;
 
-    public string $email = '';
-
-    public int $total_amount = 1;
+    public ?int $total_amount = null;
 
     protected $rules = [
         'company' => 'required|string|max:150',
@@ -40,97 +37,16 @@ class RequestBet extends Component
         'game_type' => 'required|string|max:150',
         'game_code' => 'required|string|max:150',
         'selected_numbers' => 'required|string|max:150',
-        'amount' => 'required|int|max:150',
+        'amount' => 'required|integer|min:1',
     ];
 
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
 
-        if ($propertyName === 'company' || $propertyName === 'game_time') {
-            $this->setGame();
-        }
-
         if ($propertyName === 'selected_numbers') {
             $this->validateSelectedNumbers();
         }
-
-        if ($propertyName === 'selected_numbers' || $propertyName === 'amount' || $propertyName === 'game_code' || $propertyName === 'game_type') {
-            $this->calculatePermutations();
-        }
-    }
-
-    public function setGame()
-    {
-        $dayOfWeek = Carbon::now()->format('l'); // Get the current day of the week (e.g., 'Monday', 'Tuesday')
-
-        if ($this->company === 'National Lottery Authority') {
-            if ($this->game_time === 'morning') {
-                $games = [
-                    'Monday' => 'VAG MONDAY',
-                    'Tuesday' => 'VAG TUESDAY',
-                    'Wednesday' => 'VAG WEDNESDAY',
-                    'Thursday' => 'VAG THURSDAY',
-                    'Friday' => 'VAG FRIDAY',
-                    'Saturday' => 'VAG SATURDAY',
-                    'Sunday' => 'VAG SUNDAY'
-                ];
-            } elseif ($this->game_time === 'afternoon') {
-                $games = [
-                    'Monday' => 'NOON RUSH MONDAY',
-                    'Tuesday' => 'NOON RUSH TUESDAY',
-                    'Wednesday' => 'NOON RUSH WEDNESDAY',
-                    'Thursday' => 'NOON RUSH THURSDAY',
-                    'Friday' => 'NOON RUSH FRIDAY',
-                    'Saturday' => 'NOON RUSH SATURDAY',
-                    'Sunday' => 'NOON RUSH SUNDAY'
-                ];
-            } elseif ($this->game_time === 'evening') {
-                $games = [
-                    'Monday' => 'MONDAY SPECIAL',
-                    'Tuesday' => 'LUCKY TUESDAY',
-                    'Wednesday' => 'MIDWEEK',
-                    'Thursday' => 'FORTUNE THURSDAY',
-                    'Friday' => 'FRIDAY BONANZA',
-                    'Saturday' => 'NATIONAL WEEKLY LOTTO',
-                    'Sunday' => 'SUNDAY ASEDA'
-                ];
-            }
-        } elseif ($this->company === 'Alpha Lotto') {
-            $games = [
-                'Monday' => 'ALPHA MONDAY',
-                'Tuesday' => 'DELTA TUESDAY',
-                'Wednesday' => 'OMEGA WEDNESDAY',
-                'Thursday' => 'EXCEL THURSDAY',
-                'Friday' => 'PRIME FRIDAY',
-                'Saturday' => 'KENSTAR SATURDAY',
-                'Sunday' => 'PRECISE SUNDAY'
-            ];
-        } elseif ($this->company === 'Afriluck NLA') {
-            if ($this->game_time === 'morning') {
-                $games = [
-                    'Monday' => 'ANOPA MONDAY',
-                    'Tuesday' => 'ANOPA TUESDAY',
-                    'Wednesday' => 'ANOPA WEDNESDAY',
-                    'Thursday' => 'ANOPA THURSDAY',
-                    'Friday' => 'ANOPA FRIDAY',
-                    'Saturday' => 'ANOPA SATURDAY',
-                    'Sunday' => 'ANOPA SUNDAY'
-                ];
-            } elseif ($this->game_time === 'evening') {
-                $games = [
-                    'Monday' => '6/57 MONDAY',
-                    'Tuesday' => '6/57 TUESDAY',
-                    'Wednesday' => '6/57 WEDNESDAY',
-                    'Thursday' => '6/57 THURSDAY',
-                    'Friday' => '6/57 FRIDAY',
-                    'Saturday' => '6/57 SATURDAY',
-                    'Sunday' => '6/57 SUNDAY'
-                ];
-            }
-        }
-
-        $this->game = $games[$dayOfWeek] ?? $this->company;
     }
 
     public function validateSelectedNumbers()
@@ -229,107 +145,8 @@ class RequestBet extends Component
 
     public function render()
     {
-        $currentTime = Carbon::now();
-        $isMorning = $currentTime->lt(Carbon::today()->setTime(9, 50));
-        $isAfternoon = $currentTime->lt(Carbon::today()->setTime(12, 50));
-        $isEvening = $currentTime->lt(Carbon::today()->setTime(18, 50));
 
-        $companies = [
-            ['name' => 'Afriluck NLA'],
-            ['name' => 'Alpha Lotto'],
-            ['name' => 'National Lottery Authority']
-        ];
-        $game_times = [];
-        if ($this->company === 'National Lottery Authority') {
-            if ($isMorning) {
-                $game_times = [
-                    ['name' => 'morning'],
-                    ['name' => 'afternoon'],
-                    ['name' => 'evening']
-                ];
-            } elseif ($isAfternoon) {
-                $game_times = [
-                    ['name' => 'afternoon'],
-                    ['name' => 'evening']
-                ];
-            } elseif ($isEvening) {
-                $game_times = [
-                    ['name' => 'evening']
-                ];
-            }
-        } elseif ($this->company === 'Afriluck NLA') {
-            if ($isMorning) {
-                $game_times = [
-                    ['name' => 'morning'],
-                    ['name' => 'evening']
-                ];
-            } elseif ($isAfternoon) {
-                $game_times = [
-                    ['name' => 'evening']
-                ];
-            } elseif ($isEvening) {
-                $game_times = [
-                    ['name' => 'evening']
-                ];
-            }
-        }
-
-        $game_types = [];
-        $codes = [];
-
-
-        if ($this->company === 'Afriluck NLA') {
-            if (str_contains($this->game, 'ANOPA')) {
-                $game_types = [
-                    ['name' => 'Direct'],
-                    ['name' => 'Perm'],
-                    ['name' => 'Banker'],
-                ];
-            } else {
-                $game_types = [
-                    ['name' => 'Mega Jackpot'],
-                    ['name' => 'Direct'],
-                    ['name' => 'Perm'],
-                    ['name' => 'Banker'],
-                ];
-            }
-        } else {
-            $game_types = [
-                ['name' => 'Direct'],
-                ['name' => 'Perm'],
-                ['name' => 'Banker'],
-            ];
-        }
-
-        if ($this->game_type === 'Mega Jackpot') {
-            $codes = [
-                ['name' => 'Mega Jackpot 5GHC', 'code' => '5'],
-                ['name' => 'Mega Jackpot 10GHC', 'code' => '10'],
-                ['name' => 'Mega Jackpot 20GHC', 'code' => '20'],
-            ];
-        } elseif ($this->game_type === 'Direct') {
-            $codes = [
-                ['name' => 'DIRECT 2', 'code' => '2'],
-                ['name' => 'DIRECT 3', 'code' => '3'],
-            ];
-        } elseif ($this->game_type === 'Perm') {
-            $codes = [
-                ['name' => 'PERM 2', 'code' => '2'],
-                ['name' => 'PERM 3', 'code' => '3'],
-            ];
-        } elseif ($this->game_type === 'Banker') {
-            $codes = [
-                ['name' => 'Banker Against', 'code' => '2']
-            ];
-        }
-
-        return view('livewire.request-bet', [
-            'companies' => $companies,
-            'game_times' => $game_times,
-            'available_game' => $this->game,
-            'game_types' => $game_types,
-            'codes' => $codes
-        ]);
+        return view('livewire.request-bet');
     }
 
     public function calculatePermutations()
