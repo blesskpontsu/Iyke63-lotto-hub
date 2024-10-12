@@ -134,11 +134,11 @@
         const hours = currentTime.getHours();
 
         if (this.company === 'National Lottery Authority') {
-            if (hours < 9) {
+            if (hours < 10) {
                 this.game_times = ['morning', 'afternoon', 'evening'];
-            } else if (hours < 12) {
+            } else if (hours < 13) {
                 this.game_times = ['afternoon', 'evening'];
-            } else if (hours < 18) {
+            } else if (hours < 19) {
                 this.game_times = ['evening'];
             }
         } else if (this.company === 'Afriluck NLA') {
