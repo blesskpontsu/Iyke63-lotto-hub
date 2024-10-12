@@ -206,8 +206,8 @@
         <form wire:submit.prevent="submit">
             @csrf
             <div class="space-y-5 py-10">
-                <div class="space-y-4">
-        
+                <div class="space-y-4"> 
+        {{-- her --}}
                     <div class="space-y-2">
                         <label class="text-gray-600" for="company">Select Lotto Company</label>
                         <select class="rounded-md border-1 border-gray-300 shadow-sm shadow-gray-300 w-full" x-model="company" class="form-select">
