@@ -210,7 +210,7 @@
                     <div class="space-y-2">
                         <label class="text-gray-600" for="company">Select Lotto Company</label>
                         <select class="rounded-md border-1 border-gray-300 shadow-sm shadow-gray-300 w-full" x-model="company" class="form-select">
-                            <option class="text-gray-500" value="" disabled selected>Select a company</option> <!-- Default option -->
+                            <option class="text-gray-500" value="" class="text-gray-400" disabled selected>Select a company</option> <!-- Default option -->
                             <template x-for="(companyItem, index) in companies" :key="index">
                                 <option x-text="companyItem" :value="companyItem" />
                             </template>
@@ -219,7 +219,7 @@
                     </div>
 
                     <!-- Display "Select Draw Time" only if the company is "National Lottery Authority" -->
-                    <div class="space-y-2" x-show="company === 'National Lottery Authority' || company === 'Afriluck NLA'">
+                    <div class="space-y-2" x-show="company === 'National Lottery Authority' || company === 'Afriluck NLA'" x-transition>
                         <label class="text-gray-600" for="game_time">Select Draw Time</label>
                         <select class="rounded-md border-1 border-gray-300 shadow-sm shadow-gray-300 w-full" label="Select Draw Time" x-model="game_time" placeholder="What draw do you want to play for">
                             <option class="text-gray-500" value="" disabled selected>Select draw time</option> <!-- Default option -->
