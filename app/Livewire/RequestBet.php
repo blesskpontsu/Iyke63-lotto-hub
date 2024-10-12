@@ -4,14 +4,10 @@ namespace App\Livewire;
 
 use Carbon\Carbon;
 use Livewire\Component;
-use App\Models\Transaction;
 use Illuminate\Http\Request;
 use WireUi\Traits\WireUiActions;
-use Livewire\Attributes\Validate;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Response;
 use App\Models\RequestBet as ModelsRequestBet;
 use Illuminate\Http\Client\Response as ClientResponse;
 
@@ -174,6 +170,20 @@ class RequestBet extends Component
 
     public function submit()
     {
+        if ($this->company == 'National Lottery Authority' || $this->company == 'Afriluck NLA') {
+            $this->rules = [
+                'company' => 'required|string|max:150',
+                'game' => 'required|string|max:150',
+                'game_time' => 'required|string|max:150',
+                'game_type' => 'required|string|max:150',
+                'game_code' => 'required|string|max:150',
+                'selected_numbers' => 'required|string|max:150',
+                'amount' => 'required|int|max:150',
+            ];
+        }
+
+        $this->validateSelectedNumbers();
+
         $this->validate();
 
         $bet = new ModelsRequestBet($this->all());
