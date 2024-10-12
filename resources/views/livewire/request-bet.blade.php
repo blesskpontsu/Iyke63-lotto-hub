@@ -210,7 +210,7 @@
                     <div class="space-y-2">
                         <label class="text-gray-600" for="company">Select Lotto Company</label>
                         <select class="rounded-md border-1 border-gray-300 shadow-sm shadow-gray-300 w-full" x-model="company" class="form-select">
-                            <option class="text-gray-500" value="" class="text-gray-400" disabled selected>Select a company</option> <!-- Default option -->
+                            <option class="text-gray-500" value="" class="text-gray-400" disabled selected>...</option> <!-- Default option -->
                             <template x-for="(companyItem, index) in companies" :key="index">
                                 <option x-text="companyItem" :value="companyItem" />
                             </template>
@@ -222,7 +222,7 @@
                     <div class="space-y-2" x-show="company === 'National Lottery Authority' || company === 'Afriluck NLA'" x-transition>
                         <label class="text-gray-600" for="game_time">Select Draw Time</label>
                         <select class="rounded-md border-1 border-gray-300 shadow-sm shadow-gray-300 w-full" label="Select Draw Time" x-model="game_time" placeholder="What draw do you want to play for">
-                            <option class="text-gray-500" value="" disabled selected>Select draw time</option> <!-- Default option -->
+                            <option class="text-gray-500" value="" disabled selected>...</option> <!-- Default option -->
                             <template x-for="(time, index) in game_times" :key="index">
                                 <option :value="time" x-text="time"></option>
                             </template>
@@ -242,9 +242,9 @@
                     </div>
 
                     <div class="space-y-2">
-                        <label class="text-gray-600" for="game_type">Type of Lotto</label>
+                        <label class="text-gray-600" for="game_type">Type of Lotto (eg. Perm)</label>
                         <select class="rounded-md border-1 border-gray-300 shadow-sm shadow-gray-300 w-full" x-model='game_type' placeholder="Eg Perm">
-                            <option class="text-gray-500" value="" disabled selected>eg. Perm</option> <!-- Default option -->
+                            <option class="text-gray-500" value="" disabled selected>...</option> <!-- Default option -->
                             <template x-for="(game_type, index) in game_types" :key="index">
                                 <option :value="game_type" x-text="game_type"></option>
                             </template>
@@ -253,9 +253,9 @@
                     </div>
 
                     <div class="space-y-2">
-                        <label class="text-gray-600" for="game_code">Type of Lotto</label>
+                        <label class="text-gray-600" for="game_code">Type of Lotto (eg. Perm 2)</label>
                         <select class="rounded-md border-1 border-gray-300 shadow-sm shadow-gray-300 w-full" x-model='game_code'>
-                            <option class="text-gray-500" value="" disabled selected>eg. Perm 2</option> <!-- Default option -->
+                            <option class="text-gray-500" value="" disabled selected>...</option> <!-- Default option -->
                             <template x-for="(code, index) in codes" :key="index">
                                 <option :value="code['code']" x-text="code['name']"></option>
                             </template>
