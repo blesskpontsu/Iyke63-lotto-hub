@@ -207,7 +207,6 @@
             @csrf
             <div class="space-y-5 py-10">
                 <div class="space-y-4"> 
-        {{-- her --}}
                     <div class="space-y-2">
                         <label class="text-gray-600" for="company">Select Lotto Company</label>
                         <select class="rounded-md border-1 border-gray-300 shadow-sm shadow-gray-300 w-full" x-model="company" class="form-select">
@@ -269,7 +268,7 @@
                         <input
                             class="rounded-md border-1 border-gray-300 shadow-sm shadow-gray-300 w-full"
                             type="text"
-                            wire:model.blur='selected_numbers'
+                            wire:model.live='selected_numbers'
                             placeholder="eg. 07-22-11-33-44"
                         />
                         <div class="text-red-800">@error('selected_numbers') {{ $message }} @enderror</div>
