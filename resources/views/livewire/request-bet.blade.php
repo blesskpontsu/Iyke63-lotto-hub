@@ -191,8 +191,7 @@
             this.amount = 10
         } else if (this.game_code == 20) {
           this.amount = 20
-        } else {
-         this.amount = 1}
+        } 
     },
 
     calculateTotal() {
