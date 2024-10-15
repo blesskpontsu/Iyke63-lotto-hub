@@ -131,26 +131,39 @@
 
     updateGameTimes() {
         const currentTime = new Date();
-        const hours = currentTime.getHours();
-
+    
         if (this.company === 'National Lottery Authority') {
-            if (hours < 10) {
+            const morningCutoff = new Date();
+            morningCutoff.setHours(9, 55, 0, 0);
+    
+            const afternoonCutoff = new Date();
+            afternoonCutoff.setHours(13, 20, 0, 0);
+    
+            const eveningCutoff = new Date();
+            eveningCutoff.setHours(18, 55, 0, 0);
+    
+            if (currentTime < morningCutoff) {
                 this.game_times = ['morning', 'afternoon', 'evening'];
-            } else if (hours < 13) {
+            } else if (currentTime < afternoonCutoff) {
                 this.game_times = ['afternoon', 'evening'];
-            } else if (hours < 19) {
+            } else if (currentTime < eveningCutoff) {
                 this.game_times = ['evening'];
             }
         } else if (this.company === 'Afriluck NLA') {
-            if (hours < 10) {
+            const morningCutoff = new Date();
+            morningCutoff.setHours(9, 55, 0, 0);
+    
+            const eveningCutoff = new Date();
+            eveningCutoff.setHours(19, 55, 0, 0);
+    
+            if (currentTime < morningCutoff) {
                 this.game_times = ['morning', 'evening'];
-            } else if (hours < 13) {
-                this.game_times = ['evening'];
-            } else if (hours < 19) {
+            } else if (currentTime < eveningCutoff) {
                 this.game_times = ['evening'];
             }
         }
     },
+    
     updateGameTypes() {
         if (this.company === 'Afriluck NLA') {
             this.game_types = this.game.includes('ANOPA') 
