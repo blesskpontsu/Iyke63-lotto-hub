@@ -15,9 +15,7 @@ class Plans extends Component
 
     public function chooseMedium(string $plan_id)
     {
-        // $this->redirect('/subscribe?token=' . $plan_id, navigate: true);
-
-        return redirect('/subscribe?token=' . $plan_id);
+        $this->redirect('/subscribe?token=' . $plan_id, navigate: true);
     }
 
 
