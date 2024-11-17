@@ -138,7 +138,7 @@ class Subscribe extends Component
             'totalAmount' => $plan->amount,
             'initialAmount' => $plan->amount,
             'currency' => 'GHS',
-            'callbackUrl' => 'https://webhook.site/0e567204-7097-4e8c-9845-4cd37ea31889'
+            'callbackUrl' => 'https://webhook.site/5eb99221-8d97-45d5-b467-8328cb26dcb1'
         ];
 
         $invoice = Http::withHeaders([
