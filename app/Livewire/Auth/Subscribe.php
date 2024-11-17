@@ -112,10 +112,10 @@ class Subscribe extends Component
         $plan = Plan::find($this->token);
 
         $invoiceEndDate = match ($plan->interval) {
-            '91' => Carbon::now()->addMonths(3),
-            '182' => Carbon::now()->addMonths(6),
-            '360' => Carbon::now()->addMonths(12),
-            default => Carbon::now()->addMonths(3)
+            '91' => Carbon::now()->addMonths(3)->toDateTimeString(),
+            '182' => Carbon::now()->addMonths(6)->toDateTimeString(),
+            '360' => Carbon::now()->addMonths(12)->toDateTimeString(),
+            default => Carbon::now()->addMonths(3)->toDateTimeString()
         };
 
         $paymentInterval = match ($plan->interval) {
