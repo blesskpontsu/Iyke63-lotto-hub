@@ -112,10 +112,10 @@ class Subscribe extends Component
         $plan = Plan::find($this->token);
 
         $invoiceEndDate = match ($plan->interval) {
-            '91' => Carbon::now()->addMonths(3)->toDateTimeString(),
-            '182' => Carbon::now()->addMonths(6)->toDateTimeString(),
-            '360' => Carbon::now()->addMonths(12)->toDateTimeString(),
-            default => Carbon::now()->addMonths(3)->toDateTimeString()
+            '91' => Carbon::now()->addMonths(3)->format('Y-m-d\TH:i:s'),
+            '182' => Carbon::now()->addMonths(6)->format('Y-m-d\TH:i:s'),
+            '360' => Carbon::now()->addMonths(12)->format('Y-m-d\TH:i:s'),
+            default => Carbon::now()->addMonths(3)->format('Y-m-d\TH:i:s')
         };
 
         $paymentInterval = match ($plan->interval) {
@@ -133,7 +133,7 @@ class Subscribe extends Component
         ];
 
         $data = [
-            'orderDate' => Carbon::now()->toDateTimeString(),
+            'orderDate' => Carbon::now()->format('Y-m-d\TH:i:s'),
             'invoiceEndDate' => $invoiceEndDate,
             'description' => 'Subscription for Iyke63',
             'startTime' => '12:00',
@@ -149,7 +149,6 @@ class Subscribe extends Component
         ];
 
         $invoice = Http::withHeaders($headers)->post('https://rip.hubtel.com/api/proxy/2023574/create-invoice', $data);
-
 
         Log::info($headers);
         Log::info($data);
