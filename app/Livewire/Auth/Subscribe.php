@@ -151,6 +151,7 @@ class Subscribe extends Component
         $invoice = Http::withHeaders($headers)->post('https://rip.hubtel.com/api/proxy/2023574/create-invoice', $data);
 
 
+        Log::info($headers);
         Log::info($data);
         Log::info($invoice->body());
         Log::info($invoice->json());
