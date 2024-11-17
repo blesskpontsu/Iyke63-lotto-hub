@@ -111,8 +111,6 @@ class Subscribe extends Component
         $user = Auth::user();
         $plan = Plan::find($this->token);
 
-        \dd($plan);
-
         $invoiceEndDate = match ($plan->interval) {
             '91' => Carbon::now()->addMonths(3),
             '182' => Carbon::now()->addMonths(6),
@@ -149,7 +147,8 @@ class Subscribe extends Component
         ]);
 
 
-        Log::info($invoice);
+        Log::info($invoice->body());
+        Log::info($invoice->json());
     }
 
     public function render()
