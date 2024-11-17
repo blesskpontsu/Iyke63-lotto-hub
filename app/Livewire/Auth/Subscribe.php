@@ -125,6 +125,13 @@ class Subscribe extends Component
             default => 'QUARTERLY'
         };
 
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Basic ' . base64_encode('Mj42AwP:c957a4de1515499e95604d3a8f44190a'),
+            'Cache-Control' => 'no-cache'
+        ];
+
         $data = [
             'orderDate' => Carbon::now()->toDateTimeString(),
             'invoiceEndDate' => $invoiceEndDate,
@@ -141,12 +148,7 @@ class Subscribe extends Component
             'callbackUrl' => 'https://webhook.site/5eb99221-8d97-45d5-b467-8328cb26dcb1'
         ];
 
-        $invoice = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json',
-            'Authorization' => 'Basic ' . base64_encode('Mj42AwP:c957a4de1515499e95604d3a8f44190a'),
-            'Cache-Control' => 'no-cache'
-        ])->post('https://rip.hubtel.com/api/proxy/2023574/create-invoice', $data);
+        $invoice = Http::withHeaders($headers)->post('https://rip.hubtel.com/api/proxy/2023574/create-invoice', $data);
 
 
         Log::info($data);
