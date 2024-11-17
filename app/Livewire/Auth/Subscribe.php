@@ -153,7 +153,7 @@ class Subscribe extends Component
         Log::info($headers);
         Log::info($data);
         Log::info($invoice->body());
-        Log::info($invoice->json());
+        Log::info($invoice);
     }
 
     public function render()
