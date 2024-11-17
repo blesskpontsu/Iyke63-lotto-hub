@@ -128,7 +128,7 @@ class Subscribe extends Component
         $headers = [
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
-            'Authorization' => 'Basic TWo0MkF3UDpjOTU3YTRkZTE1MTU0OTllOTU2MDRkM2E4ZjQ0MTkwYQ==',
+            'Authorization' => 'Basic ' . base64_encode('j0ZyRzv:8bf4dab397304489a16997616549269f'),
             'Cache-Control' => 'no-cache'
         ];
 
