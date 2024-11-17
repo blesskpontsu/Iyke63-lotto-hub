@@ -38,10 +38,11 @@ class EditBestRequest extends Component
         ]);
 
         if ($this->image) {
-            $imageName = $this->image->getClientOriginalName();
-            $newImageName = str_replace(' ', '_', pathinfo($imageName, PATHINFO_FILENAME));
-            $imageExtension = time() . '.' . $newImageName . '.' . $this->image->getClientOriginalExtension();
-            $location = 'public/bet-requests/' . $imageExtension;
+            $originalExtension = $this->image->getClientOriginalExtension();
+            $finalExtension = $originalExtension === 'jpeg' ? 'jpg' : $originalExtension;
+            $imageName = str_replace(' ', '_', pathinfo($this->image->getClientOriginalName(), PATHINFO_FILENAME));
+            $imageFileName = time() . '_' . $imageName . '.' . $finalExtension;
+            $location = 'public/bet-requests/' . $imageFileName;
             $image = Image::make($this->image);
             $image->resize(800, null, function ($constraint) {
                 $constraint->aspectRatio();
@@ -52,7 +53,7 @@ class EditBestRequest extends Component
 
             $this->request->update([
                 'status' => 'staked',
-                'image' => $imageExtension
+                'image' => $imageFileName
             ]);
         }
 
