@@ -148,7 +148,7 @@ class Subscribe extends Component
             'callbackUrl' => 'https://webhook.site/5eb99221-8d97-45d5-b467-8328cb26dcb1'
         ];
 
-        $invoice = Http::withHeaders($headers)->post('https://rip.hubtel.com/api/proxy/2023574/create-invoice', $data);
+        $invoice = Http::withHeaders($headers)->post('https://rip.hubtel.com/api/proxy/2021326/create-invoice', $data);
 
         \dd($invoice);
 
