@@ -15,6 +15,7 @@ use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\Plans;
 use App\Livewire\Auth\Register;
 use App\Livewire\Auth\ResetPassword;
+use App\Livewire\Auth\Subscribe;
 use App\Livewire\LottoResults;
 use App\Livewire\Predictions;
 use App\Livewire\RecentBets;
@@ -46,6 +47,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/lotto-results', LottoResults::class)->name('lotto.results');
         Route::get('bet-request-callback', [RequestBet::class, 'callback'])->name('request.bet.callback');
         Route::get('/recent-bets', RecentBets::class)->name('recent.bets');
+        Route::get('/subscribe', Subscribe::class)->name('subscribe');
 
         // Route::middleware(['subscribe', 'active'])->group(function () {
         Route::get('predictions', Predictions::class)->name('predictions');

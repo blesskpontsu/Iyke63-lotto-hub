@@ -14,7 +14,7 @@
                     </div>
                     <div class="mt-10 space-y-10">
                         <h2 class="text-4xl font-black">GH₵70.00<span class=" font-light text-sm">/3 months</span></h2>
-                        <x-button wire:click="subscribe('{{ $basic->id }}')" blue class="w-full py-2 md:py-2 text-xl text-white" spinner="login" loading-delay="short" label="Choose Plan" />
+                        <x-button wire:click="chooseMedium('{{ $basic->id }}')" blue class="w-full py-2 md:py-2 text-xl text-white" spinner="login" loading-delay="short" label="Choose Plan" />
                     </div>
                     <div class="mt-10 mb-24 text-left">
                         <h3 class="font-bold">What's included?</h3>
@@ -35,7 +35,7 @@
                     </div>
                     <div class="mt-10 space-y-10">
                         <h2 class="text-4xl font-black">GH₵120.00<span class=" font-light text-sm">/6 months</span></h2>
-                        <x-button wire:click="subscribe('{{ $deluxe->id }}')" blue class="w-full py-2 md:py-2 text-xl text-white" spinner="login" loading-delay="short" label="Choose Plan" />
+                        <x-button wire:click="chooseMedium('{{ $deluxe->id }}')" blue class="w-full py-2 md:py-2 text-xl text-white" spinner="login" loading-delay="short" label="Choose Plan" />
                     </div>
                     <div class="mt-10 mb-24 text-left">
                         <h3 class="font-bold">What's included?</h3>
@@ -56,7 +56,7 @@
                     </div>
                     <div class="mt-10 space-y-10">
                         <h2 class="text-4xl font-black">GH₵150.00<span class=" font-light text-sm">/year</span></h2>
-                        <x-button wire:click="subscribe('{{ $gold->id }}')" blue class="w-full py-2 md:py-2 text-xl text-white" spinner="login" loading-delay="short" label="Choose Plan" />
+                        <x-button wire:click="chooseMedium('{{ $gold->id }}')" blue class="w-full py-2 md:py-2 text-xl text-white" spinner="login" loading-delay="short" label="Choose Plan" />
                     </div>
                     <div class="mt-10 mb-24 text-left">
                         <h3 class="font-bold">What's included?</h3>
