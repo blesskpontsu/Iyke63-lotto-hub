@@ -128,7 +128,7 @@ class Subscribe extends Component
         $headers = [
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
-            'Authorization' => 'Basic ' . base64_encode('Mj42AwP:c957a4de1515499e95604d3a8f44190a'),
+            'Authorization' => 'Basic TWo0MkF3UDpjOTU3YTRkZTE1MTU0OTllOTU2MDRkM2E4ZjQ0MTkwYQ==',
             'Cache-Control' => 'no-cache'
         ];
 
@@ -148,7 +148,7 @@ class Subscribe extends Component
             'callbackUrl' => 'https://webhook.site/5eb99221-8d97-45d5-b467-8328cb26dcb1'
         ];
 
-        $invoice = Http::withHeaders($headers)->post('https://rip.hubtel.com/api/proxy/2021326/create-invoice', $data);
+        $invoice = Http::withHeaders($headers)->post('https://rip.hubtel.com/api/proxy/2023574/create-invoice', $data);
 
         \dd($invoice);
 
