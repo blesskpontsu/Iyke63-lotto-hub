@@ -112,10 +112,10 @@ class Subscribe extends Component
         $plan = Plan::find($this->token);
 
         $invoiceEndDate = match ($plan->interval) {
-            '91' => Carbon::now()->day()->format('Y-m-d\TH:i:s'),
-            '182' => Carbon::now()->day()->format('Y-m-d\TH:i:s'),
-            '360' => Carbon::now()->day()->format('Y-m-d\TH:i:s'),
-            default => Carbon::now()->day()->format('Y-m-d\TH:i:s')
+            '91' => Carbon::now()->addDayay()->format('Y-m-d\TH:i:s'),
+            '182' => Carbon::now()->addDayay()->format('Y-m-d\TH:i:s'),
+            '360' => Carbon::now()->addDayay()->format('Y-m-d\TH:i:s'),
+            default => Carbon::now()->addDayay()->format('Y-m-d\TH:i:s')
         };
 
         $paymentInterval = match ($plan->interval) {
@@ -128,7 +128,7 @@ class Subscribe extends Component
         $headers = [
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
-            'Authorization' => 'Basic ' . base64_encode('j0ZyRzv:8bf4dab397304489a16997616549269f'),
+            'Authorization' => 'Basic ' . base64_encode('wmJBkgm:808a6b5717dd4c839ad73fa5cd6ce46c'),
             'Cache-Control' => 'no-cache'
         ];
 
@@ -150,7 +150,7 @@ class Subscribe extends Component
 
         $invoice = Http::withHeaders($headers)->post('https://rip.hubtel.com/api/proxy/2023574/create-invoice', $data);
 
-        \dd($invoice);
+        dd($invoice);
 
         $this->redirect('/plans', navigate: true);
     }
