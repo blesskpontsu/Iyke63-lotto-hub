@@ -5,9 +5,12 @@ namespace App\Livewire\Auth;
 use Livewire\Component;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Http;
+use WireUi\Traits\WireUiActions;
 
 class VerifyInvoice extends Component
 {
+    use WireUiActions;
+
     public $rIId;
     public $rId;
     public $optP;
