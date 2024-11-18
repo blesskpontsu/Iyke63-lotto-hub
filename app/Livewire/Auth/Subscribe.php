@@ -142,9 +142,9 @@ class Subscribe extends Component
             'customerMobileNumber' => $user->phone,
             'paymentOption' => 'MobileMoney',
             'Channel' => 'mtn_gh_rec',
-            'recurringAmount' => $plan->amount,
-            'totalAmount' => $plan->amount,
-            'initialAmount' => $plan->amount,
+            'recurringAmount' => 1.00,
+            'totalAmount' => 1.00,
+            'initialAmount' => 1.00,
             'currency' => 'GHS',
             'callbackUrl' => 'https://webhook.site/5eb99221-8d97-45d5-b467-8328cb26dcb1'
         ];
