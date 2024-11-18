@@ -13,7 +13,7 @@
                 </div>
                 <div class="space-y-2">
                     <x-input
-                        wire:model.blur='token'
+                        wire:model.blur='otp'
                         type="text"
                         icon="envelope-open"
                         label="OPT"
