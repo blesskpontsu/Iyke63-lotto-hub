@@ -34,9 +34,19 @@ class VerifyInvoice extends Component
             "otpCode" => "{$this->optP}-{$this->otp}"
         ];
 
-        \dd($data);
+        $request = Http::withHeaders($headers)->post('https://rip.hubtel.com/api/proxy/verify-invoice', $data);
 
-        $request = Http::withHeaders($headers)->post('https://rip.hubtel.com/api/proxy/2023574/create-invoice', $data);
+        $response = $request->json();
+
+        if ($response['responseCode'] !== '0001') {
+            $this->notification()->send([
+                'icon' => 'error',
+                'title' => 'Failed to verify otp!',
+                'description' => 'Unable to create invoice.',
+            ]);
+
+            return \redirect('/plans');
+        }
     }
 
     public function render()
