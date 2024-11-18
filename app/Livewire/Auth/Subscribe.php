@@ -133,7 +133,7 @@ class Subscribe extends Component
         ];
 
         $data = [
-            'orderDate' => Carbon::now()->format('Y-m-d\TH:i:s'),
+            'orderDate' => Carbon::now()->addMinutes(15)->format('Y-m-d\TH:i:s'),
             'invoiceEndDate' => $invoiceEndDate,
             'description' => 'Subscription for Iyke63',
             'startTime' => '12:00',
