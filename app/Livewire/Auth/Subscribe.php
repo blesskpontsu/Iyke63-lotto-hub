@@ -6,14 +6,16 @@ use Carbon\Carbon;
 use App\Models\Plan;
 use Livewire\Component;
 use Illuminate\Http\Request;
+use WireUi\Traits\WireUiActions;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 class Subscribe extends Component
 {
-    public $token;
+    use WireUiActions;
 
+    public $token;
     protected $queryString = ['token'];
 
     private function isInternetConnected()
@@ -150,12 +152,25 @@ class Subscribe extends Component
 
         $invoice = Http::withHeaders($headers)->post('https://rip.hubtel.com/api/proxy/2023574/create-invoice', $data);
 
-        Log::info('headers', $headers);
-        Log::info('data', $data);
+        $response = $invoice->json();
 
-        dd($invoice->body());
+        if ($response->responseCode !== '0001') {
+            $this->notification()->send([
+                'icon' => 'error',
+                'title' => 'Failed to create Invoice!',
+                'description' => 'Unable to create invoice.',
+            ]);
 
-        $this->redirect('/plans', navigate: true);
+            return \redirect('/plans');
+        }
+
+        $responseData = $response->data;
+
+        $recurringInvoiceId = $responseData->recurringInvoiceId;
+        $requestId = $responseData->requestId;
+        $otpPrefix = $responseData->otpPrefix;
+
+        $this->redirect("/verify-invoice?rIId=$recurringInvoiceId&rId=$requestId&optP=$otpPrefix", navigate: true);
     }
 
     public function render()
