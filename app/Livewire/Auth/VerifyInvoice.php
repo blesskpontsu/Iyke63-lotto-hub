@@ -47,6 +47,8 @@ class VerifyInvoice extends Component
 
             return \redirect('/plans');
         }
+
+        $this->redirect('/dashboard', navigate: true);
     }
 
     public function render()
