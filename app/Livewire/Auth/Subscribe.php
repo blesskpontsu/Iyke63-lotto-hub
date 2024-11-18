@@ -154,7 +154,7 @@ class Subscribe extends Component
 
         $response = $invoice->json();
 
-        if ($response->responseCode !== '0001') {
+        if ($response['responseCode'] !== '0001') {
             $this->notification()->send([
                 'icon' => 'error',
                 'title' => 'Failed to create Invoice!',
@@ -164,11 +164,11 @@ class Subscribe extends Component
             return \redirect('/plans');
         }
 
-        $responseData = $response->data;
+        $responseData = $response['data'];
 
-        $recurringInvoiceId = $responseData->recurringInvoiceId;
-        $requestId = $responseData->requestId;
-        $otpPrefix = $responseData->otpPrefix;
+        $recurringInvoiceId = $responseData['recurringInvoiceId'];
+        $requestId = $responseData['requestId'];
+        $otpPrefix = $responseData['otpPrefix'];
 
         $this->redirect("/verify-invoice?rIId=$recurringInvoiceId&rId=$requestId&optP=$otpPrefix", navigate: true);
     }
