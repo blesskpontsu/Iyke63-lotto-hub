@@ -7,7 +7,6 @@ use App\Models\Plan;
 use Livewire\Component;
 use Illuminate\Http\Request;
 use WireUi\Traits\WireUiActions;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
