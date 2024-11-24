@@ -5,6 +5,7 @@ namespace App\Livewire\Auth;
 use Livewire\Component;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use WireUi\Traits\WireUiActions;
 
 class VerifyInvoice extends Component
@@ -40,6 +41,8 @@ class VerifyInvoice extends Component
         $request = Http::withHeaders($headers)->post('https://rip.hubtel.com/api/proxy/verify-invoice', $data);
 
         $response = $request->json();
+
+        Log::info($response);
 
         if ($response['responseCode'] !== '0001') {
             $this->notification()->send([

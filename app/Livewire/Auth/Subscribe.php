@@ -138,7 +138,7 @@ class Subscribe extends Component
             'orderDate' => Carbon::now()->addMinutes(5)->format('Y-m-d\TH:i:s'),
             'invoiceEndDate' => $invoiceEndDate,
             'description' => 'Subscription for Iyke63',
-            'startTime' => '15:10',
+            'startTime' => '15:18',
             'paymentInterval' => $paymentInterval,
             'customerMobileNumber' => '233241747683',
             'paymentOption' => 'MobileMoney',
