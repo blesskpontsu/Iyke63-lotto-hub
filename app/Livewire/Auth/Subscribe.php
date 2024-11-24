@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use WireUi\Traits\WireUiActions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class Subscribe extends Component
 {
@@ -137,7 +138,7 @@ class Subscribe extends Component
             'orderDate' => Carbon::now()->addMinutes(5)->format('Y-m-d\TH:i:s'),
             'invoiceEndDate' => $invoiceEndDate,
             'description' => 'Subscription for Iyke63',
-            'startTime' => '15:07',
+            'startTime' => '15:10',
             'paymentInterval' => $paymentInterval,
             'customerMobileNumber' => '23324174768',
             'paymentOption' => 'MobileMoney',
@@ -152,6 +153,8 @@ class Subscribe extends Component
         $invoice = Http::withHeaders($headers)->post('https://rip.hubtel.com/api/proxy/2023574/create-invoice', $data);
 
         $response = $invoice->json();
+
+        Log::alert($response);
 
         if ($response['responseCode'] !== '0001') {
             $this->notification()->send([
