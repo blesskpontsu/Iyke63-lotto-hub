@@ -140,7 +140,7 @@ class Subscribe extends Component
             'description' => 'Subscription for Iyke63',
             'startTime' => '15:10',
             'paymentInterval' => $paymentInterval,
-            'customerMobileNumber' => '23324174768',
+            'customerMobileNumber' => '233241747683',
             'paymentOption' => 'MobileMoney',
             'Channel' => 'mtn_gh_rec',
             'recurringAmount' => 5.00,
