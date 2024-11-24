@@ -29,6 +29,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::webhooks('paystack-webhooks', 'paystack');
+Route::get('/momo-subscription-callback', [MomoSubscriptionCallback::class, 'handle'])->name('momo.subscription.callback');
 Route::middleware('guest')->group(function () {
     // Route::get('/early-access', EarlyAccess::class)->name('early-access');
     Route::get('/login', Login::class)->name('login');
@@ -56,7 +57,6 @@ Route::middleware('auth')->group(function () {
         Route::get('predictions', Predictions::class)->name('predictions');
         Route::get('/videos', Video::class)->name('videos');
         // });
-        Route::get('/momo-subscription-callback', [MomoSubscriptionCallback::class, 'handle'])->name('momo.subscription.callback');
     });
 
     Route::get('/email/verify', EmailVerification::class)->name('verification.notice');
