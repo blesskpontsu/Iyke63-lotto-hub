@@ -138,17 +138,19 @@ class Subscribe extends Component
             'orderDate' => Carbon::now()->addMinutes(5)->format('Y-m-d\TH:i:s'),
             'invoiceEndDate' => $invoiceEndDate,
             'description' => 'Subscription for Iyke63',
-            'startTime' => '15:18',
+            'startTime' => Carbon::now()->addMinutes(5)->toTimeString('minute'),
             'paymentInterval' => $paymentInterval,
-            'customerMobileNumber' => '233241747683',
+            'customerMobileNumber' => '233543531563',
             'paymentOption' => 'MobileMoney',
             'Channel' => 'mtn_gh_rec',
-            'recurringAmount' => 5.00,
-            'totalAmount' => 5.00,
-            'initialAmount' => 5.00,
+            'recurringAmount' => 2.00,
+            'totalAmount' => 2.00,
+            'initialAmount' => 2.00,
             'currency' => 'GHS',
             'callbackUrl' => route('momo.subscription.callback')
         ];
+
+        Log::alert($data);
 
         $invoice = Http::withHeaders($headers)->post('https://rip.hubtel.com/api/proxy/2023574/create-invoice', $data);
 
