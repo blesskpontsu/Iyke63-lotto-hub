@@ -134,17 +134,17 @@ class Subscribe extends Component
         ];
 
         $data = [
-            'orderDate' => Carbon::now()->addMinutes(15)->format('Y-m-d\TH:i:s'),
+            'orderDate' => Carbon::now()->addMinutes(5)->format('Y-m-d\TH:i:s'),
             'invoiceEndDate' => $invoiceEndDate,
             'description' => 'Subscription for Iyke63',
-            'startTime' => '12:00',
+            'startTime' => '15:07',
             'paymentInterval' => $paymentInterval,
             'customerMobileNumber' => '23324174768',
             'paymentOption' => 'MobileMoney',
             'Channel' => 'mtn_gh_rec',
-            'recurringAmount' => 1.00,
-            'totalAmount' => 1.00,
-            'initialAmount' => 1.00,
+            'recurringAmount' => 5.00,
+            'totalAmount' => 5.00,
+            'initialAmount' => 5.00,
             'currency' => 'GHS',
             'callbackUrl' => route('momo.subscription.callback')
         ];
