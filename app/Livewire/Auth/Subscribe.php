@@ -140,7 +140,7 @@ class Subscribe extends Component
             'description' => 'Subscription for Iyke63',
             'startTime' => Carbon::now()->addMinutes(5)->toTimeString('minute'),
             'paymentInterval' => $paymentInterval,
-            'customerMobileNumber' => '233543531563',
+            'customerMobileNumber' => '233241747683',
             'paymentOption' => 'MobileMoney',
             'Channel' => 'mtn_gh_rec',
             'recurringAmount' => 2.00,
