@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Callbacks\MomoSubscriptionCallback;
 use App\Livewire\Admin\Dashboard as AdminDashboard;
 use App\Livewire\Admin\Forcast;
 use App\Livewire\Admin\Login as AdminLogin;
@@ -55,6 +56,7 @@ Route::middleware('auth')->group(function () {
         Route::get('predictions', Predictions::class)->name('predictions');
         Route::get('/videos', Video::class)->name('videos');
         // });
+        Route::get('/momo-subscription-callback', [MomoSubscriptionCallback::class, 'handle'])->name('momo.subscription.callback');
     });
 
     Route::get('/email/verify', EmailVerification::class)->name('verification.notice');

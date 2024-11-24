@@ -139,14 +139,14 @@ class Subscribe extends Component
             'description' => 'Subscription for Iyke63',
             'startTime' => '12:00',
             'paymentInterval' => $paymentInterval,
-            'customerMobileNumber' => $user->phone,
+            'customerMobileNumber' => '23324174768',
             'paymentOption' => 'MobileMoney',
             'Channel' => 'mtn_gh_rec',
             'recurringAmount' => 1.00,
             'totalAmount' => 1.00,
             'initialAmount' => 1.00,
             'currency' => 'GHS',
-            'callbackUrl' => 'https://webhook.site/5eb99221-8d97-45d5-b467-8328cb26dcb1'
+            'callbackUrl' => route('momo.subscription.callback')
         ];
 
         $invoice = Http::withHeaders($headers)->post('https://rip.hubtel.com/api/proxy/2023574/create-invoice', $data);
