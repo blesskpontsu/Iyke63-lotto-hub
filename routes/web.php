@@ -29,7 +29,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::webhooks('paystack-webhooks', 'paystack');
-Route::get('/momo-subscription-callback', [MomoSubscriptionCallback::class, 'handle'])->name('momo.subscription.callback');
+Route::post('/momo-subscription-callback', [MomoSubscriptionCallback::class, 'handle'])->name('momo.subscription.callback');
 Route::middleware('guest')->group(function () {
     // Route::get('/early-access', EarlyAccess::class)->name('early-access');
     Route::get('/login', Login::class)->name('login');
