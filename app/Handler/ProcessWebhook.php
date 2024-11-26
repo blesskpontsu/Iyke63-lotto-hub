@@ -45,6 +45,7 @@ class ProcessWebhook extends ProcessWebhookJob
                     'transaction_id' => $data['id'],
                     'customer_id' => $data['customer']['id'],
                     'amount' => $data['amount'],
+                    'source' => 'Paystack',
                     'status' => $data['status'],
                     'payload' => $jsonResponse,
                 ]);
