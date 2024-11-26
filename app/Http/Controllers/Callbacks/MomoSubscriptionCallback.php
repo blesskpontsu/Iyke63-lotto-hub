@@ -12,6 +12,7 @@ class MomoSubscriptionCallback extends Controller
     {
         $data = $request->json()->all();
 
-        Log::info($data);
+        Log::info('data', $data);
+        Log::info('request', $request->all());
     }
 }
