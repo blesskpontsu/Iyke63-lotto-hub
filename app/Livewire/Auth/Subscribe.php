@@ -140,14 +140,14 @@ class Subscribe extends Component
             'description' => 'Subscription for Iyke63',
             'startTime' => Carbon::now()->addMinutes(5)->toTimeString('minute'),
             'paymentInterval' => $paymentInterval,
-            'customerMobileNumber' => '233543531563',
+            'customerMobileNumber' => '233241747683',
             'paymentOption' => 'MobileMoney',
             'Channel' => 'mtn_gh_rec',
-            'recurringAmount' => 2.00,
-            'totalAmount' => 2.00,
-            'initialAmount' => 2.00,
+            'recurringAmount' => 1.00,
+            'totalAmount' => 1.00,
+            'initialAmount' => 1.00,
             'currency' => 'GHS',
-            'callbackUrl' => 'https://webhook.site/cbe627aa-0650-41a2-ac1e-089053cc0284'
+            'callbackUrl' => route('momo.subscription.callback')
         ];
 
         Log::alert($data);
