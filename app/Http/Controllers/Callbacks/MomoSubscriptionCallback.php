@@ -20,6 +20,7 @@ class MomoSubscriptionCallback extends Controller
 
         // Validate required response fields
         $successful = $response['ResponseCode'] === '0000';
+        $message = $response['Message'];
         $data = $response['Data'] ?? [];
         $description = $data['Description'] ?? null;
         $phoneNumber = $data['CustomerMobileNumber'] ?? null;
@@ -47,13 +48,20 @@ class MomoSubscriptionCallback extends Controller
         // Encode response payload for storage
         $jsonResponse = json_encode($data, JSON_PRETTY_PRINT);
 
+        $status = match ($message) {
+            'Success' => "success",
+            'Failed' => "failed",
+            'The Repeat Payment Invoice has been Deactivated Successfully' => 'cancel',
+            default => "failed"
+        };
+
         // Handle transaction
         $transactionData = [
             'user_id' => $user->id,
             'transaction_id' => $data['TransactionId'] ?? null,
             'recurring_invoice_id' => $data['RecurringInvoiceId'] ?? null,
             'amount' => $data['Amount'] ?? 0,
-            'status' => $successful ? 'success' : 'failed',
+            'status' => $status,
             'source' => 'Hubtel',
             'type' => 'Subscription',
             'payload' => $jsonResponse,
