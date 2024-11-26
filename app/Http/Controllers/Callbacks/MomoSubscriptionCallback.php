@@ -2,17 +2,89 @@
 
 namespace App\Http\Controllers\Callbacks;
 
-use App\Http\Controllers\Controller;
+use Carbon\Carbon;
+use App\Models\Plan;
+use App\Models\User;
+use App\Models\Transaction;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 
 class MomoSubscriptionCallback extends Controller
 {
-    public function handle(Request $request)
+    public function handle(Request $request): JsonResponse
     {
-        $data = $request->json()->all();
+        $response = $request->json()->all();
 
-        Log::info('data', $data);
-        Log::info('request', $request->all());
+        // Validate required response fields
+        $successful = $response['ResponseCode'] === '0000';
+        $data = $response['Data'] ?? [];
+        $description = $data['Description'] ?? null;
+        $phoneNumber = $data['CustomerMobileNumber'] ?? null;
+
+        if (!$description || !$phoneNumber) {
+            $missingField = !$description ? 'Description' : 'Phone Number';
+            Log::error("Momo Subscription Callback: {$missingField} missing in the response.");
+            return response()->json(['error' => "{$missingField} missing in the response."], 400);
+        }
+
+        // Retrieve plan and user
+        $plan = Plan::query()->where('name', $description)->first();
+        $user = User::query()->where('phone', $phoneNumber)->first();
+
+        if (!$plan) {
+            Log::error("Momo Subscription Callback: Plan not found. Description: {$description}");
+            return response()->json(['error' => 'Plan not found'], 404);
+        }
+
+        if (!$user) {
+            Log::error("Momo Subscription Callback: User not found. Phone Number: {$phoneNumber}");
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Encode response payload for storage
+        $jsonResponse = json_encode($data, JSON_PRETTY_PRINT);
+
+        // Handle transaction
+        $transactionData = [
+            'user_id' => $user->id,
+            'transaction_id' => $data['TransactionId'] ?? null,
+            'recurring_invoice_id' => $data['RecurringInvoiceId'] ?? null,
+            'amount' => $data['Amount'] ?? 0,
+            'status' => $successful ? 'success' : 'failed',
+            'source' => 'Hubtel',
+            'type' => 'Subscription',
+            'payload' => $jsonResponse,
+        ];
+
+        Transaction::create($transactionData);
+
+        if (!$successful) {
+            Log::error("Momo Subscription Callback: Subscription Failed. Transaction Id: {$transactionData['transaction_id']}");
+            return response()->json(['error' => 'Subscription Failed'], 400);
+        }
+
+        // Handle subscription
+        $lastSubscription = Subscription::query()->where('user_id', $user->id)->first();
+        $startDate = Carbon::parse($data['OrderDate']);
+        $endDate = $startDate->addDays($plan->interval)->toDateTimeString();
+
+        $subscriptionData = [
+            'plan_id' => $plan->id,
+            'start_date' => $startDate->toDateTimeString(),
+            'end_date' => $endDate,
+            'is_active' => true,
+        ];
+
+        if ($lastSubscription) {
+            $lastSubscription->update($subscriptionData);
+        } else {
+            Subscription::create(array_merge(['user_id' => $user->id], $subscriptionData));
+        }
+
+        Log::info("Momo Subscription Callback: Subscription Successful. Transaction Id: {$transactionData['transaction_id']}");
+        return response()->json(['message' => 'Subscription Successful'], 200);
     }
 }

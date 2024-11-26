@@ -15,9 +15,12 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignId('user_id')->constrained('users');
             $table->string('transaction_id');
-            $table->string('customer_id');
+            $table->string('recurring_invoice_id')->nullable();
+            $table->string('customer_id')->nullable();
             $table->float('amount', precision: 7);
             $table->string('status');
+            $table->string('source');
+            $table->string('type');
             $table->json('payload');
             $table->timestamps();
         });

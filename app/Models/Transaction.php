@@ -15,7 +15,10 @@ class Transaction extends Model
         'user_id',
         'transaction_id',
         'customer_id',
+        'recurring_invoice_id',
         'amount',
+        'source',
+        'type',
         'status',
         'payload',
     ];

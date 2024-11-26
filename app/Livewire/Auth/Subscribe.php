@@ -137,10 +137,10 @@ class Subscribe extends Component
         $data = [
             'orderDate' => Carbon::now()->addMinutes(5)->format('Y-m-d\TH:i:s'),
             'invoiceEndDate' => $invoiceEndDate,
-            'description' => 'Subscription for Iyke63',
+            'description' => $plan->name,
             'startTime' => Carbon::now()->addMinutes(5)->toTimeString('minute'),
             'paymentInterval' => $paymentInterval,
-            'customerMobileNumber' => '233543531563',
+            'customerMobileNumber' => $user->phone,
             'paymentOption' => 'MobileMoney',
             'Channel' => 'mtn_gh_rec',
             'recurringAmount' => 1.00,
