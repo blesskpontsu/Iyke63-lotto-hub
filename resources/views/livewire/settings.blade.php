@@ -8,6 +8,7 @@
             <div class="bg-white py-5 w-full shadow-xl px-2">
                 <h1>Settings</h1>
             </div>
+
             <div class="bg-white shadow-lg mx-auto py-8 mt-10 flex items-center justify-around">
                 <figure>
                     <img width="100" src="{{ asset('images/user-image.webp') }}" alt="">
@@ -20,7 +21,12 @@
                     <button wire:click='logout' class="">Logout</button>
                 </div>
             </div>
-            
+
+            <div class="bg-white shadow-lg mx-auto py-8 mt-10 flex items-center justify-around">
+                <x-button wire:click='profile' primary label="Update Profile" />
+                <x-button primary label="Update Password" />
+            </div>
+
         </div>
         <livewire:navigation />
     </x-structure>

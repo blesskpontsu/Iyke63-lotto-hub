@@ -142,10 +142,10 @@ class Subscribe extends Component
             'paymentInterval' => $paymentInterval,
             'customerMobileNumber' => $user->phone,
             'paymentOption' => 'MobileMoney',
-            'Channel' => 'mtn_gh_rec',
-            'recurringAmount' => 1.00,
-            'totalAmount' => 1.00,
-            'initialAmount' => 1.00,
+            'Channel' => $user->channel,
+            'recurringAmount' => $plan->amount,
+            'totalAmount' => $plan->amount,
+            'initialAmount' => $plan->amount,
             'currency' => 'GHS',
             'callbackUrl' => route('momo.subscription.callback')
         ];

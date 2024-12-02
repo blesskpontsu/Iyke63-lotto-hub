@@ -20,6 +20,7 @@ use App\Livewire\Auth\Subscribe;
 use App\Livewire\Auth\VerifyInvoice;
 use App\Livewire\LottoResults;
 use App\Livewire\Predictions;
+use App\Livewire\Profile;
 use App\Livewire\RecentBets;
 use App\Livewire\RequestBet;
 use App\Livewire\Settings;
@@ -52,6 +53,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/recent-bets', RecentBets::class)->name('recent.bets');
         Route::get('/subscribe', Subscribe::class)->name('subscribe');
         Route::get('/verify-invoice', VerifyInvoice::class)->name('verify.invoice');
+        Route::get('/profile', Profile::class)->name('profile');
 
         // Route::middleware(['subscribe', 'active'])->group(function () {
         Route::get('predictions', Predictions::class)->name('predictions');

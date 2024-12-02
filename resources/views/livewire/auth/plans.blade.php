@@ -4,6 +4,7 @@
     </x-slot>
     <div class="bg-gray-100 pt-20 lg:py-44 px-5 xl:px-48">
         <h2 class="text-3xl text-center font-bold lg:text-5xl">Pick your Perfect Plan</h2>
+        <p class="text-center text-lg lg:text-xl pt-3">If you haven't updated your phone number yet, please <a class="text-xl text-blue-500" href="/profile" wire:navigate>click Here</a> to update</p>
         <p class="text-center text-md lg:text-xl py-5">Choose from our customized plans for your needs</p>
         <div class="w-full py-10 space-y-10 xl:space-y-0 xl:flex">
             <div class="bg-blue-800 pt-3 w-11/12 xl:w-1/4 mx-auto rounded-t-lg shadow-lg">

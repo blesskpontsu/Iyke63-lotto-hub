@@ -15,6 +15,11 @@ class Settings extends Component
         $this->redirect('/login', navigate: true);
     }
 
+    public function profile()
+    {
+        $this->redirect('/profile', navigate: true);
+    }
+
     public function render()
     {
         return view('livewire.settings');
