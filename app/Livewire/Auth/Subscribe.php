@@ -114,17 +114,17 @@ class Subscribe extends Component
         $plan = Plan::find($this->token);
 
         $invoiceEndDate = match ($plan->interval) {
+            '30' => Carbon::now()->addYears(5)->format('Y-m-d\TH:i:s'),
             '91' => Carbon::now()->addYears(5)->format('Y-m-d\TH:i:s'),
-            '182' => Carbon::now()->addYears(5)->format('Y-m-d\TH:i:s'),
             '360' => Carbon::now()->addYears(5)->format('Y-m-d\TH:i:s'),
             default => Carbon::now()->addYears(5)->format('Y-m-d\TH:i:s')
         };
 
         $paymentInterval = match ($plan->interval) {
-            '91' => 'QUARTERLY',
-            '182' => 'SEMIYEARLY',
+            '30' => 'MONTHLY',
+            '81' => 'QUARTERLY',
             '360' => 'YEARLY',
-            default => 'QUARTERLY'
+            default => 'MONTHLY'
         };
 
         $headers = [

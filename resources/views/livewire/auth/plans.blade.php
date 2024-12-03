@@ -14,7 +14,7 @@
                         <p class="text-left text-gray-500">Most Popular</p>
                     </div>
                     <div class="mt-10 space-y-10">
-                        <h2 class="text-4xl font-black">GH₵70.00<span class=" font-light text-sm">/3 months</span></h2>
+                        <h2 class="text-4xl font-black">GH₵50.00<span class=" font-light text-sm">/3 months</span></h2>
                         <x-button wire:click="chooseMedium('{{ $basic->id }}')" blue class="w-full py-2 md:py-2 text-xl text-white" spinner="login" loading-delay="short" label="Choose Plan" />
                     </div>
                     <div class="mt-10 mb-24 text-left">

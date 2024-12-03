@@ -143,7 +143,7 @@
                                 <p class="text-left text-gray-500">Most Popular</p>
                             </div>
                             <div class="mt-10 space-y-10">
-                                <h2 class="text-4xl font-black">GH₵70.00<span class=" font-light text-sm">/months</span></h2>
+                                <h2 class="text-4xl font-black">GH₵50.00<span class=" font-light text-sm">/month</span></h2>
                                 <a href="#" wire:navigate class="block bg-blue-800 w-10/12 py-3 px-5 rounded-lg text-white text-xl font-semibold">Choose Plan</a>
                             </div>
                             <div class="mt-10 mb-24 text-left">
