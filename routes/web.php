@@ -55,10 +55,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/verify-invoice', VerifyInvoice::class)->name('verify.invoice');
         Route::get('/profile', Profile::class)->name('profile');
 
-        // Route::middleware(['subscribe', 'active'])->group(function () {
-        Route::get('predictions', Predictions::class)->name('predictions');
-        Route::get('/videos', Video::class)->name('videos');
-        // });
+        Route::middleware(['subscribe', 'active'])->group(function () {
+            Route::get('predictions', Predictions::class)->name('predictions');
+            Route::get('/videos', Video::class)->name('videos');
+        });
     });
 
     Route::get('/email/verify', EmailVerification::class)->name('verification.notice');

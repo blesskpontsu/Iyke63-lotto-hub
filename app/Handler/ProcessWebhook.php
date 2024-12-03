@@ -57,7 +57,7 @@ class ProcessWebhook extends ProcessWebhookJob
                 if ($metadata) {
                     if ($metadata['type'] == 'subscription') {
                         $start_date = Carbon::parse($data['created_at']);
-                        $end_date = $start_date->copy()->addDays(30);
+                        $end_date = $start_date->copy()->addDays($plan->interval);
 
                         if ($lastSubscription) {
                             $lastSubscription->forceFill([
