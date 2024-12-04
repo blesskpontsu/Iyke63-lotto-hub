@@ -8,7 +8,7 @@
             <div class="bg-white py-5 w-full shadow-xl px-2">
                 <h1>Profile</h1>
             </div>
-            <div class="bg-white shadow-lg mx-auto py-8 mt-10 px-5">
+            <div class="bg-white shadow-lg mx-auto pt-8 pb-32 mt-10 px-5">
                 <div class="space-y-4">
                     <div class="space-y-2">
                         <x-input
