@@ -69,7 +69,7 @@ class Subscribe extends Component
         ]);
 
         $data = [
-            'totalAmount' => 1.00,
+            'totalAmount' => $plan->amount,
             'description' => $plan->name,
             'callbackUrl' => route('card.subscription.callback'),
             'returnUrl' => route('dashboard'),
