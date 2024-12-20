@@ -18,16 +18,13 @@ class CardSubscriptionCallback extends Controller
 
         // Validate required response fields
         $successful = $response['ResponseCode'] === '0000';
-        $message = $response['Message'];
         $data = $response['Data'] ?? [];
         $clientReference = $data['ClientReference'] ?? null;
 
-        if (!$clientReference || !$message) {
-            $missingField = !$clientReference ? 'Reference' : 'Message';
-            Log::error("Card Subscription Callback: {$missingField} missing in the response.");
-            return response()->json(['error' => "{$missingField} missing in the response."], 400);
+        if (!$clientReference) {
+            Log::error("Card Subscription Callback: Client Reference missing in the response.");
+            return response()->json(['error' => "Client Reference missing in the response."], 400);
         }
-
 
         $subscription = Subscription::query()->find($clientReference);
 
