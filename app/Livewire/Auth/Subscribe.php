@@ -81,7 +81,7 @@ class Subscribe extends Component
         $response = $this->initialize_hubtel_subscription($data);
         $data = $response->json();
 
-        if ($response['status' !== 'Success']) {
+        if ($response['status'] !== 'Success') {
             $this->notification()->send([
                 'icon' => 'error',
                 'title' => 'Subscription error',
