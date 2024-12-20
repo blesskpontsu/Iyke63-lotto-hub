@@ -47,7 +47,7 @@ class CardSubscriptionCallback extends Controller
             // Handle transaction
             $transactionData = [
                 'user_id' => $user->id,
-                'transaction_id' => $data['TransactionId'] ?? null,
+                'transaction_id' => $data['CheckoutId'] ?? null,
                 'amount' => $data['Amount'] ?? 0,
                 'status' => 'failed',
                 'source' => 'Hubtel',
@@ -61,11 +61,23 @@ class CardSubscriptionCallback extends Controller
             return response()->json(['error' => 'Subscription Failed']);
         }
 
+        $transactionData = [
+            'user_id' => $user->id,
+            'transaction_id' => $data['CheckoutId'] ?? null,
+            'amount' => $data['Amount'] ?? 0,
+            'status' => 'success',
+            'source' => 'Hubtel',
+            'type' => 'Subscription',
+            'payload' => $jsonResponse,
+        ];
+
+        Transaction::create($transactionData);
+
         $subscription->update([
             'is_active' => true
         ]);
 
-        Log::info("Card Subscription Callback: Subscription Successful. Transaction Id: {$data['TransactionId']}");
+        Log::info("Card Subscription Callback: Subscription Successful. Transaction Id: {$data['CheckoutId']}");
         return response()->json(['message' => 'Subscription Successful']);
     }
 }
