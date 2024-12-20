@@ -20,7 +20,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: [
             '/paystack-webhooks',
             '/subscription-callback',
-            '/momo-subscription-callback'
+            '/momo-subscription-callback',
+            '/card-subscription-callback'
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

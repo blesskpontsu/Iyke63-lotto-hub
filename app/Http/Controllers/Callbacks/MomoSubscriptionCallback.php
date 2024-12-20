@@ -37,7 +37,7 @@ class MomoSubscriptionCallback extends Controller
 
         if (!$plan) {
             Log::error("Momo Subscription Callback: Plan not found. Description: {$description}");
-            return response()->json(['error' => 'Plan not found'], 404);
+            return response()->json(['error' => 'Plan not found']);
         }
 
         if (!$user) {
@@ -71,7 +71,7 @@ class MomoSubscriptionCallback extends Controller
 
         if (!$successful) {
             Log::error("Momo Subscription Callback: Subscription Failed. Transaction Id: {$transactionData['transaction_id']}");
-            return response()->json(['error' => 'Subscription Failed'], 400);
+            return response()->json(['error' => 'Subscription Failed']);
         }
 
         // Handle subscription
@@ -93,6 +93,6 @@ class MomoSubscriptionCallback extends Controller
         }
 
         Log::info("Momo Subscription Callback: Subscription Successful. Transaction Id: {$transactionData['transaction_id']}");
-        return response()->json(['message' => 'Subscription Successful'], 200);
+        return response()->json(['message' => 'Subscription Successful']);
     }
 }

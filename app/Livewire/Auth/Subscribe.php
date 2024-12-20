@@ -4,6 +4,7 @@ namespace App\Livewire\Auth;
 
 use Carbon\Carbon;
 use App\Models\Plan;
+use App\Models\Subscription;
 use Livewire\Component;
 use Illuminate\Http\Request;
 use WireUi\Traits\WireUiActions;
@@ -33,43 +34,23 @@ class Subscribe extends Component
         return true;
     }
 
-    public function initialize_subscription($user_data)
+    private function initialize_hubtel_subscription($user_data)
     {
-        $http = Http::withHeaders([
-            'authorization' => 'Bearer ' . config('services.paystack.live_key'),
-        ])->accept('application/json')
-            ->post('https://api.paystack.co/transaction/initialize', $user_data);
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Basic ' . base64_encode('wmJBkgm:808a6b5717dd4c839ad73fa5cd6ce46c'),
+            'Cache-Control' => 'no-cache'
+        ];
+
+        $http = Http::withHeaders($headers)
+            ->post('https://payproxyapi.hubtel.com/items/initiate', $user_data);
 
         return $http;
     }
 
-    public function verify_subscription($reference)
-    {
-        $http = Http::withHeaders([
-            'authorization' => 'Bearer ' . config('services.paystack.live_key'),
-        ])->accept('application/json')
-            ->get('https://api.paystack.co/transaction/verify/' . $reference);
 
-        return $http;
-    }
-
-    public function subscription_callback(Request $request)
-    {
-        $data = $this->verify_subscription($request->reference);
-
-        $response = $data->json();
-
-        // Ensure that the response is valid and the transaction was successful
-        if ($response && isset($response['status']) && $response['status'] === true) {
-            return redirect('/dashboard');
-        }
-
-        // Handle failed transaction or unexpected response here
-        $this->redirect('/subscription/failure');
-    }
-
-
-    public function cardSubscription()
+    public function hubtel_card_subscription()
     {
         // Check internet connection
         if (!$this->isInternetConnected()) {
@@ -79,34 +60,39 @@ class Subscribe extends Component
         $user = Auth::user();
         $plan = Plan::find($this->token);
 
-        $metadata = [
-            'type' => 'subscription',
-            'cancel_action' => route('plans')
+        $subscription = Subscription::create([
+            'user_id' => $user->id,
+            'plan_id' => $plan->id,
+            'start_date' => now(),
+            'end_date' => now()->addDays($plan->interval),
+            'is_active' => false,
+        ]);
+
+        $data = [
+            'totalAmount' => 1.00,
+            'description' => $plan->name,
+            'callbackUrl' => route('card.subscription.callback'),
+            'returnUrl' => route('dashboard'),
+            'merchantAccountNumber' => '2023574',
+            'cancellationUrl' => route('plans'),
+            'clientReference' => $subscription->id,
         ];
 
-        $user_data = [
-            'email' => $user->email,
-            'amount' => $plan->price * 100,
-            'plan' => $plan->plan_code,
-            'metadata' => $metadata,
-            'callback_url' => route('subscription.callback'),
-        ];
+        $response = $this->initialize_hubtel_subscription($data);
+        $data = $response->json();
 
-        $subscribe = $this->initialize_subscription($user_data);
-
-        if ($subscribe->json('status') == false) {
-            // session()->flash('subscription-error', $subscribe->json('message'));
-
+        if ($response['status' !== 'Success']) {
             $this->notification()->send([
                 'icon' => 'error',
                 'title' => 'Subscription error',
-                'description' => $subscribe->json('message'),
+                'description' => $data['data']['message'],
             ]);
-            return;
+            return redirect('/plans');
         }
 
-        $this->redirect($subscribe->json('data')['authorization_url']);
+        $this->redirect($data['data']['checkoutUrl']);
     }
+
 
     public function momoSubscription()
     {
