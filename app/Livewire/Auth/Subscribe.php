@@ -4,13 +4,14 @@ namespace App\Livewire\Auth;
 
 use Carbon\Carbon;
 use App\Models\Plan;
-use App\Models\Subscription;
 use Livewire\Component;
+use Illuminate\Support\Str;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
 use WireUi\Traits\WireUiActions;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 class Subscribe extends Component
 {
@@ -60,13 +61,38 @@ class Subscribe extends Component
         $user = Auth::user();
         $plan = Plan::find($this->token);
 
-        $subscription = Subscription::create([
-            'user_id' => $user->id,
-            'plan_id' => $plan->id,
-            'start_date' => now(),
-            'end_date' => now()->addDays($plan->interval),
-            'is_active' => false,
+        if (!$plan) {
+            $this->notification()->send([
+                'icon' => 'error',
+                'title' => 'Subscription error',
+                'description' => 'The selected plan does not exist in our records',
+            ]);
+            return redirect('/plans');
+        }
+
+        $activeSubscription = Subscription::query()
+            ->where('user_id', $user->id)
+            ->where('is_active', true)
+            ->first();
+
+        if (!$activeSubscription) {
+            $subscription = Subscription::query()->updateOrCreate(
+                ['user_id' => $user->id],
+                [
+                    'user_id' => $user->id,
+                    'plan_id' => $plan->id,
+                    'start_date' => now(),
+                    'end_date' => now()->addDays($plan->interval),
+                    'is_active' => false,
+                    'reference' => Str::uuid()
+                ]
+            );
+        }
+
+        $activeSubscription->update([
+            'reference' => Str::uuid()
         ]);
+
 
         $data = [
             'totalAmount' => $plan->amount,
@@ -75,7 +101,7 @@ class Subscribe extends Component
             'returnUrl' => route('dashboard'),
             'merchantAccountNumber' => '2023574',
             'cancellationUrl' => route('plans'),
-            'clientReference' => $subscription->id,
+            'clientReference' => $activeSubscription ? $activeSubscription->reference : $subscription->reference,
         ];
 
         $response = $this->initialize_hubtel_subscription($data);
