@@ -58,8 +58,8 @@ class MomoSubscriptionCallback extends Controller
         // Handle transaction
         $transactionData = [
             'user_id' => $user->id,
-            'transaction_id' => $data['TransactionId'] ?? null,
-            'recurring_invoice_id' => $data['RecurringInvoiceId'] ?? null,
+            'transaction_id' => $data['TransactionId'] ?? 'NoID',
+            'recurring_invoice_id' => $data['RecurringInvoiceId'] ?? 'NoID',
             'amount' => $data['Amount'] ?? 0,
             'status' => $status,
             'source' => 'Hubtel',
@@ -77,7 +77,8 @@ class MomoSubscriptionCallback extends Controller
         // Handle subscription
         $lastSubscription = Subscription::query()->where('user_id', $user->id)->first();
         $startDate = Carbon::parse($data['OrderDate']);
-        $endDate = $startDate->addDays($plan->interval)->toDateTimeString();
+        $endDate = $startDate->copy()->addDays($plan->interval)->toDateTimeString();
+
 
         $subscriptionData = [
             'plan_id' => $plan->id,

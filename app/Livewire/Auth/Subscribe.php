@@ -98,7 +98,7 @@ class Subscribe extends Component
             'totalAmount' => $plan->amount,
             'description' => $plan->name,
             'callbackUrl' => route('card.subscription.callback'),
-            'returnUrl' => route('dashboard'),
+            'returnUrl' => route('dashboard'), 
             'merchantAccountNumber' => '2023574',
             'cancellationUrl' => route('plans'),
             'clientReference' => $activeSubscription ? $activeSubscription->reference : $subscription->reference,
