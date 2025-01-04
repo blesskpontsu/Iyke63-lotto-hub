@@ -18,6 +18,7 @@ class Subscription extends Model
         'end_date',
         'is_active',
         'subscription_code',
+        'reference'
 
     ];
 
