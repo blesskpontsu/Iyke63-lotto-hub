@@ -76,13 +76,13 @@ class MomoSubscriptionCallback extends Controller
 
         // Handle subscription
         $lastSubscription = Subscription::query()->where('user_id', $user->id)->first();
-        $startDate = Carbon::parse($data['OrderDate']);
-        $endDate = $startDate->copy()->addDays($plan->interval)->toDateTimeString();
+        $startDate = now()->toDateTimeString();
+        $endDate = now()->addDays($plan->interval)->toDateTimeString();
 
 
         $subscriptionData = [
             'plan_id' => $plan->id,
-            'start_date' => $startDate->toDateTimeString(),
+            'start_date' => $startDate,
             'end_date' => $endDate,
             'is_active' => true,
         ];
