@@ -125,7 +125,7 @@ class BetCommand extends Command
                     'selected_numbers' => $selectedNumbers,
                     'channel' => 'mtn',
                     'discounted_amount' => '',
-                    'use_wallet' => 'true',
+                    'use_wallet' => true,
                     'medium' => 'ussd',
                 ]);
 
