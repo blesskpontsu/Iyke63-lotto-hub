@@ -125,7 +125,7 @@ class BetCommand extends Command
         $account = Account::query()->find('9d630489-5734-4c22-a3e1-b9bf8b69bd73');
         if ($account) {
             $account->update(['balance' => $depositAmount]);
-            Log::info('Account', $account->balance);
+            Log::info('Account', [$account->balance]);
         } else {
             Log::error('Account not found for deposit update');
             return;
