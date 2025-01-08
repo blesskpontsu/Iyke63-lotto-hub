@@ -115,6 +115,7 @@ class BetCommand extends Command
             try {
                 $response = Http::withHeaders([
                     'Accept' => 'application/json',
+                    'x-afriluck-key' => 'suRU/Cbv535hU9kStQyEvrrU0+2aEAhrymCw4UsPnYI='
                 ])->post('https://app.afriluck.com/api/V1/place-bet', [
                     'msisdn' => '233598593095',
                     'total_amount' => $amount,
