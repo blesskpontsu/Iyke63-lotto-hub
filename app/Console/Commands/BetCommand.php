@@ -34,13 +34,13 @@ class BetCommand extends Command
         $now = Carbon::now();
 
         // Determine the time slot
-        $isMorning = $now->lt(Carbon::today()->addHours(14)); // Before 10:00 AM
-        $isAfternoon = !$isMorning && $now->lt(Carbon::today()->addHours(15)); // Before 1:00 PM
+        $isMorning = $now->lt(Carbon::today()->addHours(10)); // Before 10:00 AM
+        $isAfternoon = !$isMorning && $now->lt(Carbon::today()->addHours(13)); // Before 1:00 PM
 
         // Define bet configurations
         $bets = [
             'morning' => [
-                'game' => '657',
+                'game' => 'anopa',
                 'numbers' => [
                     '32-43-25' => '15',
                     '24-22-37' => '15',
@@ -59,7 +59,7 @@ class BetCommand extends Command
                 ],
             ],
             'afternoon' => [
-                'game' => '657',
+                'game' => 'mid',
                 'numbers' => [
                     '32-43-25' => '15',
                     '24-22-37' => '15',
