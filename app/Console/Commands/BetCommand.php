@@ -35,7 +35,7 @@ class BetCommand extends Command
 
         // Determine the time slot
         $isMorning = $now->lt(Carbon::today()->addHours(10)); // Before 10:00 AM
-        $isAfternoon = !$isMorning && $now->lt(Carbon::today()->addHours(13)); // Before 1:00 PM
+        $isAfternoon = !$isMorning && $now->lt(Carbon::today()->addHours(14)); // Before 1:00 PM
 
         // Define bet configurations
         $bets = [
@@ -55,7 +55,13 @@ class BetCommand extends Command
                     '12-13-15-17-19' => '50',
                     '20-21-22-23-25' => '50',
                     '44-35-21-16' => '30',
-                    '10-13-17-19' => '30'
+                    '10-13-17-19' => '30',
+                    '1-2-3-4-5-6-7-8-9-10' => '90',
+                    '11-12-13-14-15-16-17-18-19-20' => '90',
+                    '20-21-22-23-24-25-26-27-28-29' => '90',
+                    '30-31-32-33-34-35-36-37-38-39' => '90',
+                    '40-41-42-43-44-45-46-47-48-49' => '90',
+                    '48-49-50-51-52-53-54-55-56-57' => '90',
                 ],
             ],
             'afternoon' => [
@@ -74,7 +80,13 @@ class BetCommand extends Command
                     '12-13-15-17-19' => '50',
                     '20-21-22-23-25' => '50',
                     '44-35-21-16' => '30',
-                    '10-13-17-19' => '30'
+                    '10-13-17-19' => '30',
+                    '1-2-3-4-5-6-7-8-9-10' => '90',
+                    '11-12-13-14-15-16-17-18-19-20' => '90',
+                    '20-21-22-23-24-25-26-27-28-29' => '90',
+                    '30-31-32-33-34-35-36-37-38-39' => '90',
+                    '40-41-42-43-44-45-46-47-48-49' => '90',
+                    '48-49-50-51-52-53-54-55-56-57' => '90',
                 ],
             ],
             'evening' => [
@@ -114,8 +126,8 @@ class BetCommand extends Command
 
         // Define deposit amount
         $depositAmounts = [
-            'morning' => 350,
-            'afternoon' => 350,
+            'morning' => 890,
+            'afternoon' => 890,
             'evening' => 890,
         ];
 

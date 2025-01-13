@@ -9,6 +9,6 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote')->hourly();
 
 Schedule::command('app:deactivate-expired-subscriptions')->daily();
-Schedule::command('app:bet-command')->dailyAt('09:55');
-Schedule::command('app:bet-command')->dailyAt('12:55');
-Schedule::command('app:bet-command')->dailyAt('17:09');
+Schedule::command('app:bet-command')->dailyAt('09:45');
+Schedule::command('app:bet-command')->dailyAt('13:15');
+Schedule::command('app:bet-command')->dailyAt('19:45');
