@@ -148,9 +148,9 @@ class Subscribe extends Component
         }
 
         $paymentInterval = match ($interval) {
-            '30' => 'MONTHLY',
-            '91' => 'QUARTERLY',
-            '360' => 'YEARLY',
+            30 => 'MONTHLY',
+            91 => 'QUARTERLY',
+            360 => 'YEARLY',
             default => 'MONTHLY'
         };
 
