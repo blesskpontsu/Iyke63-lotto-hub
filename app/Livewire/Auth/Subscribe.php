@@ -98,7 +98,7 @@ class Subscribe extends Component
             'totalAmount' => $plan->amount,
             'description' => $plan->name,
             'callbackUrl' => route('card.subscription.callback'),
-            'returnUrl' => route('dashboard'), 
+            'returnUrl' => route('dashboard'),
             'merchantAccountNumber' => '2023574',
             'cancellationUrl' => route('plans'),
             'clientReference' => $activeSubscription ? $activeSubscription->reference : $subscription->reference,
@@ -125,6 +125,7 @@ class Subscribe extends Component
         $user = Auth::user();
         $plan = Plan::find($this->token);
 
+
         $invoiceEndDate = match ($plan->interval) {
             '30' => Carbon::now()->addYears(5)->format('Y-m-d\TH:i:s'),
             '91' => Carbon::now()->addYears(5)->format('Y-m-d\TH:i:s'),
@@ -132,9 +133,21 @@ class Subscribe extends Component
             default => Carbon::now()->addYears(5)->format('Y-m-d\TH:i:s')
         };
 
-        $paymentInterval = match ($plan->interval) {
+        $interval = $plan?->interval;
+
+        if (!$interval) {
+            $this->notification()->send([
+                'icon' => 'error',
+                'title' => 'No plan Inteval',
+                'description' => 'Unable to create invoice.',
+            ]);
+
+            return \redirect('/plans');
+        }
+
+        $paymentInterval = match ($interval) {
             '30' => 'MONTHLY',
-            '81' => 'QUARTERLY',
+            '91' => 'QUARTERLY',
             '360' => 'YEARLY',
             default => 'MONTHLY'
         };
