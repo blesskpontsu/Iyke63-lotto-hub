@@ -135,6 +135,8 @@ class Subscribe extends Component
 
         $interval = $plan?->interval;
 
+        Log::info($interval);
+
         if (!$interval) {
             $this->notification()->send([
                 'icon' => 'error',
