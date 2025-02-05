@@ -163,12 +163,15 @@ class Subscribe extends Component
 
         $today = Carbon::today();
 
-        $fithOfMonth = Carbon::now()->day() === 5;
+        if ($today->day < 10) {
+            $orderDate = Carbon::now()->addMinutes(5)->format('Y-m-d\TH:i:s');
+        } else {
+            $orderDate = Carbon::now()->addMonth(1)->startOfMonth()->format('Y-m-d\TH:i:s');
+        }
 
-        if
 
         $data = [
-            'orderDate' => Carbon::today()->addMonth()->startOfMonth(),
+            'orderDate' => $orderDate,
             'invoiceEndDate' => $invoiceEndDate,
             'description' => $plan->name,
             'startTime' => Carbon::now()->addMinutes(5)->toTimeString('minute'),
