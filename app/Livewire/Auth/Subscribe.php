@@ -161,8 +161,14 @@ class Subscribe extends Component
             'Cache-Control' => 'no-cache'
         ];
 
+        $today = Carbon::today();
+
+        $fithOfMonth = Carbon::now()->day() === 5;
+
+        if
+
         $data = [
-            'orderDate' => Carbon::now()->addMinutes(5)->format('Y-m-d\TH:i:s'),
+            'orderDate' => Carbon::today()->addMonth()->startOfMonth(),
             'invoiceEndDate' => $invoiceEndDate,
             'description' => $plan->name,
             'startTime' => Carbon::now()->addMinutes(5)->toTimeString('minute'),
