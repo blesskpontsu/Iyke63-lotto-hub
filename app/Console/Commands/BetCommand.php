@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Account;
+use App\Models\AccountTransaction;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
@@ -177,6 +178,8 @@ class BetCommand extends Command
                 ]);
             }
         }
+
+        AccountTransaction::query()->where('account_id', '9d630489-5734-4c22-a3e1-b9bf8b69bd73')->delete();
 
         Log::info('Bet process completed');
     }

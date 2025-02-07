@@ -11,6 +11,8 @@ class AccountTransaction extends Model
 {
     use HasFactory, HasUuids;
 
+    protected $connection = 'secondary_mysql';
+
     protected $fillable = [
         'account_id',
         'amount',
