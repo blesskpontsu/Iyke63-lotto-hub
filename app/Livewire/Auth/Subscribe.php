@@ -164,9 +164,14 @@ class Subscribe extends Component
         $today = Carbon::today();
 
         if ($today->day < 10) {
-            $orderDate = Carbon::now()->addMinutes(5)->format('Y-m-d\TH:i:s');
+            $orderDate = now()->addMinutes(5)->format('Y-m-d\TH:i:s');
+            $initialAmount = $plan->amount;
+        } elseif ($today->day > 25) {
+            $orderDate = now()->addMonth(1)->startOfMonth()->format('Y-m-d\TH:i:s');
+            $initialAmount = 1.00;
         } else {
-            $orderDate = Carbon::now()->addMonth(1)->startOfMonth()->format('Y-m-d\TH:i:s');
+            $orderDate = now()->addMonth(1)->startOfMonth()->format('Y-m-d\TH:i:s');
+            $initialAmount = 10.00;
         }
 
 
@@ -181,7 +186,7 @@ class Subscribe extends Component
             'Channel' => $user->channel,
             'recurringAmount' => $plan->amount,
             'totalAmount' => $plan->amount,
-            'initialAmount' => $plan->amount,
+            'initialAmount' => $initialAmount,
             'currency' => 'GHS',
             'callbackUrl' => route('momo.subscription.callback')
         ];
