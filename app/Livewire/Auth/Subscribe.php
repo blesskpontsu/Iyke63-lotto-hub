@@ -87,11 +87,12 @@ class Subscribe extends Component
                     'reference' => Str::uuid()
                 ]
             );
+        } else {
+            // Only update the reference if there is an active subscription
+            $activeSubscription->update([
+                'reference' => Str::uuid()
+            ]);
         }
-
-        $activeSubscription->update([
-            'reference' => Str::uuid()
-        ]);
 
 
         $data = [
