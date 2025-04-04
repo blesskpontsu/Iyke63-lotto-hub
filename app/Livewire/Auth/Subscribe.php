@@ -162,18 +162,24 @@ class Subscribe extends Component
             'Cache-Control' => 'no-cache'
         ];
 
-        $today = Carbon::today();
+        if ($paymentInterval === 'MONTHLY') {
+            $today = Carbon::today();
+            $day = $today->day;
 
-        if ($today->day < 10) {
-            $orderDate = now()->addMinutes(5)->format('Y-m-d\TH:i:s');
-            $initialAmount = $plan->amount;
-        } elseif ($today->day > 25) {
-            $orderDate = now()->addMonth(1)->startOfMonth()->format('Y-m-d\TH:i:s');
-            $initialAmount = 1.00;
+            if ($day < 10) {
+                $orderDate = now()->addMinutes(5);
+                $initialAmount = $plan->amount;
+            } else {
+                $orderDate = now()->addMonth(1)->startOfMonth();
+                $initialAmount = $day > 25 ? 1.00 : 10.00;
+            }
         } else {
-            $orderDate = now()->addMonth(1)->startOfMonth()->format('Y-m-d\TH:i:s');
-            $initialAmount = 10.00;
+            $orderDate = now()->addMinutes(5);
+            $initialAmount = $plan->amount;
         }
+
+        // Format the date once at the end
+        $orderDate = $orderDate->format('Y-m-d\TH:i:s');
 
 
         $data = [
