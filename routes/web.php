@@ -68,18 +68,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/email/verify/{id}/{hash}', [EmailVerification::class, 'verifyEmail'])->middleware('signed')->name('verification.verify');
 });
 
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::middleware('guest:admin')->group(function () {
-        Route::get('login', AdminLogin::class)->name('login');
-    });
+// Route::prefix('admin')->name('admin.')->group(function () {
+//     Route::middleware('guest:admin')->group(function () {
+//         Route::get('login', AdminLogin::class)->name('login');
+//     });
 
 
-    Route::middleware('admin')->group(function () {
-        Route::get('dashboard', AdminDashboard::class)->name('dashboard');
-        Route::get('forcast', Forcast::class)->name('forcast');
-        Route::get('predictions', Prediction::class)->name('predictions');
-        Route::get('results', Result::class)->name('results');
-        Route::get('settings', AdminSettings::class)->name('settings');
-        Route::get('videos', Index::class)->name('video.index');
-    });
-});
+//     Route::middleware('admin')->group(function () {
+//         Route::get('dashboard', AdminDashboard::class)->name('dashboard');
+//         Route::get('forcast', Forcast::class)->name('forcast');
+//         Route::get('predictions', Prediction::class)->name('predictions');
+//         Route::get('results', Result::class)->name('results');
+//         Route::get('settings', AdminSettings::class)->name('settings');
+//         Route::get('videos', Index::class)->name('video.index');
+//     });
+// });

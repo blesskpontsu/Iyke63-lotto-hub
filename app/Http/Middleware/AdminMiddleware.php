@@ -17,7 +17,7 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (!Auth::guard('admin')->check()) {
-            return redirect()->route('admin.login')->with('message', 'You need to login first');
+            return redirect()->route('filament.admin.auth.login')->with('message', 'You need to login first');
         }
         return $next($request);
     }

@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User;
+use Filament\Models\Contracts\HasName;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Admin extends User
+class Admin extends User implements HasName
 {
     use HasFactory, Notifiable;
 
@@ -31,5 +32,10 @@ class Admin extends User
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function getFilamentName(): string
+    {
+        return $this->getAttributeValue('firstname');
     }
 }
