@@ -8,13 +8,14 @@
                 <h1>Predictions</h1>
             </div>
             <div class="bg-white shadow-lg mx-auto pt-8 pb-32 mt-10">
-            @foreach ($predictions as $prediction)
-                <figure class="text-center my-5">
-                    <h1 class="text-3xl font-semibold text-gray-600">{{ $prediction->company }}</h1>
-                    <h1 class="text-gray-600">{{ $prediction->game }}</h1>
-                    <img class="mt-3 mx-auto" width="350" src="{{ asset('storage/forcast/' . $prediction->image) }}" alt="here">
-                </figure>  
-            @endforeach
+                @foreach ($predictions as $prediction)
+                    <figure class="text-center my-5">
+                        <h1 class="text-3xl font-semibold text-gray-600">{{ $prediction->company }}</h1>
+                        <h1 class="text-gray-600">{{ $prediction->game }}</h1>
+                        <img class="mt-3 mx-auto" width="350" src="{{ asset('storage/' . $prediction->image) }}"
+                            alt="here">
+                    </figure>
+                @endforeach
             </div>
         </div>
         <livewire:navigation />
