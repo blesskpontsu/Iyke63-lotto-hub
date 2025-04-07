@@ -21,6 +21,7 @@ class RequestBet extends Model
         'selected_numbers',
         'amount',
         'total_amount',
+        'amount_won',
         'status',
         'image'
     ];
