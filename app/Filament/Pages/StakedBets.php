@@ -51,6 +51,11 @@ class StakedBets extends Page implements HasTable
                 ->label('Total amount')
                 ->money('GHS', true),
 
+            Tables\Columns\TextColumn::make('amount_won')
+                ->label('Amount won')
+                ->money('GHS', true)
+                ->sortable(),
+
             Tables\Columns\TextColumn::make('status')
                 ->label('Status'),
         ];
@@ -97,6 +102,9 @@ class StakedBets extends Page implements HasTable
                         ->image()
                         ->directory('bet-requests'),
 
+                    Forms\Components\TextInput::make('amount_won')
+                        ->label('Amount won'),
+
                     Forms\Components\Select::make('status')
                         ->options([
                             'staked' => 'Staked',
@@ -104,6 +112,7 @@ class StakedBets extends Page implements HasTable
                             'lost' => 'Lost',
                         ])
                         ->required(),
+
                 ]),
         ];
     }
