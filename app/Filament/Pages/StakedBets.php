@@ -44,6 +44,7 @@ class StakedBets extends Page implements HasTable
 
             Tables\Columns\TextColumn::make('selected_numbers')
                 ->label('Selected Numbers'),
+                
             Tables\Columns\TextColumn::make('amount')
                 ->label('Unit amount'),
 
