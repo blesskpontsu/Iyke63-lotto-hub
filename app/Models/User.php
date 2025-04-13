@@ -30,7 +30,8 @@ class User extends Authenticatable implements MustVerifyEmail, MustVerifySubscri
         'phone',
         'email',
         'password',
-        'channel'
+        'channel',
+        'email_verified_at'
     ];
 
     /**
