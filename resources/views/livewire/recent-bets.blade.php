@@ -51,6 +51,7 @@
                     <!-- Modal Body -->
                     <div class="mt-4">
                         <img src="{{ asset('storage/' . $ticket->image) }}" alt="img">
+                        <p>Amount won: {{ $ticket->amount_won ? $ticket->amount_won : 'Not Won' }}</p>
                     </div>
 
                     <!-- Modal Footer -->

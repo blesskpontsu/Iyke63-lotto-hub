@@ -12,6 +12,7 @@
                     <figure class="text-center my-5">
                         <h1 class="text-3xl font-semibold text-gray-600">{{ $prediction->company }}</h1>
                         <h1 class="text-gray-600">{{ $prediction->game }}</h1>
+                        <h1 class="text-gray-600">{{ $prediction->draw_time }}</h1>
                         <img class="mt-3 mx-auto" width="350" src="{{ asset('storage/' . $prediction->image) }}"
                             alt="here">
                     </figure>
