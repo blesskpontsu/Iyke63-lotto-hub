@@ -11,4 +11,11 @@ class Forcast extends Model
     use HasFactory, HasUuids;
 
     protected $fillable = ['company', 'game', 'draw_time', 'image'];
+
+    protected function casts(): array
+    {
+        return [
+            'draw_time' => 'datetime',
+        ];
+    }
 }
