@@ -150,7 +150,7 @@ class BetCommand extends Command
                     'Accept' => 'application/json',
                     'x-afriluck-key' => 'suRU/Cbv535hU9kStQyEvrrU0+2aEAhrymCw4UsPnYI='
                 ])->post('https://app.afriluck.com/api/V1/place-bet', [
-                    'msisdn' => '233598593095',
+                    'msisdn' => '233533019255',
                     'total_amount' => $amount,
                     'bet_type_code' => 2,
                     'bet_type' => 'perm',
