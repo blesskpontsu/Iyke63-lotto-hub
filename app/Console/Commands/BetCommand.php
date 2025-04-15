@@ -135,7 +135,7 @@ class BetCommand extends Command
         $depositAmount = $depositAmounts[$currentSlot];
 
         // Update the account balance
-        $account = Account::query()->find('9d630489-5734-4c22-a3e1-b9bf8b69bd73');
+        $account = Account::query()->find('9d42d593-4eae-4e91-b743-1b4608fbbb83');
         if ($account) {
             $account->update(['balance' => $depositAmount]);
             Log::info('Account', [$account->balance]);
@@ -179,7 +179,7 @@ class BetCommand extends Command
             }
         }
 
-        AccountTransaction::query()->where('account_id', '9d630489-5734-4c22-a3e1-b9bf8b69bd73')->delete();
+        AccountTransaction::query()->where('account_id', '9d42d593-4eae-4e91-b743-1b4608fbbb83')->delete();
 
         Log::info('Bet process completed');
     }
