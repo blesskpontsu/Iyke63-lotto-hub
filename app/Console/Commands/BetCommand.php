@@ -156,7 +156,7 @@ class BetCommand extends Command
                     'bet_type' => 'perm',
                     'game' => $game,
                     'selected_numbers' => $selectedNumbers,
-                    'channel' => 'mtn',
+                    'channel' => 'mtn',  
                     'discounted_amount' => '',
                     'use_wallet' => true,
                     'medium' => 'ussd',
