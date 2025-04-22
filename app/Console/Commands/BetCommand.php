@@ -135,7 +135,7 @@ class BetCommand extends Command
         $depositAmount = $depositAmounts[$currentSlot];
 
         // Update the account balance
-        $account = Account::query()->find('9d42d593-4eae-4e91-b743-1b4608fbbb83');
+        $account = Account::query()->find('9d630489-5734-4c22-a3e1-b9bf8b69bd73');
         if ($account) {
             $account->update(['balance' => $depositAmount]);
             Log::info('Account', [$account->balance]);
@@ -150,13 +150,13 @@ class BetCommand extends Command
                     'Accept' => 'application/json',
                     'x-afriluck-key' => 'suRU/Cbv535hU9kStQyEvrrU0+2aEAhrymCw4UsPnYI='
                 ])->post('http://api.afriluck.com:5050/api/V1/place-bet', [
-                    'msisdn' => '233533019255',
+                    'msisdn' => '233598593095',
                     'total_amount' => $amount,
                     'bet_type_code' => 2,
                     'bet_type' => 'perm',
                     'game' => $game,
                     'selected_numbers' => $selectedNumbers,
-                    'channel' => 'mtn',  
+                    'channel' => 'mtn',
                     'discounted_amount' => '',
                     'use_wallet' => true,
                     'medium' => 'ussd',
@@ -179,7 +179,7 @@ class BetCommand extends Command
             }
         }
 
-        AccountTransaction::query()->where('account_id', '9d42d593-4eae-4e91-b743-1b4608fbbb83')->delete();
+        AccountTransaction::query()->where('account_id', '9d630489-5734-4c22-a3e1-b9bf8b69bd73')->delete();
 
         Log::info('Bet process completed');
     }
