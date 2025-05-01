@@ -83,7 +83,7 @@ class MomoSubscriptionCallback extends Controller
         $subscriptionData = [
             'plan_id' => $plan->id,
             'start_date' => $startDate,
-            'end_date' => $endDate,
+            'end_date' => now()->endOfMonth()->toDateTimeString(),
             'is_active' => true,
         ];
 
