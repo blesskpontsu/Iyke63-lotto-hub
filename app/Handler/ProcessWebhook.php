@@ -48,18 +48,23 @@ class ProcessWebhook extends ProcessWebhookJob
         if ($eventType == 'charge.success') {
             $type = $metadata['type'] == 'subscription' ? 'subscription' : 'request-bet';
             if ($user) {
-                $jsonResponse = json_encode($data, JSON_PRETTY_PRINT);
-                $transaction = new Transaction([
-                    'user_id' => $user->id,
-                    'transaction_id' => $data['id'],
-                    'customer_id' => $data['customer']['id'],
-                    'amount' => $data['amount'],
-                    'source' => 'Paystack',
-                    'type' => $type,
-                    'status' => $data['status'],
-                    'payload' => $jsonResponse,
-                ]);
-                $transaction->save();
+
+                $transactionExist = Transaction::query()->where('transaction_id', $data['id'])->first();
+
+                if (!$transactionExist) {
+                    $jsonResponse = json_encode($data, JSON_PRETTY_PRINT);
+                    $transaction = new Transaction([
+                        'user_id' => $user->id,
+                        'transaction_id' => $data['id'],
+                        'customer_id' => $data['customer']['id'],
+                        'amount' => $data['amount'],
+                        'source' => 'Paystack',
+                        'type' => $type,
+                        'status' => $data['status'],
+                        'payload' => $jsonResponse,
+                    ]);
+                    $transaction->save();
+                }
 
 
                 //Create or update subscription
