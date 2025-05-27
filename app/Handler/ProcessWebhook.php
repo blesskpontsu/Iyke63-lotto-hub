@@ -24,20 +24,29 @@ class ProcessWebhook extends ProcessWebhookJob
 
         $metadata = $data['metadata'] ?? null; //Retrieve Metadata
 
-        $user = User::query()->where('email', $data['customer']['email'])->first(); //Retrive User
+        $user = User::query()
+            ->where('email', $data['customer']['email'])
+            ->first(); //Retrive User
 
-        $lastSubscription = Subscription::query()->where('user_id', $user->id)->first(); //Retrive previous subscription
+        $lastSubscription = Subscription::query()
+            ->where('user_id', $user->id)
+            ->whereNotNull('reference')
+            ->latest()
+            ->first(); //Retrive previous subscription
 
         $dataPlan = $data['plan'] ?? null; //Retrieve plan
 
         //Check if plan exists and query plan
         // Check if $dataPlan exists and contains 'plan_code'
         if ($dataPlan && array_key_exists('plan_code', $dataPlan)) {
-            $plan = Plan::query()->where('plan_code', $dataPlan['plan_code'])->first();
+            $plan = Plan::query()
+                ->where('plan_code', $dataPlan['plan_code'])
+                ->first();
         }
 
         //Every charge event
         if ($eventType == 'charge.success') {
+            $type = $metadata['type'] == 'subscription' ? 'subscription' : 'request-bet';
             if ($user) {
                 $jsonResponse = json_encode($data, JSON_PRETTY_PRINT);
                 $transaction = new Transaction([
@@ -46,7 +55,7 @@ class ProcessWebhook extends ProcessWebhookJob
                     'customer_id' => $data['customer']['id'],
                     'amount' => $data['amount'],
                     'source' => 'Paystack',
-                    'type' => 'bet request',
+                    'type' => $type,
                     'status' => $data['status'],
                     'payload' => $jsonResponse,
                 ]);
@@ -87,14 +96,24 @@ class ProcessWebhook extends ProcessWebhookJob
             $end_date = Carbon::parse($data['next_payment_date']);
 
             if ($user) {
-                $subscription = new Subscription();
-                $subscription->plan_id = $plan->id;
-                $subscription->is_active = true;
-                $subscription->start_date = $start_date->format('Y-m-d H:i:s');
-                $subscription->end_date = $end_date->format('Y-m-d H:i:s');
-                $subscription->user_id = $user->id;
-                $subscription->subscription_code = $data['subscription_code'];
-                $subscription->save();
+
+                if ($lastSubscription) {
+                    $lastSubscription->forceFill([
+                        'subscription_code' => $data['subscription_code'],
+                        'is_active' => true,
+                        'start_date' => $start_date->format('Y-m-d H:i:s'),
+                        'end_date' => $end_date->format('Y-m-d H:i:s'),
+                    ])->save();
+                } else {
+                    $subscription = new Subscription();
+                    $subscription->plan_id = $plan->id;
+                    $subscription->is_active = true;
+                    $subscription->start_date = $start_date->format('Y-m-d H:i:s');
+                    $subscription->end_date = $end_date->format('Y-m-d H:i:s');
+                    $subscription->user_id = $user->id;
+                    $subscription->subscription_code = $data['subscription_code'];
+                    $subscription->save();
+                }
             }
         }
 

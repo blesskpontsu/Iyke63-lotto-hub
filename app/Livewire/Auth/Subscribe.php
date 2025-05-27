@@ -7,7 +7,6 @@ use App\Models\Plan;
 use Livewire\Component;
 use Illuminate\Support\Str;
 use App\Models\Subscription;
-use Illuminate\Http\Request;
 use WireUi\Traits\WireUiActions;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -35,23 +34,18 @@ class Subscribe extends Component
         return true;
     }
 
-    private function initialize_hubtel_subscription($user_data)
+    public function initialize_subscription($user_data)
     {
-        $headers = [
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json',
-            'Authorization' => 'Basic ' . base64_encode('wmJBkgm:808a6b5717dd4c839ad73fa5cd6ce46c'),
-            'Cache-Control' => 'no-cache'
-        ];
-
-        $http = Http::withHeaders($headers)
-            ->post('https://payproxyapi.hubtel.com/items/initiate', $user_data);
+        $http = Http::withHeaders([
+            'authorization' => 'Bearer ' . config('services.paystack.live_key2'),
+        ])->accept('application/json')
+            ->post('https://api.paystack.co/transaction/initialize', $user_data);
 
         return $http;
     }
 
 
-    public function hubtel_card_subscription()
+    public function card_subscription()
     {
         // Check internet connection
         if (!$this->isInternetConnected()) {
@@ -94,30 +88,34 @@ class Subscribe extends Component
             ]);
         }
 
-
-        $data = [
-            'totalAmount' => $plan->amount,
+        $metadata = [
+            'type' => 'subscription',
             'description' => $plan->name,
-            'callbackUrl' => route('card.subscription.callback'),
-            'returnUrl' => route('dashboard'),
-            'merchantAccountNumber' => '2023574',
-            'cancellationUrl' => route('plans'),
-            'clientReference' => $activeSubscription ? $activeSubscription->reference : $subscription->reference,
+            'cancel_action' => route('plans'),
         ];
 
-        $response = $this->initialize_hubtel_subscription($data);
-        $data = $response->json();
+        $data = [
+            'email' => $user->email,
+            'amount' => $plan->price * 100,
+            'plan' => $plan->plan_code,
+            'metadata' => $metadata,
+            'callback_url' => route('paystack.subscription.callback'),
+            'channels' => ['card', 'mobile_money'],
+            'reference' => $activeSubscription ? $activeSubscription->reference : $subscription->reference,
+        ];
 
-        if ($response['status'] !== 'Success') {
+        $response = $this->initialize_subscription($data);
+
+        if ($response->json('status') == false) {
             $this->notification()->send([
                 'icon' => 'error',
                 'title' => 'Subscription error',
-                'description' => $data['data']['message'],
+                'description' => $response->json('message'),
             ]);
-            return redirect('/plans');
+            // return redirect('/plans');
         }
 
-        $this->redirect($data['data']['checkoutUrl']);
+        $this->redirect($response->json('data')['authorization_url']);
     }
 
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Callbacks\CardSubscriptionCallback;
 use App\Http\Controllers\Callbacks\MomoSubscriptionCallback;
+use App\Http\Controllers\Callbacks\PaystackSubscriptionCallback;
 use App\Livewire\Admin\Dashboard as AdminDashboard;
 use App\Livewire\Admin\Forcast;
 use App\Livewire\Admin\Login as AdminLogin;
@@ -32,7 +33,9 @@ Route::get('/', function () {
 });
 Route::webhooks('paystack-webhooks', 'paystack');
 Route::post('/momo-subscription-callback', [MomoSubscriptionCallback::class, 'handle'])->name('momo.subscription.callback');
-Route::post('/card-subscription-callback', [CardSubscriptionCallback::class, 'handle'])->name('card.subscription.callback');
+// Route::post('/card-subscription-callback', [CardSubscriptionCallback::class, 'handle'])->name('card.subscription.callback');
+Route::get('/card-subscription-callback', [PaystackSubscriptionCallback::class, 'handle'])->name('paystack.subscription.callback');
+
 Route::middleware('guest')->group(function () {
     // Route::get('/early-access', EarlyAccess::class)->name('early-access');
     Route::get('/login', Login::class)->name('login');
@@ -67,19 +70,3 @@ Route::middleware('auth')->group(function () {
     Route::post('/email/verification-notification', EmailVerification::class)->middleware(['throttle:6,1'])->name('verification.send');
     Route::get('/email/verify/{id}/{hash}', [EmailVerification::class, 'verifyEmail'])->middleware('signed')->name('verification.verify');
 });
-
-// Route::prefix('admin')->name('admin.')->group(function () {
-//     Route::middleware('guest:admin')->group(function () {
-//         Route::get('login', AdminLogin::class)->name('login');
-//     });
-
-
-//     Route::middleware('admin')->group(function () {
-//         Route::get('dashboard', AdminDashboard::class)->name('dashboard');
-//         Route::get('forcast', Forcast::class)->name('forcast');
-//         Route::get('predictions', Prediction::class)->name('predictions');
-//         Route::get('results', Result::class)->name('results');
-//         Route::get('settings', AdminSettings::class)->name('settings');
-//         Route::get('videos', Index::class)->name('video.index');
-//     });
-// });

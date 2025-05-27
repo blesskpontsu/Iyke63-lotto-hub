@@ -42,6 +42,7 @@ return [
 
     'paystack' => [
         'live_key' => env('PAYSTACK_SECRET'),
+        'live_key2' => env('PAYSTACK_KEY')
     ],
 
 ];
