@@ -23,7 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
             '/subscription-callback',
             '/momo-subscription-callback',
             '/card-subscription-callback',
-            '/paystack-api'
+            '/paystack-payload'
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
