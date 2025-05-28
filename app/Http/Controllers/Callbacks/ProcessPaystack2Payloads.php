@@ -29,6 +29,8 @@ class ProcessPaystack2Payloads extends Controller
             ->where('email', $data['customer']['email'])
             ->first();
 
+        Log::info($data['customer']['email']);
+
         if (!$user) {
             Log::error('Paystack Payload: No user associated with customer email');
             return response()->json(['error' => 'No user associated with customer email']);
