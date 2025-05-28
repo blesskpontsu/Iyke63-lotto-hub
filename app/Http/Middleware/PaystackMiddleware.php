@@ -44,7 +44,7 @@ class PaystackMiddleware
         // Get the IP address from the request
 
         $forwardedIp = $request->header('X-Forwarded-For');
-        $requestIP = explode(',', $forwardedIp)[0] ?? $request->ip();
+        $requestIP = $forwardedIp;
 
         // Check if the request IP is in the list of whitelisted IPs
         return in_array($requestIP, $this->whitelistedIPs);
