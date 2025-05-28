@@ -32,6 +32,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::webhooks('paystack-webhooks', 'paystack');
+Route::webhooks('paystack2-webhooks', 'paystack-2');
 Route::post('/momo-subscription-callback', [MomoSubscriptionCallback::class, 'handle'])->name('momo.subscription.callback');
 // Route::post('/card-subscription-callback', [CardSubscriptionCallback::class, 'handle'])->name('card.subscription.callback');
 Route::get('/card-subscription-callback', [PaystackSubscriptionCallback::class, 'handle'])->name('paystack.subscription.callback');
