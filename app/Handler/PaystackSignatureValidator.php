@@ -12,6 +12,7 @@ class PaystackSignatureValidator implements SignatureValidator
 {
     public function isValid(Request $request, WebhookConfig $config): bool
     {
+
         $signature = $request->header($config->signatureHeaderName);
         if (!$signature) {
             Log::info('Invalid signature');
@@ -23,6 +24,12 @@ class PaystackSignatureValidator implements SignatureValidator
             throw InvalidConfig::signingSecretNotSet();
         }
         $computedSignature = hash_hmac('sha512', $request->getContent(), $signingSecret);
+        Log::info('Paystack Webhook Validation', [
+            'provided_signature' => $signature,
+            'expected_signature' => $computedSignature,
+            'body' => $request->getContent(),
+            'secret_used' => $signingSecret,
+        ]);
         return hash_equals($signature, $computedSignature);
     }
 }
