@@ -21,7 +21,7 @@ return [
             'signature_header_name' => 'x-paystack-signature',
 
             /*
-             *  This class will verify that the content of the signature header is valid.
+             *  This class will verify that the content of the signature header is valids.
              *
              * It should implement \Spatie\WebhookClient\SignatureValidator\SignatureValidator
              */
