@@ -25,6 +25,7 @@ class PaystackMiddleware
         $isValidIp = $this->shouldProcess($request);
 
         if (!$isValidIp) {
+            Log::warning('Rejected request from IP: ' . $request->ip());
             return response()->json(['error' => 'Invalid IP'], 403);
         }
 
@@ -53,15 +54,12 @@ class PaystackMiddleware
     {
         $signature = $request->header('x-paystack-signature');
         if (!$signature) {
-            Log::warning('Rejected request from IP: ' . $request->ip());
+            Log::warning('Invalid signature header from IP: ' . $request->ip());
             return false;
         }
         $signingSecret = config('services.paystack.live_key2');
         if (empty($signingSecret)) {
-            Log::warning('Invalid signature from IP: ' . $request->ip(), [
-                'signature' => $request->header('x-paystack-signature'),
-                'computed' => hash_hmac('sha512', $request->getContent(), $signingSecret)
-            ]);
+            Log::critical('Paystack signing secret is not configured.');
             throw new RuntimeException('Paystack signing secret is not configured.');
         }
         $computedSignature = hash_hmac('sha512', $request->getContent(), $signingSecret);
