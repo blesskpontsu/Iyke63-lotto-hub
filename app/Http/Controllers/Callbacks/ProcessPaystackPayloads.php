@@ -16,7 +16,7 @@ class ProcessPaystackPayloads extends Controller
     public function handle(Request $request)
     {
         $payload = $request->json()->all();
-
+        Log::info('response', ['payload' => $payload]);
         $data = $payload['data'];
         $successful = isset($data['status']) && $data['status'] === 'success';
         $eventType = $payload['event'];
