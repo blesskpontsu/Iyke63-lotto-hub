@@ -58,30 +58,6 @@ return [
              */
             'process_webhook_job' => App\Handler\ProcessWebhook::class,
         ],
-
-        [
-            /*
-             * This package supports multiple webhook receiving endpoints. If you only have
-             * one endpoint receiving webhooks, you can use 'default'.
-             */
-            'name' => 'paystack-2',
-
-            'signing_secret' => env('PAYSTACK_KEY'),
-
-            'signature_header_name' => 'x-paystack-signature',
-
-            'signature_validator' => App\Handler\PaystackSignatureValidator::class,
-
-            'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
-
-            'webhook_response' => \Spatie\WebhookClient\WebhookResponse\DefaultRespondsTo::class,
-
-            'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
-
-            'store_headers' => [],
-
-            'process_webhook_job' => App\Handler\ProcessWebhook::class,
-        ],
     ],
 
     /*

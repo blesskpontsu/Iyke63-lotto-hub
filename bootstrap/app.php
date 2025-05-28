@@ -14,7 +14,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'subscribe' => \App\Http\Middleware\SubscriptionMiddleware::class,
             'active' => \App\Http\Middleware\ActiveSubscriptionMiddleware::class,
-            'admin' => \App\Http\Middleware\AdminMiddleware::class
+            'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'paystack' => \App\Http\Middleware\PaystackMiddleware::class,
         ]);
 
         $middleware->validateCsrfTokens(except: [
@@ -22,7 +23,8 @@ return Application::configure(basePath: dirname(__DIR__))
             '/paystack2-webhooks',
             '/subscription-callback',
             '/momo-subscription-callback',
-            '/card-subscription-callback'
+            '/card-subscription-callback',
+            '/paystack'
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

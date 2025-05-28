@@ -3,6 +3,7 @@
 use App\Http\Controllers\Callbacks\CardSubscriptionCallback;
 use App\Http\Controllers\Callbacks\MomoSubscriptionCallback;
 use App\Http\Controllers\Callbacks\PaystackSubscriptionCallback;
+use App\Http\Controllers\Callbacks\ProcessPaystackPayloads;
 use App\Livewire\Admin\Dashboard as AdminDashboard;
 use App\Livewire\Admin\Forcast;
 use App\Livewire\Admin\Login as AdminLogin;
@@ -32,10 +33,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::webhooks('paystack-webhooks', 'paystack');
-Route::webhooks('paystack2-webhooks', 'paystack-2');
+
 Route::post('/momo-subscription-callback', [MomoSubscriptionCallback::class, 'handle'])->name('momo.subscription.callback');
-// Route::post('/card-subscription-callback', [CardSubscriptionCallback::class, 'handle'])->name('card.subscription.callback');
 Route::get('/card-subscription-callback', [PaystackSubscriptionCallback::class, 'handle'])->name('paystack.subscription.callback');
+Route::post('paystack', [ProcessPaystackPayloads::class, 'handle'])->middleware('paystack');
 
 Route::middleware('guest')->group(function () {
     // Route::get('/early-access', EarlyAccess::class)->name('early-access');
