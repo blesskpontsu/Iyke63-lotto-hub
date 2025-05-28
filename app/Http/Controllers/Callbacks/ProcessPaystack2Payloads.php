@@ -29,8 +29,6 @@ class ProcessPaystack2Payloads extends Controller
             ->where('email', $data['customer']['email'])
             ->first();
 
-        Log::info($data['customer']['email']);
-
         if (!$user) {
             Log::error('Paystack Payload: No user associated with customer email');
             return response()->json(['error' => 'No user associated with customer email']);
@@ -66,8 +64,8 @@ class ProcessPaystack2Payloads extends Controller
                 'status' => 'paid'
             ]);
 
-            Log::info('Paystack Payload: No user associated with customer email');
-            return response()->json(['error' => 'No user associated with customer email']);
+            Log::info('Paystack Payload: Request Bet processed successfully');
+            return response()->json(['error' => 'Request Bet processed successfully']);
         }
     }
 }
