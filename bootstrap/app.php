@@ -15,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'subscribe' => \App\Http\Middleware\SubscriptionMiddleware::class,
             'active' => \App\Http\Middleware\ActiveSubscriptionMiddleware::class,
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
-            'paystack' => \App\Http\Middleware\PaystackMiddleware::class,
+            'paystack-api' => \App\Http\Middleware\PaystackMiddleware::class,
         ]);
 
         $middleware->validateCsrfTokens(except: [
