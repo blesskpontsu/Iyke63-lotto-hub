@@ -36,7 +36,7 @@ Route::webhooks('paystack-webhooks', 'paystack');
 
 Route::post('/momo-subscription-callback', [MomoSubscriptionCallback::class, 'handle'])->name('momo.subscription.callback');
 Route::get('/card-subscription-callback', [PaystackSubscriptionCallback::class, 'handle'])->name('paystack.subscription.callback');
-Route::post('paystack', [ProcessPaystackPayloads::class, 'handle'])->middleware('paystack');
+Route::post('paystack-payload', [ProcessPaystackPayloads::class, 'handle'])->middleware('paystack-api');
 
 Route::middleware('guest')->group(function () {
     // Route::get('/early-access', EarlyAccess::class)->name('early-access');
