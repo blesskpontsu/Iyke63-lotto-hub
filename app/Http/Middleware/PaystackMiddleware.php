@@ -43,11 +43,10 @@ class PaystackMiddleware
     {
         // Get the IP address from the request
 
-        $forwardedIp = $request->header('X-Forwarded-For');
-        $requestIP = $forwardedIp;
+        $requestIp = $request->ip();
 
         // Check if the request IP is in the list of whitelisted IPs
-        return in_array($requestIP, $this->whitelistedIPs);
+        return in_array($requestIp, $this->whitelistedIPs);
     }
 
     public function validateSignature(Request $request): bool
