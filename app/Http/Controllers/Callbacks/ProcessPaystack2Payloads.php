@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Callbacks;
 
+use Exception;
 use App\Models\User;
 use App\Models\RequestBet;
 use App\Models\Transaction;
@@ -36,22 +37,24 @@ class ProcessPaystack2Payloads extends Controller
 
         if ($eventType == 'charge.success' && $metadata['type'] == 'bet_request') {
 
-            $transactionExist = Transaction::query()->where('transaction_id', $data['id'])->first();
-
-            if (!$transactionExist) {
-                $jsonResponse = json_encode($data, JSON_PRETTY_PRINT);
-                $transaction = new Transaction([
-                    'user_id' => $user->id,
-                    'transaction_id' => $data['id'],
-                    'customer_id' => $data['customer']['id'],
-                    'amount' => $data['amount'],
-                    'source' => 'Paystack',
-                    'type' => 'request-bet',
-                    'status' => $data['status'],
-                    'payload' => $jsonResponse,
-                ]);
-                $transaction->save();
+            if (Transaction::where('transaction_id', $data['id'])->exists()) {
+                return response()->json(['message' => 'Transaction already exists']);
             }
+
+
+            $jsonResponse = json_encode($data, JSON_PRETTY_PRINT);
+            $transaction = new Transaction([
+                'user_id' => $user->id,
+                'transaction_id' => $data['id'],
+                'customer_id' => $data['customer']['id'],
+                'amount' => $data['amount'],
+                'source' => 'Paystack',
+                'type' => 'request-bet',
+                'status' => $data['status'],
+                'payload' => $jsonResponse,
+            ]);
+            $transaction->save();
+
 
             $betRequest = RequestBet::find($data['reference']);
 
@@ -60,12 +63,30 @@ class ProcessPaystack2Payloads extends Controller
                 return response()->json(['error' => 'No Bet request associated with reference']);
             }
 
-            $betRequest->update([
-                'status' => 'paid'
-            ]);
+            $this->updateBet($betRequest);
 
             Log::info('Paystack Payload: Request Bet processed successfully');
             return response()->json(['error' => 'Request Bet processed successfully']);
         }
+    }
+
+
+    private function updateBet($bet)
+    {
+        try {
+            $bet->update([
+                'status' => 'paid'
+            ]);
+            Log::info($bet);
+        } catch (Exception $e) {
+            Log::error('Error while updating bet', [
+                'line' => $e->getLine(),
+                'code' => $e->getCode(),
+                'file' => $e->getFile(),
+                'message' => $e->getMessage()
+            ]);
+            return null;
+        }
+        return $bet;
     }
 }

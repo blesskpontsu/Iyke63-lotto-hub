@@ -3,12 +3,16 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use Illuminate\Http\Request;
 use WireUi\Traits\WireUiActions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Models\RequestBet as ModelsRequestBet;
+use Exception;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Client\Response as ClientResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Log;
+use Livewire\Features\SupportRedirects\Redirector;
 
 class RequestBet extends Component
 {
@@ -26,9 +30,9 @@ class RequestBet extends Component
 
     public string $selected_numbers = '';
 
-    public ?int $amount = null;
+    public int|string|null $amount = null;
 
-    public ?int $total_amount = null;
+    public int|string|null $total_amount = null;
 
     protected $rules = [
         'company' => 'required|string|max:150',
@@ -40,7 +44,7 @@ class RequestBet extends Component
         'amount' => 'required|integer|min:1',
     ];
 
-    public function updated($propertyName)
+    public function updated($propertyName): void
     {
         $this->validateOnly($propertyName);
 
@@ -55,57 +59,46 @@ class RequestBet extends Component
         $count = count($numbers);
 
         if ($this->game_type === 'Mega Jackpot' && $count !== 6) {
-            $this->addError('selected_numbers', 'Mega Jackpot requires exactly 6 numbers.');
-        } elseif ($this->game_type === 'Direct' && $this->game_code === '2' && $count !== 2) {
-            $this->addError('selected_numbers', 'Direct 2 requires exactly 2 numbers.');
-        } elseif ($this->game_type === 'Direct' && $this->game_code === '3' && $count !== 3) {
-            $this->addError('selected_numbers', 'Direct 3 requires exactly 3 numbers.');
-        } elseif ($this->game_type === 'Perm' && $this->game_code === '2' && ($count < 3 || $count > 15)) {
-            $this->addError('selected_numbers', 'Perm 2 requires between 3 and 15 numbers.');
-        } elseif ($this->game_type === 'Perm' && $this->game_code === '3' && ($count < 4 || $count > 10)) {
-            $this->addError('selected_numbers', 'Perm 3 requires between 4 and 10 numbers.');
-        } elseif ($this->game_type === 'Banker' && $this->game_code === '2' && $count !== 1) {
-            $this->addError('selected_numbers', 'Banker requires exactly 1 number.');
+            return $this->addError('selected_numbers', 'Mega Jackpot requires exactly 6 numbers.');
+        }
+
+        if ($this->game_type === 'Direct') {
+            if ($this->game_code === '2' && $count !== 2) {
+                return $this->addError('selected_numbers', 'Direct 2 requires exactly 2 numbers.');
+            }
+
+            if ($this->game_code === '3' && $count !== 3) {
+                return $this->addError('selected_numbers', 'Direct 3 requires exactly 3 numbers.');
+            }
+        }
+
+        if ($this->game_type === 'Perm') {
+            if ($this->game_code === '2' && ($count < 3 || $count > 15)) {
+                return $this->addError('selected_numbers', 'Perm 2 requires between 3 and 15 numbers.');
+            }
+
+            if ($this->game_code === '3' && ($count < 4 || $count > 10)) {
+                return $this->addError('selected_numbers', 'Perm 3 requires between 4 and 10 numbers.');
+            }
+        }
+
+        if ($this->game_type === 'Banker' && $this->game_code === '2' && $count !== 1) {
+            return $this->addError('selected_numbers', 'Banker requires exactly 1 number.');
         }
     }
 
-    public function callback(Request $request)
+    public function submit(): RedirectResponse|Redirector
     {
-        $response = $this->verify_payment($request->reference);
-
-        $jsonResponse = $response->json('data');
-
-        $successful = $jsonResponse['status'] == 'success';
-
-        if (!$successful) {
-            return redirect('/request-bet');
-        }
-
-        return redirect('/dashboard');
-    }
-
-    public function submit()
-    {
-        if ($this->company == 'National Lottery Authority' || $this->company == 'Afriluck NLA') {
-            $this->rules = [
-                'company' => 'required|string|max:150',
-                'game' => 'required|string|max:150',
-                'game_time' => 'required|string|max:150',
-                'game_type' => 'required|string|max:150',
-                'game_code' => 'required|string|max:150',
-                'selected_numbers' => 'required|string|max:150',
-                'amount' => 'required|int|max:150',
-            ];
-        }
 
         $this->validateSelectedNumbers();
 
         $this->validate();
 
-        $bet = new ModelsRequestBet($this->all());
-        $bet->user_id = Auth::user()->id;
-        $bet->status = 'pending';
-        $bet->save();
+        $bet = $this->saveBet();
+
+        if (!$bet) {
+            return redirect('/request-bet')->with('error', 'Could not save bet. Please try again.');
+        }
 
         $discount = $this->total_amount * 0.15;
 
@@ -113,7 +106,7 @@ class RequestBet extends Component
 
         $metadata = [
             'type' => 'bet_request',
-            'cancel_action' => route('plans')
+            'cancel_action' => route('request.bet')
         ];
 
         $formData = [
@@ -126,30 +119,21 @@ class RequestBet extends Component
 
         $response = $this->initiate_payment($formData);
 
-        if ($response->json('status') == false) {
+        $jsonResponse = $response->json();
 
-            $this->notification()->send([
-                'icon' => 'error',
-                'title' => 'Request not successful',
-                'description' => $response->json('message'),
-            ]);
-        } else {
-            $this->notification()->send([
-                'icon' => 'success',
-                'title' => 'Request Succesful',
-                'description' => 'Proceed to make payment',
-            ]);
-            $this->redirect($response->json('data')['authorization_url']);
-        };
+        if (!$response || !isset($jsonResponse['status']) || $jsonResponse['status'] == false) {
+            return redirect('/request-bet')->with('error', 'Payment initalization failed.');
+        }
+
+        return redirect()->away($jsonResponse['data']['authorization_url']);
     }
 
-    public function render()
+    public function render(): View
     {
-
         return view('livewire.request-bet');
     }
 
-    public function calculatePermutations()
+    public function calculatePermutations(): void
     {
         $amount = $this->amount;
         $selected_numbers_string = $this->selected_numbers;
@@ -234,27 +218,55 @@ class RequestBet extends Component
         return $results;
     }
 
-    public function initiate_payment($formData): ClientResponse
+    public function initiate_payment($formData): ?ClientResponse
     {
-        $key = config('services.paystack.live_key');
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => "Bearer $key",
-            'Cache-Control' => 'no-cache'
-        ])->post('https://api.paystack.co/transaction/initialize', $formData);
-
-        return $response;
+        try {
+            $key = config('services.paystack.live_key');
+            $response = Http::withHeaders([
+                'Accept' => 'application/json',
+                'Authorization' => "Bearer $key",
+                'Cache-Control' => 'no-cache'
+            ])->post('https://api.paystack.co/transaction/initialize', $formData);
+            Log::info('initialize payment', ['payload' => $response]);
+            return $response;
+        } catch (Exception $e) {
+            Log::error('Error while initializing payment for bet', [
+                'line' => $e->getLine(),
+                'code' => $e->getCode(),
+                'file' => $e->getFile(),
+                'message' => $e->getMessage()
+            ]);
+            return null;
+        }
     }
 
-    public function verify_payment($reference)
-    {
-        $key = config('services.paystack.live_key');
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => "Bearer $key",
-            'Cache-Control' => 'no-cache'
-        ])->get("https://api.paystack.co/transaction/verify/{$reference}");
 
-        return $response;
+    private function saveBet()
+    {
+        $bet = null;
+        try {
+            $bet = ModelsRequestBet::create([
+                'user_id' => Auth::id(),
+                'company' => $this->company,
+                'game' => $this->game,
+                'game_time' => $this->game_time,
+                'game_type' => $this->game_type,
+                'game_code' => $this->game_code,
+                'selected_numbers' => $this->selected_numbers,
+                'amount' => $this->amount,
+                'total_amount' => $this->total_amount,
+                'status' => 'pending',
+            ]);
+            Log::info('Bet Created', [$bet]);
+        } catch (Exception $e) {
+            Log::error('Error while saving bet', [
+                'line' => $e->getLine(),
+                'code' => $e->getCode(),
+                'file' => $e->getFile(),
+                'message' => $e->getMessage()
+            ]);
+        }
+
+        return $bet;
     }
 }

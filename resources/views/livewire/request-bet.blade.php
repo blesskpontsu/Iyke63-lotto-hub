@@ -1,7 +1,6 @@
-
 {{-- $disabled variable is set to true if there are errors or empty input fields. --}}
 @php
-    $disabled = $errors->any() 
+    $disabled = $errors->any();
 @endphp
 
 <div x-data="{
@@ -16,12 +15,11 @@
     game_types: [],
     codes: [],
     dayOfWeek: '',
-    companies: ['Afriluck NLA', 'Alpha Lotto', 'National Lottery Authority'], 
+    companies: ['Afriluck NLA', 'Alpha Lotto', 'Blue Star Lotto', 'National Lottery Authority'],
     init() {
         this.dayOfWeek = this.getDayOfWeek();
         this.$watch('company', value => {
             this.updateGameTimes();
-            this.updateGameTypes();
             this.updateCodes();
             this.setGame();
         });
@@ -29,7 +27,7 @@
         this.$watch('game_time', value => {
             this.setGame(); // Update game based on game_time change
         });
-        
+
         this.$watch('game_type', value => {
             this.updateCodes();
         });
@@ -43,7 +41,11 @@
         this.$watch('amount', value => {
             this.calculateTotal();
         });
-        
+
+        this.$watch('game', value => {
+            this.updateGameTypes();
+        });
+
     },
     getDayOfWeek() {
         const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -54,7 +56,7 @@
 
     setGame() {
         let games = {};
-        
+
         if (this.company === 'National Lottery Authority') {
             if (this.game_time === 'morning') {
                 games = {
@@ -88,36 +90,90 @@
                 };
             }
         } else if (this.company === 'Alpha Lotto') {
-            games = {
-                'Monday': 'ALPHA MONDAY',
-                'Tuesday': 'DELTA TUESDAY',
-                'Wednesday': 'OMEGA WEDNESDAY',
-                'Thursday': 'EXCEL THURSDAY',
-                'Friday': 'PRIME FRIDAY',
-                'Saturday': 'KENSTAR SATURDAY',
-                'Sunday': 'PRECISE SUNDAY'
-            };
-        }  else if (this.company === 'Afriluck NLA') {
             if (this.game_time === 'morning') {
                 games = {
-                    'Monday' : 'ANOPA MONDAY',
-                    'Tuesday' : 'ANOPA TUESDAY',
-                    'Wednesday' : 'ANOPA WEDNESDAY',
-                    'Thursday' : 'ANOPA THURSDAY',
-                    'Friday' : 'ANOPA FRIDAY',
-                    'Saturday' : 'ANOPA SATURDAY',
-                    'Sunday' : 'ANOPA SUNDAY'
-                }
-            }  else if (this.game_time === 'evening') {
+                    'Monday': 'ALPHA-ONE MONDAY',
+                    'Tuesday': 'ALPHA-ONE TUESDAY',
+                    'Wednesday': 'ALPHA-ONE WEDNESDAY',
+                    'Thursday': 'ALPHA-ONE THURSDAY',
+                    'Friday': 'ALPHA-ONE FRIDAY',
+                    'Saturday': 'ALPHA-ONE SATURDAY',
+                    'Sunday': 'ALPHA-ONE SUNDAY'
+                };
+            } else if (this.game_time === 'afternoon') {
                 games = {
-                    'Monday' : '6/57 MONDAY',
-                    'Tuesday' : '6/57 TUESDAY',
-                    'Wednesday' : '6/57 WEDNESDAY',
-                    'Thursday' : '6/57 THURSDAY',
-                    'Friday' : '6/57 FRIDAY',
-                    'Saturday' : '6/57 SATURDAY',
-                    'Sunday' : '6/57 SUNDAY'
-                }  
+                    'Monday': 'ALPHA-EXPRESS MONDAY',
+                    'Tuesday': 'ALPHA-EXPRESS TUESDAY',
+                    'Wednesday': 'ALPHA-EXPRESS WEDNESDAY',
+                    'Thursday': 'ALPHA-EXPRESS THURSDAY',
+                    'Friday': 'ALPHA-EXPRESS FRIDAY',
+                    'Saturday': 'ALPHA-EXPRESS SATURDAY',
+                    'Sunday': 'ALPHA-EXPRESS SUNDAY'
+                };
+            } else if (this.game_time === 'evening') {
+                games = {
+                    'Monday': 'ALPHA MONDAY',
+                    'Tuesday': 'DELTA TUESDAY',
+                    'Wednesday': 'OMEGA WEDNESDAY',
+                    'Thursday': 'EXCEL THURSDAY',
+                    'Friday': 'PRIME FRIDAY',
+                    'Saturday': 'KENSTAR SATURDAY',
+                    'Sunday': 'PRECISE SUNDAY'
+                };
+            }
+        } else if (this.company === 'Afriluck NLA') {
+            if (this.game_time === 'morning') {
+                games = {
+                    'Monday': 'ANOPA MONDAY',
+                    'Tuesday': 'ANOPA TUESDAY',
+                    'Wednesday': 'ANOPA WEDNESDAY',
+                    'Thursday': 'ANOPA THURSDAY',
+                    'Friday': 'ANOPA FRIDAY',
+                    'Saturday': 'ANOPA SATURDAY',
+                    'Sunday': 'ANOPA SUNDAY'
+                }
+            } else if (this.game_time === 'afternoon') {
+                games = {
+                    'Monday': 'MIDDAY CASH MONDAY',
+                    'Tuesday': 'MIDDAY CASH TUESDAY',
+                    'Wednesday': 'MIDDAY CASH WEDNESDAY',
+                    'Thursday': 'MIDDAY CASH THURSDAY',
+                    'Friday': 'MIDDAY CASH FRIDAY',
+                    'Saturday': 'MIDDAY CASH SATURDAY',
+                    'Sunday': 'MIDDAY CASH SUNDAY'
+                }
+            } else if (this.game_time === 'evening') {
+                games = {
+                    'Monday': '6/57 MONDAY',
+                    'Tuesday': '6/57 TUESDAY',
+                    'Wednesday': '6/57 WEDNESDAY',
+                    'Thursday': '6/57 THURSDAY',
+                    'Friday': '6/57 FRIDAY',
+                    'Saturday': '6/57 SATURDAY',
+                    'Sunday': '6/57 SUNDAY'
+                }
+            }
+        } else if (this.company === 'Blue Star Lotto') {
+            if (this.game_time === 'afternoon') {
+                games = {
+                    'Monday': 'DIAMOND MONDAY',
+                    'Tuesday': 'DIAMOND TUESDAY',
+                    'Wednesday': 'DIAMOND WEDNESDAY',
+                    'Thursday': 'DIAMOND THURSDAY',
+                    'Friday': 'DIAMOND FRIDAY',
+                    'Saturday': 'DIAMOND SATURDAY',
+                    'Sunday': 'DIAMOND SUNDAY'
+                }
+            } else if (this.game_time === 'evening') {
+                games = {
+                    'Monday': 'GOLD MONDAY',
+                    'Tuesday': 'GOLD TUESDAY',
+                    'Wednesday': 'GOLD WEDNESDAY',
+                    'Thursday': 'GOLD THURSDAY',
+                    'Friday': 'GOLD FRIDAY',
+                    'Saturday': 'GOLD SATURDAY',
+                    'Sunday': 'GOLD SUNDAY'
+                }
             }
         }
 
@@ -131,17 +187,17 @@
 
     updateGameTimes() {
         const currentTime = new Date();
-    
+
         if (this.company === 'National Lottery Authority') {
             const morningCutoff = new Date();
             morningCutoff.setHours(9, 55, 0, 0);
-    
+
             const afternoonCutoff = new Date();
             afternoonCutoff.setHours(13, 20, 0, 0);
-    
+
             const eveningCutoff = new Date();
             eveningCutoff.setHours(18, 55, 0, 0);
-    
+
             if (currentTime < morningCutoff) {
                 this.game_times = ['morning', 'afternoon', 'evening'];
             } else if (currentTime < afternoonCutoff) {
@@ -152,23 +208,55 @@
         } else if (this.company === 'Afriluck NLA') {
             const morningCutoff = new Date();
             morningCutoff.setHours(9, 55, 0, 0);
-    
+
+            const afternoonCutoff = new Date();
+            afternoonCutoff.setHours(13, 20, 0, 0);
+
             const eveningCutoff = new Date();
             eveningCutoff.setHours(19, 55, 0, 0);
-    
+
             if (currentTime < morningCutoff) {
                 this.game_times = ['morning', 'evening'];
+            } else if (currentTime < afternoonCutoff) {
+                this.game_times = ['afternoon', 'evening'];
+            } else if (currentTime < eveningCutoff) {
+                this.game_times = ['evening'];
+            }
+        } else if (this.company === 'Alpha Lotto') {
+            const morningCutoff = new Date();
+            morningCutoff.setHours(11, 20, 0, 0);
+
+            const afternoonCutoff = new Date();
+            afternoonCutoff.setHours(16, 20, 0, 0);
+
+            const eveningCutoff = new Date();
+            eveningCutoff.setHours(21, 20, 0, 0);
+
+            if (currentTime < morningCutoff) {
+                this.game_times = ['morning', 'afternoon', 'evening'];
+            } else if (currentTime < afternoonCutoff) {
+                this.game_times = ['afternoon', 'evening'];
+            } else if (currentTime < eveningCutoff) {
+                this.game_times = ['evening'];
+            }
+        } else if (this.company === 'Blue Star Lotto') {
+            const afternoonCutoff = new Date();
+            afternoonCutoff.setHours(15, 20, 0, 0);
+
+            const eveningCutoff = new Date();
+            eveningCutoff.setHours(20, 20, 0, 0);
+
+            if (currentTime < afternoonCutoff) {
+                this.game_times = ['afternoon', 'evening'];
             } else if (currentTime < eveningCutoff) {
                 this.game_times = ['evening'];
             }
         }
     },
-    
+
     updateGameTypes() {
         if (this.company === 'Afriluck NLA') {
-            this.game_types = this.game.includes('ANOPA') 
-                ? ['Direct', 'Perm', 'Banker'] 
-                : ['Mega Jackpot', 'Direct', 'Perm', 'Banker'];
+            this.game_types = this.game.includes('ANOPA') ? ['Direct', 'Perm', 'Banker'] : (this.game.includes('MIDDAY CASH') ? ['Direct', 'Perm', 'Banker'] : ['Mega Jackpot', 'Direct', 'Perm', 'Banker']);
         } else {
             this.game_types = ['Direct', 'Perm', 'Banker'];
         }
@@ -196,15 +284,15 @@
             this.codes = [];
         }
     },
-    
+
     calculateMegaAmount() {
         if (this.game_code == 5) {
             this.amount = 5
         } else if (this.game_code == 10) {
             this.amount = 10
         } else if (this.game_code == 20) {
-          this.amount = 20
-        } 
+            this.amount = 20
+        }
     },
 
     calculateTotal() {
@@ -216,93 +304,125 @@
     </x-slot>
     <x-auth-card>
         <h1 class="text-center text-3xl lg:text-4xl text-blue-700 font-bold">Stake a bet</h1>
+        @if (session('error'))
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                {{ session('error') }}
+            </div>
+        @endif
         <form wire:submit.prevent="submit">
             @csrf
             <div class="space-y-5 py-10">
-                <div class="space-y-4"> 
+                <div class="space-y-4">
                     <div class="space-y-2">
                         <label class="text-gray-600" for="company">Select Lotto Company</label>
-                        <select class="rounded-md border-1 border-gray-300 shadow-sm shadow-gray-300 w-full" x-model="company" class="form-select">
-                            <option class="text-gray-500" value="" class="text-gray-400" disabled selected>...</option> <!-- Default option -->
+                        <select class="rounded-md border-1 border-gray-300 shadow-sm shadow-gray-300 w-full"
+                            x-model="company" class="form-select">
+                            <option class="text-gray-500" value="" class="text-gray-400" disabled selected>...
+                            </option> <!-- Default option -->
                             <template x-for="(companyItem, index) in companies" :key="index">
                                 <option x-text="companyItem" :value="companyItem" />
                             </template>
-                        <select>
-                            <div class="text-red-800">@error('company') {{ $message }} @enderror</div>
+                        </select>
+                        <div class="text-red-800">
+                            @error('company')
+                                {{ $message }}
+                            @enderror
+                        </div>
                     </div>
 
                     <!-- Display "Select Draw Time" only if the company is "National Lottery Authority" -->
-                    <div class="space-y-2" x-show="company === 'National Lottery Authority' || company === 'Afriluck NLA'" x-transition>
+                    <div class="space-y-2" x-transition>
                         <label class="text-gray-600" for="game_time">Select Draw Time</label>
-                        <select class="rounded-md border-1 border-gray-300 shadow-sm shadow-gray-300 w-full" label="Select Draw Time" x-model="game_time" placeholder="What draw do you want to play for">
-                            <option class="text-gray-500" value="" disabled selected>...</option> <!-- Default option -->
+                        <select class="rounded-md border-1 border-gray-300 shadow-sm shadow-gray-300 w-full"
+                            label="Select Draw Time" x-model="game_time"
+                            placeholder="What draw do you want to play for">
+                            <option class="text-gray-500" value="" disabled selected>...</option>
+                            <!-- Default option -->
                             <template x-for="(time, index) in game_times" :key="index">
                                 <option :value="time" x-text="time"></option>
                             </template>
-                        <select>
-                        <div class="text-red-800">@error('game_time') {{ $message }} @enderror</div>
+                        </select>
+                        <div class="text-red-800">
+                            @error('game_time')
+                                {{ $message }}
+                            @enderror
+                        </div>
                     </div>
 
                     <div class="space-y-2">
                         <label class="text-gray-600" for="game">Name of Lotto</label>
-                        <input
-                            class="rounded-md border-1 border-gray-300 shadow-sm shadow-gray-300 w-full"
-                            type="text"
-                            x-model='game'
-                            placeholder="None"
-                        />
-                        <div class="text-red-800">@error('game') {{ $message }} @enderror</div>
+                        <input class="rounded-md border-1 border-gray-300 shadow-sm shadow-gray-300 w-full"
+                            type="text" x-model='game' placeholder="None" />
+                        <div class="text-red-800">
+                            @error('game')
+                                {{ $message }}
+                            @enderror
+                        </div>
                     </div>
 
                     <div class="space-y-2">
                         <label class="text-gray-600" for="game_type">Type of Lotto (eg. Perm)</label>
-                        <select class="rounded-md border-1 border-gray-300 shadow-sm shadow-gray-300 w-full" x-model='game_type' placeholder="Eg Perm">
-                            <option class="text-gray-500" value="" disabled selected>...</option> <!-- Default option -->
+                        <select class="rounded-md border-1 border-gray-300 shadow-sm shadow-gray-300 w-full"
+                            x-model='game_type' placeholder="Eg Perm">
+                            <option class="text-gray-500" value="" disabled selected>...</option>
+                            <!-- Default option -->
                             <template x-for="(game_type, index) in game_types" :key="index">
                                 <option :value="game_type" x-text="game_type"></option>
                             </template>
                         </select>
-                        <div class="text-red-800">@error('game_type') {{ $message }} @enderror</div>
+                        <div class="text-red-800">
+                            @error('game_type')
+                                {{ $message }}
+                            @enderror
+                        </div>
                     </div>
 
                     <div class="space-y-2">
                         <label class="text-gray-600" for="game_code">Type of Lotto (eg. Perm 2)</label>
-                        <select class="rounded-md border-1 border-gray-300 shadow-sm shadow-gray-300 w-full" x-model='game_code'>
-                            <option class="text-gray-500" value="" disabled selected>...</option> <!-- Default option -->
+                        <select class="rounded-md border-1 border-gray-300 shadow-sm shadow-gray-300 w-full"
+                            x-model='game_code'>
+                            <option class="text-gray-500" value="" disabled selected>...</option>
+                            <!-- Default option -->
                             <template x-for="(code, index) in codes" :key="index">
                                 <option :value="code['code']" x-text="code['name']"></option>
                             </template>
                         </select>
-                        <div class="text-red-800">@error('game_code') {{ $message }} @enderror</div>
+                        <div class="text-red-800">
+                            @error('game_code')
+                                {{ $message }}
+                            @enderror
+                        </div>
                     </div>
 
                     <div class="space-y-2">
                         <label class="text-gray-600" for="selected_numbers">Select your numbers</label>
-                        <input
-                            class="rounded-md border-1 border-gray-300 shadow-sm shadow-gray-300 w-full"
-                            type="text"
-                            wire:model.live='selected_numbers'
-                            placeholder="eg. 07-22-11-33-44"
-                        />
-                        <div class="text-red-800">@error('selected_numbers') {{ $message }} @enderror</div>
+                        <input class="rounded-md border-1 border-gray-300 shadow-sm shadow-gray-300 w-full"
+                            type="text" wire:model.live='selected_numbers' placeholder="eg. 07-22-11-33-44" />
+                        <div class="text-red-800">
+                            @error('selected_numbers')
+                                {{ $message }}
+                            @enderror
+                        </div>
                     </div>
 
                     <div class="space-y-2">
                         <label class="text-gray-600" for="amount">Enter amount to stake</label>
-                        <input
-                            class="rounded-md border-1 border-gray-300 shadow-sm shadow-gray-300 w-full"
-                            type="text"
-                            x-model='amount'
-                            placeholder="10"
-                        />
-                        <div class="text-red-800">@error('amount') {{ $message }} @enderror</div>
+                        <input class="rounded-md border-1 border-gray-300 shadow-sm shadow-gray-300 w-full"
+                            type="text" x-model='amount' placeholder="10" />
+                        <div class="text-red-800">
+                            @error('amount')
+                                {{ $message }}
+                            @enderror
+                        </div>
                     </div>
                     <div class="space-y-2">
                         <h1 class="text-lg">Total Amount: <span x-text="total_amount"></span></h1>
                     </div>
-                    
-                </div> 
-                <x-button type="submit" blue spinner="submit" loading-delay="short" label="Stake Lotto" :disabled="$disabled" class="w-full py-2 md:py-2 text-xl text-white disabled disabled:opacity-15 transition {{ $disabled ? 'disabled' : '' }}" />
+
+                </div>
+                <x-button type="submit" blue spinner="submit" loading-delay="short" label="Stake Lotto"
+                    :disabled="$disabled"
+                    class="w-full py-2 md:py-2 text-xl text-white disabled disabled:opacity-15 transition {{ $disabled ? 'disabled' : '' }}" />
             </div>
         </form>
     </x-auth-card>

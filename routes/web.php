@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Callbacks\BetRequestCallback;
 use App\Http\Controllers\Callbacks\CardSubscriptionCallback;
 use App\Http\Controllers\Callbacks\MomoSubscriptionCallback;
 use App\Http\Controllers\Callbacks\PaystackSubscriptionCallback;
@@ -58,7 +59,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/request-bet', RequestBet::class)->name('request.bet');
         Route::get('/settings', Settings::class)->name('settings');
         Route::get('/lotto-results', LottoResults::class)->name('lotto.results');
-        Route::get('bet-request-callback', [RequestBet::class, 'callback'])->name('request.bet.callback');
+        Route::get('bet-request-callback', [BetRequestCallback::class, 'handle'])->name('request.bet.callback');
         Route::get('/recent-bets', RecentBets::class)->name('recent.bets');
         Route::get('/subscribe', Subscribe::class)->name('subscribe');
         Route::get('/verify-invoice', VerifyInvoice::class)->name('verify.invoice');
