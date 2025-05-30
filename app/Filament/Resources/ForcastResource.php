@@ -31,8 +31,9 @@ class ForcastResource extends Resource
                     ->options([
                         'Afriluck NLA' => 'Afriluck NLA',
                         'NLA' => 'NLA',
-                        'UK49S' => 'UK49S',
+                        'UK49S' => 'UK49S And More',
                         'Alpha Lotto' => 'Alpha Lotto',
+                        'Blue Star Lotto' => 'Blue Star Lotto'
                     ])
                     ->label('Select Lotto company')
                     ->required(),
