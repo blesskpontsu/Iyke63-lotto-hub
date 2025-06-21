@@ -100,7 +100,7 @@ class RequestBet extends Component
             return redirect('/request-bet')->with('error', 'Could not save bet. Please try again.');
         }
 
-        $discount = $this->total_amount * 0.15;
+        $discount = $this->total_amount * 0.10;
 
         $amount = $this->total_amount - $discount;
 
